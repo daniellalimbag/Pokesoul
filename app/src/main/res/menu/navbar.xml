@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/selector_home"
+        android:title="Home" />
 
-</LinearLayout>
+    <item
+        android:id="@+id/nav_community"
+        android:icon="@drawable/selector_explore"
+        android:title="Explore" />
+
+    <item
+        android:id="@+id/nav_add"
+        android:icon="@drawable/selector_add"
+        android:title="Add" />
+
+    <item
+        android:id="@+id/nav_runs"
+        android:icon="@drawable/selector_game"
+        android:title="Runs" />
+
+    <item
+        android:id="@+id/nav_notifications"
+        android:icon="@drawable/selector_bell"
+        android:title="Notifications" />
+
+</menu>
