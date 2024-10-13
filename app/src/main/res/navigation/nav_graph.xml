@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/fragment_home">
+
+    <fragment
+        android:id="@+id/fragment_home"
+        android:name="com.mobdeve.s21.pokesoul.HomeFragment"
+        android:label="Home" />
+
+    <fragment
+        android:id="@+id/fragment_explore"
+        android:name="com.mobdeve.s21.pokesoul.ExploreFragment"
+        android:label="Explore" />
+
+    <fragment
+        android:id="@+id/fragment_add"
+        android:name="com.mobdeve.s21.pokesoul.AddFragment"
+        android:label="Add" />
+
+    <fragment
+        android:id="@+id/fragment_run"
+        android:name="com.mobdeve.s21.pokesoul.RunFragment"
+        android:label="Run" />
+
+    <fragment
+        android:id="@+id/fragment_notification"
+        android:name="com.mobdeve.s21.pokesoul.NotificationFragment"
+        android:label="Notification" />
+
+</navigation>
