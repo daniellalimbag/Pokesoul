@@ -1,4 +1,4 @@
-package com.mobdeve.s21.pokesoul
+package com.mobdeve.s21.pokesoul.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -7,6 +7,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.mobdeve.s21.pokesoul.R
 
 class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
