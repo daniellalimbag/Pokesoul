@@ -16,7 +16,7 @@ class RunFragment : Fragment() {
 
     private lateinit var runsRv: RecyclerView
     private lateinit var runAdapter: RunAdapter
-    private lateinit var runList: List<Run> // Declare as lateinit var
+    private lateinit var runList: List<Run>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
