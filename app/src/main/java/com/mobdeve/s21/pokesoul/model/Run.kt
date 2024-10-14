@@ -1,6 +1,6 @@
 package com.mobdeve.s21.pokesoul.model
 
-class Run(runName: String, gameTitle: String, players: List<User>, team: List<Pokemon>) {
+class Run(runName: String, gameTitle: String, players: List<User>) {
 
     var runName = runName
         private set
@@ -9,8 +9,5 @@ class Run(runName: String, gameTitle: String, players: List<User>, team: List<Po
         private set
 
     var players = players
-        private set
-
-    var team = team
         private set
 }
