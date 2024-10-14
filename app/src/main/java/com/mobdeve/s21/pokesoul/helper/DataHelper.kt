@@ -34,17 +34,17 @@ object DataHelper {
         // Add runs with players and Pokemon teams
         data.add(
             Run(
-                runName = "Run 1",
-                gameTitle = "Game A",
-                players = listOf(user1, user2),
+                runName = "BiRep",
+                gameTitle = "SoulSilver",
+                players = listOf(user1, user2, user4),
                 team = teamRun1
             )
         )
         data.add(
             Run(
-                runName = "Run 2",
-                gameTitle = "Game B",
-                players = listOf(user1, user3, user4),
+                runName = "Super Funny Run",
+                gameTitle = "HeartGold",
+                players = listOf(user1, user3),
                 team = teamRun2
             )
         )
