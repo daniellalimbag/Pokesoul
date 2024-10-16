@@ -24,7 +24,6 @@ class PostAdapter(private val posts: List<Post>) : RecyclerView.Adapter<PostView
         holder.likeCountTv.text = post.likeCount.toString()
         holder.dislikeCountTv.text = post.dislikeCount.toString()
 
-        // Set click listeners for like/dislike buttons if needed
         holder.likeImageButton.setOnClickListener {
             // Handle like action
         }

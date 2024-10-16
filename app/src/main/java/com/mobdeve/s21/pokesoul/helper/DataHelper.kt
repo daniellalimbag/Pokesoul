@@ -7,13 +7,24 @@ import com.mobdeve.s21.pokesoul.model.Post
 import com.mobdeve.s21.pokesoul.model.Run
 import com.mobdeve.s21.pokesoul.model.User
 import kotlinx.datetime.Instant
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 object DataHelper {
+
     val user1 = User("Player 1", R.drawable.player1, mutableListOf())
     val user2 = User("Player 2", R.drawable.player2, mutableListOf())
     val user3 = User("Player 3", R.drawable.player3, mutableListOf())
+
+    private fun formatInstant(instant: Instant): String {
+        val dateFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        val date = java.util.Date(instant.toEpochMilliseconds())
+        return dateFormatter.format(date)
+    }
+
     fun loadRunData(): ArrayList<Run> {
         val data = ArrayList<Run>()
+
         val pokemon1 = Pokemon("Quilava", 156, R.drawable.quilava)
         val pokemon2 = Pokemon("Ampharos", 181, R.drawable.ampharos)
         val pokemon3 = Pokemon("Drowzee", 96, R.drawable.drowzee)
@@ -46,12 +57,13 @@ object DataHelper {
         linkedPokemonList[8].link(linkedPokemonList[0])
 
         val linkedTeam1 = linkedPokemonList
+
         val run1 = Run(
             runName = "Best Run Ever",
             gameTitle = "SoulSilver",
             players = listOf(user1, user2, user3),
             team = linkedTeam1,
-            creationDateTime = Instant.parse("2024-10-14T17:15:23.000Z")
+            updatedTime = formatInstant(Instant.parse("2024-10-14T17:15:23.000Z"))
         )
         data.add(run1)
 
@@ -71,7 +83,7 @@ object DataHelper {
             gameTitle = "HeartGold",
             players = listOf(user1, user3),
             team = linkedTeam2,
-            creationDateTime = Instant.parse("2024-10-17T22:19:44.000Z")
+            updatedTime = formatInstant(Instant.parse("2024-10-17T22:19:44.000Z"))
         )
         data.add(run2)
 
@@ -80,6 +92,7 @@ object DataHelper {
 
         return data
     }
+
     fun loadPostData(): ArrayList<Post> {
         val posts = ArrayList<Post>()
 
@@ -88,7 +101,7 @@ object DataHelper {
                 title = "How to beat Voltorb Flip?",
                 username = "Player 3",
                 time = "30 min ago",
-                content = "I want to get 2000 coins from the gam corner to trade for a Dratini but I duck at Voltorb Flip. Any tips on how to beat it?",
+                content = "I want to get 2000 coins from the game corner to trade for a Dratini but I suck at Voltorb Flip. Any tips on how to beat it?",
                 commentCount = 5,
                 likeCount = 20,
                 dislikeCount = 1
@@ -98,7 +111,7 @@ object DataHelper {
         posts.add(
             Post(
                 title = "I Died to Elite Four",
-                username = "Player2",
+                username = "Player 2",
                 time = "5 hrs ago",
                 content = "I hate this game",
                 commentCount = 8,

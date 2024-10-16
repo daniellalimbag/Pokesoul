@@ -1,6 +1,5 @@
 package com.mobdeve.s21.pokesoul.model
 
-import kotlinx.datetime.Instant
 import java.io.Serializable
 
 data class Run(
@@ -8,5 +7,5 @@ data class Run(
     val gameTitle: String,
     val players: List<User>,
     val team: List<LinkedPokemon>,
-    val creationDateTime: Instant
+    val updatedTime: String
 ) : Serializable
