@@ -6,5 +6,6 @@ data class Run(
     val runName: String,
     val gameTitle: String,
     val players: List<User>,
-    val team: List<LinkedPokemon>
+    val team: List<LinkedPokemon>,
+    val creationDateTime: String
 ) : Serializable
