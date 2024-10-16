@@ -8,7 +8,10 @@ import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.model.User
 import com.mobdeve.s21.pokesoul.viewholder.PlayerViewHolder
 
-class PlayerAdapter(private val playerList: List<User>) : RecyclerView.Adapter<PlayerViewHolder>() {
+class PlayerAdapter(
+    private val playerList: List<User>,
+    private val showNames: Boolean
+) : RecyclerView.Adapter<PlayerViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayerViewHolder {
         // Inflate the item layout for each player (item_player.xml)
@@ -18,7 +21,7 @@ class PlayerAdapter(private val playerList: List<User>) : RecyclerView.Adapter<P
 
     override fun onBindViewHolder(holder: PlayerViewHolder, position: Int) {
         // Bind each player data to the ViewHolder
-        holder.bind(playerList[position])
+        holder.bind(playerList[position], showNames)
     }
 
     override fun getItemCount(): Int {

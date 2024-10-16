@@ -21,7 +21,7 @@ class RunViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         gameTv.text = run.gameTitle
 
         // Set up the Player adapter
-        val playerAdapter = PlayerAdapter(run.players)
+        val playerAdapter = PlayerAdapter(run.players, false)
         playersRv.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
         playersRv.adapter = playerAdapter
 
