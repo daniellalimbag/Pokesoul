@@ -22,16 +22,13 @@ class RunFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_run, container, false)
         runsRv = view.findViewById(R.id.runsRv)
 
-        // Load runs
         loadRuns()
 
-        // Set up the RecyclerView
         runsRv.layoutManager = LinearLayoutManager(requireContext())
-        runAdapter = RunAdapter(runList)
+        runAdapter = RunAdapter(runList, "Player 1") // Note: Hardcoded username
         runsRv.adapter = runAdapter
 
         return view

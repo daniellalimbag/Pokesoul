@@ -1,5 +1,6 @@
 package com.mobdeve.s21.pokesoul.viewholder
 
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,18 +17,22 @@ class RunViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val playersRv: RecyclerView = itemView.findViewById(R.id.playersRv)
     private val teamRv: RecyclerView = itemView.findViewById(R.id.teamRv)
 
-    fun bind(run: Run) {
+    fun bind(run: Run, currentUserName: String) {
         runNameTv.text = run.runName
         gameTv.text = run.gameTitle
 
-        // Set up the Player adapter
         val playerAdapter = PlayerAdapter(run.players, false)
         playersRv.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
         playersRv.adapter = playerAdapter
 
-        // Set up the Pokémon adapter for the team
-        val pokemonAdapter = PokemonAdapter(run.team)
+        val userPokemon = run.team.filter { it.owner.username.equals(currentUserName, ignoreCase = true) }
+
+        Log.d("RunViewHolder", "Current User: $currentUserName")
+        Log.d("RunViewHolder", "User Pokémon: ${userPokemon.size}")
+
+        val pokemonAdapter = PokemonAdapter(userPokemon)
         teamRv.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
         teamRv.adapter = pokemonAdapter
     }
+
 }
