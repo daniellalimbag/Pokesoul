@@ -12,23 +12,34 @@ import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.fragment.PokemonFragment
 import com.mobdeve.s21.pokesoul.fragment.SummaryFragment
 import com.mobdeve.s21.pokesoul.fragment.TimelineFragment
+import com.mobdeve.s21.pokesoul.model.Run
 
 class RunDetailsActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
 
+    private var run: Run? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.run_details)
+
+        // Retrieve the Run instance from the intent
+        run = intent.getSerializableExtra("RUN_INSTANCE") as? Run
 
         drawerLayout = findViewById(R.id.drawerLayout)
         navigationView = findViewById(R.id.navigationView)
 
         // Set the default fragment
         if (savedInstanceState == null) {
+            val summaryFragment = SummaryFragment().apply {
+                arguments = Bundle().apply {
+                    putSerializable("RUN_INSTANCE", run)
+                }
+            }
             supportFragmentManager.commit {
-                replace(R.id.fragmentContainer, SummaryFragment())
+                replace(R.id.fragmentContainer, summaryFragment)
             }
         }
 
@@ -45,6 +56,7 @@ class RunDetailsActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
 
+        // Set navigation view item selected listener
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_summary -> {
@@ -69,6 +81,11 @@ class RunDetailsActivity : AppCompatActivity() {
     }
 
     private fun loadFragment(fragment: Fragment) {
+        // Pass the Run instance to the fragment
+        fragment.arguments = Bundle().apply {
+            putSerializable("RUN_INSTANCE", run)
+        }
+
         supportFragmentManager.commit {
             replace(R.id.fragmentContainer, fragment)
             addToBackStack(null) // Optional: adds to back stack for navigation

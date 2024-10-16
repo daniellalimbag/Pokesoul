@@ -1,7 +1,8 @@
 package com.mobdeve.s21.pokesoul.model
 
-class User(username: String, image: Int) {
+import java.io.Serializable
 
+class User(username: String, image: Int) : Serializable {
     var username = username
         private set
 

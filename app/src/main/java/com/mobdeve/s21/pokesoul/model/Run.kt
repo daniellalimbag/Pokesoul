@@ -1,16 +1,10 @@
 package com.mobdeve.s21.pokesoul.model
 
-class Run(runName: String, gameTitle: String, players: List<User>, team: List<Pokemon>) {
+import java.io.Serializable
 
-    var runName = runName
-        private set
-
-    var gameTitle = gameTitle
-        private set
-
-    var players = players
-        private set
-
-    var team = team
-        private set
-}
+data class Run(
+    val runName: String,
+    val gameTitle: String,
+    val players: List<User>,
+    val team: List<Pokemon>
+) : Serializable

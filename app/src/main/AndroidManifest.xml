@@ -21,6 +21,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- RunDetailsActivity -->
+        <activity
+            android:name=".activity.RunDetailsActivity"
+            android:exported="true" />
     </application>
 
 </manifest>
