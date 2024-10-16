@@ -5,94 +5,94 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="3dp"
-    android:background="@color/black"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="?android:attr/selectableItemBackground"
     app:cardBackgroundColor="@color/black"
     app:cardCornerRadius="8dp"
     app:cardElevation="6dp">
 
     <LinearLayout
-        android:id="@+id/runLl"
-        android:layout_width="match_parent"
+    android:id="@+id/runLl"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="12dp">
+
+    <LinearLayout
+        android:id="@+id/rundetailsLl"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="12dp">
-
-        <LinearLayout
-            android:id="@+id/rundetailsLl"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="5dp">
-
-            <TextView
-                android:id="@+id/runnameTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Run Name"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/gameTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingLeft="6dp"
-                android:text="• SoulSilver"
-                android:textColor="@color/boulder" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/playersLl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center|center_horizontal|left"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/playersTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingRight="6dp"
-                android:text="Players"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/playersRv"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:clipToPadding="false"
-                android:padding="6dp"
-                android:scrollbars="horizontal" />
-        </LinearLayout>
+        android:orientation="horizontal"
+        android:paddingBottom="5dp">
 
         <TextView
-            android:id="@+id/teamTv"
-            android:layout_width="match_parent"
+            android:id="@+id/runnameTv"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Team"
-            android:textColor="@color/white" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/teamRv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
             android:layout_weight="1"
-            android:clipToPadding="false"
-            android:orientation="horizontal"
-            android:paddingLeft="6dp" />
+            android:text="Run Name"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="12dp"
-            android:background="@android:color/darker_gray" />
-
+        <TextView
+            android:id="@+id/gameTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="6dp"
+            android:text="• SoulSilver"
+            android:textColor="@color/boulder" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/playersLl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center|center_horizontal|left"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/playersTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="6dp"
+            android:text="Players"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/playersRv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:padding="6dp"
+            android:scrollbars="horizontal" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/teamTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Team"
+        android:textColor="@color/white" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/teamRv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        android:paddingLeft="6dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:background="@android:color/darker_gray" />
+    </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -2,8 +2,9 @@ package com.mobdeve.s21.pokesoul.activity
 
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.appcompat.app.ActionBarDrawerToggle
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
@@ -17,7 +18,6 @@ import com.mobdeve.s21.pokesoul.model.Run
 class RunDetailsActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
-    private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
 
     private var run: Run? = null
 
@@ -25,13 +25,18 @@ class RunDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.run_details)
 
-        // Retrieve the Run instance from the intent
+        setSupportActionBar(findViewById(R.id.toolbar))
+
         run = intent.getSerializableExtra("RUN_INSTANCE") as? Run
 
-        drawerLayout = findViewById(R.id.drawerLayout)
+        drawerLayout = findViewById(R.id.mainDl)
         navigationView = findViewById(R.id.navigationView)
 
-        // Set the default fragment
+        val backButton: ImageButton = findViewById(R.id.backIbtn)
+        backButton.setOnClickListener {
+            finish()
+        }
+
         if (savedInstanceState == null) {
             val summaryFragment = SummaryFragment().apply {
                 arguments = Bundle().apply {
@@ -39,24 +44,19 @@ class RunDetailsActivity : AppCompatActivity() {
                 }
             }
             supportFragmentManager.commit {
-                replace(R.id.fragmentContainer, summaryFragment)
+                replace(R.id.fragmentFl, summaryFragment)
             }
         }
 
-        // Set up the ActionBarDrawerToggle
-        actionBarDrawerToggle = ActionBarDrawerToggle(
-            this,
-            drawerLayout,
-            R.string.open_drawer,
-            R.string.close_drawer
-        )
-        drawerLayout.addDrawerListener(actionBarDrawerToggle)
-        actionBarDrawerToggle.syncState()
+        val menuButton: ImageButton = findViewById(R.id.menuIbtn)
+        menuButton.setOnClickListener {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START)
+            } else {
+                drawerLayout.openDrawer(GravityCompat.START)
+            }
+        }
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeButtonEnabled(true)
-
-        // Set navigation view item selected listener
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_summary -> {
@@ -77,19 +77,18 @@ class RunDetailsActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return actionBarDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item)
+        return super.onOptionsItemSelected(item)
     }
 
     private fun loadFragment(fragment: Fragment) {
-        // Pass the Run instance to the fragment
         fragment.arguments = Bundle().apply {
             putSerializable("RUN_INSTANCE", run)
         }
 
         supportFragmentManager.commit {
-            replace(R.id.fragmentContainer, fragment)
-            addToBackStack(null) // Optional: adds to back stack for navigation
+            replace(R.id.fragmentFl, fragment)
+            addToBackStack(null)
         }
-        drawerLayout.closeDrawers() // Close the drawer after selection
+        drawerLayout.closeDrawers()
     }
 }
