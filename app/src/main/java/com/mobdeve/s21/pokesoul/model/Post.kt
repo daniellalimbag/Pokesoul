@@ -4,7 +4,7 @@ import java.io.Serializable
 
 data class Post(
     val title: String,
-    val username: String,
+    val creator: User,
     val time: String,
     val content: String,
     val commentCount: Int,

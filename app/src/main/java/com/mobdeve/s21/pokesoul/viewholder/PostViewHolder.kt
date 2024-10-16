@@ -2,13 +2,16 @@ package com.mobdeve.s21.pokesoul.viewholder
 
 import android.view.View
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.imageview.ShapeableImageView
 import com.mobdeve.s21.pokesoul.R
 
 class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val titleTv: TextView = itemView.findViewById(R.id.titleTv)
     val usernameTv: TextView = itemView.findViewById(R.id.usernameTv)
+    val userSiv: ShapeableImageView = itemView.findViewById(R.id.userSiv)
     val timeTv: TextView = itemView.findViewById(R.id.timeTv)
     val contentTv: TextView = itemView.findViewById(R.id.contentTv)
     val commentCountTv: TextView = itemView.findViewById(R.id.commentCountTv)

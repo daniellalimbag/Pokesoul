@@ -99,7 +99,7 @@ object DataHelper {
         posts.add(
             Post(
                 title = "How to beat Voltorb Flip?",
-                username = "Player 3",
+                creator = user3,
                 time = "30 min ago",
                 content = "I want to get 2000 coins from the game corner to trade for a Dratini but I suck at Voltorb Flip. Any tips on how to beat it?",
                 commentCount = 5,
@@ -110,8 +110,8 @@ object DataHelper {
 
         posts.add(
             Post(
-                title = "I Died to Elite Four",
-                username = "Player 2",
+                title = "I Died to a Stantler",
+                creator = user2,
                 time = "5 hrs ago",
                 content = "I hate this game",
                 commentCount = 8,
@@ -123,7 +123,7 @@ object DataHelper {
         posts.add(
             Post(
                 title = "HeartGold Run Success!",
-                username = "Austin Fernandez",
+                creator = user1,
                 time = "2024-10-17 17:30",
                 content = "Finally finished my HeartGold run. I love this game.",
                 commentCount = 3,

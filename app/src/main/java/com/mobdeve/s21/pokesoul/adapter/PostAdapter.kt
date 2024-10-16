@@ -17,7 +17,8 @@ class PostAdapter(private val posts: List<Post>) : RecyclerView.Adapter<PostView
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         val post = posts[position]
         holder.titleTv.text = post.title
-        holder.usernameTv.text = post.username
+        holder.usernameTv.text = post.creator.username
+        holder.userSiv.setImageResource(post.creator.image)
         holder.timeTv.text = post.time
         holder.contentTv.text = post.content
         holder.commentCountTv.text = post.commentCount.toString()
