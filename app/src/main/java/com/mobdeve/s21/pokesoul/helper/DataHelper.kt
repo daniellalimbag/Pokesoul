@@ -5,6 +5,7 @@ import com.mobdeve.s21.pokesoul.model.LinkedPokemon
 import com.mobdeve.s21.pokesoul.model.Pokemon
 import com.mobdeve.s21.pokesoul.model.Run
 import com.mobdeve.s21.pokesoul.model.User
+import kotlinx.datetime.*
 
 object DataHelper {
     fun loadRunData(): ArrayList<Run> {
@@ -50,7 +51,8 @@ object DataHelper {
             runName = "Best Run Ever",
             gameTitle = "SoulSilver",
             players = listOf(user1, user2, user3),
-            team = linkedTeam1
+            team = linkedTeam1,
+            creationDateTime = LocalDateTime.parse("2024-10-14T17:15:23.000Z").toString()
         )
         data.add(run1)
 
@@ -69,7 +71,8 @@ object DataHelper {
             runName = "Another Run",
             gameTitle = "HeartGold",
             players = listOf(user1, user3),
-            team = linkedTeam2
+            team = linkedTeam2,
+            creationDateTime = LocalDateTime.parse("2024-10-17T22:19:44.000Z").toString()
         )
         data.add(run2)
 
