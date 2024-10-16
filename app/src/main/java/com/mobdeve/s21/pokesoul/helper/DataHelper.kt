@@ -3,18 +3,17 @@ package com.mobdeve.s21.pokesoul.helper
 import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.model.LinkedPokemon
 import com.mobdeve.s21.pokesoul.model.Pokemon
+import com.mobdeve.s21.pokesoul.model.Post
 import com.mobdeve.s21.pokesoul.model.Run
 import com.mobdeve.s21.pokesoul.model.User
 import kotlinx.datetime.Instant
 
 object DataHelper {
+    val user1 = User("Player 1", R.drawable.player1, mutableListOf())
+    val user2 = User("Player 2", R.drawable.player2, mutableListOf())
+    val user3 = User("Player 3", R.drawable.player3, mutableListOf())
     fun loadRunData(): ArrayList<Run> {
         val data = ArrayList<Run>()
-
-        val user1 = User("Player 1", R.drawable.player1, mutableListOf())
-        val user2 = User("Player 2", R.drawable.player2, mutableListOf())
-        val user3 = User("Player 3", R.drawable.player3, mutableListOf())
-
         val pokemon1 = Pokemon("Quilava", 156, R.drawable.quilava)
         val pokemon2 = Pokemon("Ampharos", 181, R.drawable.ampharos)
         val pokemon3 = Pokemon("Drowzee", 96, R.drawable.drowzee)
@@ -80,5 +79,46 @@ object DataHelper {
         user3.runs.add(run2)
 
         return data
+    }
+    fun loadPostData(): ArrayList<Post> {
+        val posts = ArrayList<Post>()
+
+        posts.add(
+            Post(
+                title = "How to beat Voltorb Flip?",
+                username = "Player 3",
+                time = "30 min ago",
+                content = "I want to get 2000 coins from the gam corner to trade for a Dratini but I duck at Voltorb Flip. Any tips on how to beat it?",
+                commentCount = 5,
+                likeCount = 20,
+                dislikeCount = 1
+            )
+        )
+
+        posts.add(
+            Post(
+                title = "I Died to Elite Four",
+                username = "Player2",
+                time = "5 hrs ago",
+                content = "I hate this game",
+                commentCount = 8,
+                likeCount = 35,
+                dislikeCount = 3
+            )
+        )
+
+        posts.add(
+            Post(
+                title = "HeartGold Run Success!",
+                username = "Austin Fernandez",
+                time = "2024-10-17 17:30",
+                content = "Finally finished my HeartGold run. I love this game.",
+                commentCount = 3,
+                likeCount = 15,
+                dislikeCount = 0
+            )
+        )
+
+        return posts
     }
 }

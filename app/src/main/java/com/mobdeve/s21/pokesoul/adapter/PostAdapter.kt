@@ -1,0 +1,40 @@
+package com.mobdeve.s21.pokesoul.adapter
+
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.mobdeve.s21.pokesoul.R
+import com.mobdeve.s21.pokesoul.model.Post
+import com.mobdeve.s21.pokesoul.viewholder.PostViewHolder
+
+class PostAdapter(private val posts: List<Post>) : RecyclerView.Adapter<PostViewHolder>() {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_post, parent, false)
+        return PostViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
+        val post = posts[position]
+        holder.titleTv.text = post.title
+        holder.usernameTv.text = post.username
+        holder.timeTv.text = post.time
+        holder.contentTv.text = post.content
+        holder.commentCountTv.text = post.commentCount.toString()
+        holder.likeCountTv.text = post.likeCount.toString()
+        holder.dislikeCountTv.text = post.dislikeCount.toString()
+
+        // Set click listeners for like/dislike buttons if needed
+        holder.likeImageButton.setOnClickListener {
+            // Handle like action
+        }
+
+        holder.dislikeImageButton.setOnClickListener {
+            // Handle dislike action
+        }
+    }
+
+    override fun getItemCount(): Int {
+        return posts.size
+    }
+}
