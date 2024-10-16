@@ -124,7 +124,7 @@ object DataHelper {
             Post(
                 title = "HeartGold Run Success!",
                 creator = user1,
-                time = "2024-10-17 17:30",
+                time = "12 hrs ago",
                 content = "Finally finished my HeartGold run. I love this game.",
                 commentCount = 3,
                 likeCount = 15,

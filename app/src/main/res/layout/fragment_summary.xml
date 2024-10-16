@@ -21,6 +21,7 @@
             android:id="@+id/runTitleTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/satoshi_bold"
             android:text="Summary Fragment"
             android:textColor="@color/white"
             android:textSize="24sp" />
@@ -29,6 +30,7 @@
             android:id="@+id/gameTitleTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/satoshi_medium"
             android:text="TextView"
             android:textColor="@color/boulder"
             android:textSize="16sp" />
