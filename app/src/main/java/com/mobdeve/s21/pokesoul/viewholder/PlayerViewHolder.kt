@@ -9,7 +9,7 @@ import com.mobdeve.s21.pokesoul.model.User
 
 class PlayerViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val playerImageView: ShapeableImageView = view.findViewById(R.id.playerSiv)
-    private val playerNameTextView: TextView = view.findViewById(R.id.nameTv)
+    private val playerNameTextView: TextView = view.findViewById(R.id.usernameTv)
 
     fun bind(user: User, showNames: Boolean) {
         playerImageView.setImageResource(user.image) // Set the player's image

@@ -53,7 +53,7 @@ class SummaryFragment : Fragment() {
             }
             val player1View = layoutInflater.inflate(R.layout.item_player, tableRow, false) as LinearLayout
             val player1ImageView = player1View.findViewById<ShapeableImageView>(R.id.playerSiv)
-            val player1NameTextView = player1View.findViewById<TextView>(R.id.nameTv)
+            val player1NameTextView = player1View.findViewById<TextView>(R.id.usernameTv)
 
             player1ImageView.setImageResource(players[i].image)
             player1NameTextView.text = players[i].username
@@ -66,7 +66,7 @@ class SummaryFragment : Fragment() {
             if (i + 1 < players.size) {
                 val player2View = layoutInflater.inflate(R.layout.item_player, tableRow, false) as LinearLayout
                 val player2ImageView = player2View.findViewById<ShapeableImageView>(R.id.playerSiv)
-                val player2NameTextView = player2View.findViewById<TextView>(R.id.nameTv)
+                val player2NameTextView = player2View.findViewById<TextView>(R.id.usernameTv)
 
                 player2ImageView.setImageResource(players[i + 1].image)
                 player2NameTextView.text = players[i + 1].username

@@ -19,7 +19,6 @@ import com.mobdeve.s21.pokesoul.helper.DataHelper
 import com.mobdeve.s21.pokesoul.model.Post
 
 class HomeFragment : Fragment() {
-
     private lateinit var postRv: RecyclerView
     private lateinit var postAdapter: PostAdapter
     private var posts: MutableList<Post> = mutableListOf()
