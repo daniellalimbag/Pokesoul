@@ -32,7 +32,7 @@ class AddPostActivity : AppCompatActivity() {
         this.titleEt = findViewById(R.id.titleEt)
         this.userImageIv = findViewById(R.id.userImageIv)
 
-        currentUser = User("Austin", R.drawable.player1)
+        currentUser = User("Austin", R.drawable.player1, "I like men and women")
 
         this.userImageIv.setImageResource(currentUser.image)
 

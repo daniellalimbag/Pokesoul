@@ -12,9 +12,9 @@ import java.util.Locale
 
 object DataHelper {
 
-    val user1 = User("Player 1", R.drawable.player1, mutableListOf())
-    val user2 = User("Player 2", R.drawable.player2, mutableListOf())
-    val user3 = User("Player 3", R.drawable.player3, mutableListOf())
+    val user1 = User("Player 1",  R.drawable.player1, "I like men and women",mutableListOf(), mutableListOf())
+    val user2 = User("Player 2", R.drawable.player2, "I like men and women",mutableListOf(), mutableListOf())
+    val user3 = User("Player 3", R.drawable.player3, "I like men and women",mutableListOf(), mutableListOf())
 
     private fun formatInstant(instant: Instant): String {
         val dateFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
