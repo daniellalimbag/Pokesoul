@@ -25,6 +25,10 @@
         <activity
             android:name=".activity.RunDetailsActivity"
             android:exported="true" />
+        <!-- AddPostActivity -->
+        <activity
+            android:name=".activity.AddPostActivity"
+            android:exported="true" />
     </application>
 
 </manifest>
