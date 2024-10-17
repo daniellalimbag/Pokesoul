@@ -2,6 +2,7 @@ package com.mobdeve.s21.pokesoul.helper
 
 import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.model.LinkedPokemon
+import com.mobdeve.s21.pokesoul.model.Notification
 import com.mobdeve.s21.pokesoul.model.Pokemon
 import com.mobdeve.s21.pokesoul.model.Post
 import com.mobdeve.s21.pokesoul.model.Run
@@ -133,5 +134,35 @@ object DataHelper {
         )
 
         return posts
+    }
+
+    fun loadNotificationData(): ArrayList<Notification>{
+        val Notifications = ArrayList<Notification>()
+
+        Notifications.add(
+            Notification(
+                title = "Who wants to Join?",
+                time = "30 Mins ago",
+                content = "I'm a new player and would love to learn how to play a Soulink"
+            )
+        )
+
+        Notifications.add(
+            Notification(
+                title = "A player died to a Stantler and made us lose...",
+                time = "2 Hrs ago",
+                content = "Title ^^^"
+            )
+        )
+
+        Notifications.add(
+            Notification(
+                title = "Looking for one more person for soulink",
+                time = "10 Hrs ago",
+                content = "We're a group of 3 and looking for one more person to join this runthrough. Comment if interested!"
+            )
+        )
+
+        return Notifications
     }
 }
