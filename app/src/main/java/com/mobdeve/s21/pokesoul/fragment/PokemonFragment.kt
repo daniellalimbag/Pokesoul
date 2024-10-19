@@ -1,6 +1,7 @@
 package com.mobdeve.s21.pokesoul.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.imageview.ShapeableImageView
 import com.mobdeve.s21.pokesoul.R
@@ -18,7 +20,7 @@ import com.mobdeve.s21.pokesoul.model.Run
 import com.mobdeve.s21.pokesoul.model.User
 
 class PokemonFragment : Fragment() {
-    private lateinit var run: Run  // Store the run instance
+    private lateinit var run: Run
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -112,13 +114,22 @@ class PokemonFragment : Fragment() {
         val pokemonImageView = pokemonView.findViewById<ShapeableImageView>(R.id.pokemonSiv)
         val nicknameTextView = pokemonView.findViewById<TextView>(R.id.nicknameTv)
 
+        pokemonView.orientation = LinearLayout.HORIZONTAL
+
         pokemonImageView.setImageResource(pokemon.pokemon.imageId)
         nicknameTextView.text = pokemon.nickname
+
+        val paddingInPx = dpToPx(8)
+        nicknameTextView.setPadding(paddingInPx, 0, 0, 0)
 
         val params = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
         pokemonView.layoutParams = params
 
         return pokemonView
+    }
+
+    private fun dpToPx(dp: Int): Int {
+        return (dp * resources.displayMetrics.density).toInt()
     }
 }
 
