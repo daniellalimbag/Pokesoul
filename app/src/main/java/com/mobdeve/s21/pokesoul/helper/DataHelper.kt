@@ -13,7 +13,7 @@ import java.util.Locale
 
 object DataHelper {
 
-    val user1 = User("Player 1",  R.drawable.player1, "I like men and women", mutableListOf(), mutableListOf())
+    val user1 = User("Player 1", R.drawable.player1, "I like men and women", mutableListOf(), mutableListOf())
     val user2 = User("Player 2", R.drawable.player2, "I like men and women", mutableListOf(), mutableListOf())
     val user3 = User("Player 3", R.drawable.player3, "I like men and women", mutableListOf(), mutableListOf())
 
@@ -47,6 +47,7 @@ object DataHelper {
             OwnedPokemon(pokemon1, "Weaver", user3)
         )
 
+        // Link Pokémon together
         ownedPokemonLists[0].link(ownedPokemonLists[1])
         ownedPokemonLists[2].link(ownedPokemonLists[3])
         ownedPokemonLists[4].link(ownedPokemonLists[5])
@@ -57,9 +58,24 @@ object DataHelper {
         ownedPokemonLists[7].link(ownedPokemonLists[8])
         ownedPokemonLists[8].link(ownedPokemonLists[0])
 
-        val linkedTeam1 = ownedPokemonLists
+        val linkedTeam1 = listOf(
+            OwnedPokemon(pokemon1, "Ron", user1),
+            OwnedPokemon(pokemon2, "Rov", user1),
+            OwnedPokemon(pokemon3, "Izzy", user2),
+            OwnedPokemon(pokemon4, "Julian", user2),
+            OwnedPokemon(pokemon5, "Hiro", user1),
+            OwnedPokemon(pokemon6, "Ilan", user2),
+            OwnedPokemon(pokemon7, "Marc", user3),
+            OwnedPokemon(pokemon8, "Fish", user3),
+            OwnedPokemon(pokemon5, "Test", user2)
+        )
 
-        // Using the secondary constructor
+        val box1 = listOf(
+            OwnedPokemon(pokemon5, "Test", user1),
+            OwnedPokemon(pokemon5, "Test", user2),
+            OwnedPokemon(pokemon5, "Test", user3)
+        )
+
         val run1 = Run(
             runName = "Best Run Ever",
             gameTitle = "SoulSilver",
@@ -67,7 +83,9 @@ object DataHelper {
             updatedTime = formatInstant(Instant.parse("2024-10-14T17:15:23.000Z"))
         ).apply {
             team = linkedTeam1
+            box = box1
         }
+
         data.add(run1)
 
         user1.runs.add(run1)
@@ -89,6 +107,7 @@ object DataHelper {
         ).apply {
             team = linkedTeam2
         }
+
         data.add(run2)
 
         user1.runs.add(run2)
@@ -96,7 +115,6 @@ object DataHelper {
 
         return data
     }
-
     fun loadPostData(): ArrayList<Post> {
         val posts = ArrayList<Post>()
 

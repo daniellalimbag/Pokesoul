@@ -32,7 +32,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView">
 
         <AutoCompleteTextView
-            android:id="@+id/autoCompleteTextView"
+            android:id="@+id/playerActv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -47,6 +47,7 @@
         android:id="@+id/teamLl"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -54,9 +55,8 @@
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
             android:fontFamily="@font/satoshi_bold"
             android:text="Team"
             android:textColor="@color/white"
@@ -91,15 +91,16 @@
         android:id="@+id/boxLl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/teamLl">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
             android:fontFamily="@font/satoshi_bold"
             android:text="Box"
             android:textColor="@color/white"
@@ -132,15 +133,16 @@
         android:id="@+id/daycareLl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/boxLl">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
             android:fontFamily="@font/satoshi_bold"
             android:text="Daycare"
             android:textColor="@color/white"
@@ -173,15 +175,16 @@
         android:id="@+id/graveLl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/daycareLl">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
             android:fontFamily="@font/satoshi_bold"
             android:text="Grave"
             android:textColor="@color/white"
@@ -207,6 +210,7 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+
         </TableLayout>
     </LinearLayout>
 

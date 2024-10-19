@@ -6,22 +6,55 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.LinearLayout
+import android.widget.TableLayout
+import android.widget.TableRow
+import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.google.android.material.imageview.ShapeableImageView
 import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.helper.DataHelper
+import com.mobdeve.s21.pokesoul.model.OwnedPokemon
+import com.mobdeve.s21.pokesoul.model.Run
+import com.mobdeve.s21.pokesoul.model.User
 
 class PokemonFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_pokemon, container, false)
+        val view = inflater.inflate(R.layout.fragment_pokemon, container, false)
+
+        val autoCompleteTextView = view.findViewById<AutoCompleteTextView>(R.id.playerActv)
+        val teamTableLayout = view.findViewById<TableLayout>(R.id.teamTl)
+        val boxTableLayout = view.findViewById<TableLayout>(R.id.boxTl)
+        val daycareTableLayout = view.findViewById<TableLayout>(R.id.daycareTl)
+        val graveTableLayout = view.findViewById<TableLayout>(R.id.graveTl)
+
+        val run = arguments?.getSerializable("RUN_INSTANCE") as? Run
+
+        run?.let {
+            val playerNames = it.players.map { player -> player.username }
+            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, playerNames)
+            autoCompleteTextView.setAdapter(adapter)
+
+            autoCompleteTextView.setOnItemClickListener { _, _, position, _ ->
+                val selectedPlayer = it.players[position]
+                displayPokemon(selectedPlayer, teamTableLayout, boxTableLayout, daycareTableLayout, graveTableLayout, it)
+            }
+        }
+
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val autoCompleteTextView = view.findViewById<AutoCompleteTextView>(R.id.autoCompleteTextView)
+        val autoCompleteTextView = view.findViewById<AutoCompleteTextView>(R.id.playerActv)
+        val teamTableLayout = view.findViewById<TableLayout>(R.id.teamTl)
+        val boxTableLayout = view.findViewById<TableLayout>(R.id.boxTl)
+        val daycareTableLayout = view.findViewById<TableLayout>(R.id.daycareTl)
+        val graveTableLayout = view.findViewById<TableLayout>(R.id.graveTl)
 
         val runs = DataHelper.loadRunData()
         val run = runs[0]
@@ -38,10 +71,85 @@ class PokemonFragment : Fragment() {
 
         if (playerNames.isNotEmpty()) {
             autoCompleteTextView.setText(playerNames[0], false)
+
+            val firstPlayer = run.players[0]
+            displayPokemon(firstPlayer, teamTableLayout, boxTableLayout, daycareTableLayout, graveTableLayout, run)
         }
 
         autoCompleteTextView.setOnClickListener {
             autoCompleteTextView.showDropDown()
         }
+
+        autoCompleteTextView.setOnItemClickListener { _, _, position, _ ->
+            val selectedPlayer = run.players[position]
+            displayPokemon(selectedPlayer, teamTableLayout, boxTableLayout, daycareTableLayout, graveTableLayout, run)
+        }
+    }
+
+
+    private fun displayPokemon(
+        selectedPlayer: User,
+        teamTableLayout: TableLayout,
+        boxTableLayout: TableLayout,
+        daycareTableLayout: TableLayout,
+        graveTableLayout: TableLayout,
+        run: Run
+    ) {
+        teamTableLayout.removeAllViews()
+        boxTableLayout.removeAllViews()
+        daycareTableLayout.removeAllViews()
+        graveTableLayout.removeAllViews()
+
+        val team = run.team.filter { it.owner.username == selectedPlayer.username }
+        val box = run.box.filter { it.owner.username == selectedPlayer.username }
+        val daycare = run.daycare.filter { it.owner.username == selectedPlayer.username }
+        val grave = run.grave.filter { it.owner.username == selectedPlayer.username }
+
+        populatePokemonTable(team, teamTableLayout)
+        populatePokemonTable(box, boxTableLayout)
+        populatePokemonTable(daycare, daycareTableLayout)
+        populatePokemonTable(grave, graveTableLayout)
+    }
+
+    private fun populatePokemonTable(pokemonList: List<OwnedPokemon>, tableLayout: TableLayout) {
+        for (i in pokemonList.indices step 2) {
+            val tableRow = TableRow(requireContext()).apply {
+                layoutParams = TableRow.LayoutParams(
+                    TableRow.LayoutParams.MATCH_PARENT,
+                    TableRow.LayoutParams.WRAP_CONTENT
+                )
+            }
+
+            val pokemonView1 = createPokemonView(pokemonList[i])
+            tableRow.addView(pokemonView1)
+
+            if (i + 1 < pokemonList.size) {
+                val pokemonView2 = createPokemonView(pokemonList[i + 1])
+                tableRow.addView(pokemonView2)
+            } else {
+                val placeholderView = View(requireContext()).apply {
+                    layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.MATCH_PARENT, 1f)
+                    minimumHeight = pokemonView1.height
+                }
+                tableRow.addView(placeholderView)
+            }
+
+            tableLayout.addView(tableRow)
+        }
+    }
+
+
+    private fun createPokemonView(pokemon: OwnedPokemon): LinearLayout {
+        val pokemonView = layoutInflater.inflate(R.layout.item_pokemon, null) as LinearLayout
+        val pokemonImageView = pokemonView.findViewById<ShapeableImageView>(R.id.pokemonSiv)
+        val nicknameTextView = pokemonView.findViewById<TextView>(R.id.nicknameTv)
+
+        pokemonImageView.setImageResource(pokemon.pokemon.imageId)
+        nicknameTextView.text = pokemon.nickname
+
+        val params = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
+        pokemonView.layoutParams = params
+
+        return pokemonView
     }
 }
