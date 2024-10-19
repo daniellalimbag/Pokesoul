@@ -13,12 +13,13 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.google.android.material.imageview.ShapeableImageView
 import com.mobdeve.s21.pokesoul.R
-import com.mobdeve.s21.pokesoul.helper.DataHelper
 import com.mobdeve.s21.pokesoul.model.OwnedPokemon
 import com.mobdeve.s21.pokesoul.model.Run
 import com.mobdeve.s21.pokesoul.model.User
 
 class PokemonFragment : Fragment() {
+    private lateinit var run: Run  // Store the run instance
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -31,61 +32,29 @@ class PokemonFragment : Fragment() {
         val daycareTableLayout = view.findViewById<TableLayout>(R.id.daycareTl)
         val graveTableLayout = view.findViewById<TableLayout>(R.id.graveTl)
 
-        val run = arguments?.getSerializable("RUN_INSTANCE") as? Run
+        // Get the run instance from arguments
+        run = arguments?.getSerializable("RUN_INSTANCE") as? Run ?: return view
 
-        run?.let {
-            val playerNames = it.players.map { player -> player.username }
-            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, playerNames)
-            autoCompleteTextView.setAdapter(adapter)
-
-            autoCompleteTextView.setOnItemClickListener { _, _, position, _ ->
-                val selectedPlayer = it.players[position]
-                displayPokemon(selectedPlayer, teamTableLayout, boxTableLayout, daycareTableLayout, graveTableLayout, it)
-            }
-        }
-
-        return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val autoCompleteTextView = view.findViewById<AutoCompleteTextView>(R.id.playerActv)
-        val teamTableLayout = view.findViewById<TableLayout>(R.id.teamTl)
-        val boxTableLayout = view.findViewById<TableLayout>(R.id.boxTl)
-        val daycareTableLayout = view.findViewById<TableLayout>(R.id.daycareTl)
-        val graveTableLayout = view.findViewById<TableLayout>(R.id.graveTl)
-
-        val runs = DataHelper.loadRunData()
-        val run = runs[0]
-
-        val playerNames = run.players.map { it.username }
-
-        val adapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_dropdown_item_1line,
-            playerNames
-        )
-
+        // Set up the player names in the AutoCompleteTextView
+        val playerNames = run.players.map { player -> player.username }
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, playerNames)
         autoCompleteTextView.setAdapter(adapter)
 
+        // Display the first player's Pokémon if available
         if (playerNames.isNotEmpty()) {
             autoCompleteTextView.setText(playerNames[0], false)
-
             val firstPlayer = run.players[0]
             displayPokemon(firstPlayer, teamTableLayout, boxTableLayout, daycareTableLayout, graveTableLayout, run)
         }
 
-        autoCompleteTextView.setOnClickListener {
-            autoCompleteTextView.showDropDown()
-        }
-
+        // Set up the item click listener for the AutoCompleteTextView
         autoCompleteTextView.setOnItemClickListener { _, _, position, _ ->
             val selectedPlayer = run.players[position]
             displayPokemon(selectedPlayer, teamTableLayout, boxTableLayout, daycareTableLayout, graveTableLayout, run)
         }
-    }
 
+        return view
+    }
 
     private fun displayPokemon(
         selectedPlayer: User,
@@ -138,7 +107,6 @@ class PokemonFragment : Fragment() {
         }
     }
 
-
     private fun createPokemonView(pokemon: OwnedPokemon): LinearLayout {
         val pokemonView = layoutInflater.inflate(R.layout.item_pokemon, null) as LinearLayout
         val pokemonImageView = pokemonView.findViewById<ShapeableImageView>(R.id.pokemonSiv)
@@ -153,3 +121,4 @@ class PokemonFragment : Fragment() {
         return pokemonView
     }
 }
+

@@ -22,6 +22,17 @@ class RunDetailsActivity : AppCompatActivity() {
     private var run: Run? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null && run != null) {
+            val summaryFragment = SummaryFragment().apply {
+                arguments = Bundle().apply {
+                    putSerializable("RUN_INSTANCE", run)
+                }
+            }
+            supportFragmentManager.commit {
+                replace(R.id.fragmentFl, summaryFragment)
+            }
+        }
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.run_details)
 
