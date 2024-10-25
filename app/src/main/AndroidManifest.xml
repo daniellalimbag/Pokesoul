@@ -29,6 +29,10 @@
         <activity
             android:name=".activity.AddPostActivity"
             android:exported="true" />
+        <!-- AddPokemonActivity -->
+        <activity
+            android:name=".activity.AddPokemonActivity"
+            android:exported="true" />
     </application>
 
 </manifest>

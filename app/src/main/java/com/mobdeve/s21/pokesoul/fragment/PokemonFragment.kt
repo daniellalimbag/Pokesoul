@@ -1,5 +1,6 @@
 package com.mobdeve.s21.pokesoul.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,8 +14,10 @@ import android.widget.TableRow
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.imageview.ShapeableImageView
 import com.mobdeve.s21.pokesoul.R
+import com.mobdeve.s21.pokesoul.activity.AddPokemonActivity
 import com.mobdeve.s21.pokesoul.model.OwnedPokemon
 import com.mobdeve.s21.pokesoul.model.Run
 import com.mobdeve.s21.pokesoul.model.User
@@ -33,6 +36,7 @@ class PokemonFragment : Fragment() {
         val boxTableLayout = view.findViewById<TableLayout>(R.id.boxTl)
         val daycareTableLayout = view.findViewById<TableLayout>(R.id.daycareTl)
         val graveTableLayout = view.findViewById<TableLayout>(R.id.graveTl)
+        val addFab = view.findViewById<FloatingActionButton>(R.id.addFab)
 
         // Get the run instance from arguments
         run = arguments?.getSerializable("RUN_INSTANCE") as? Run ?: return view
@@ -53,6 +57,12 @@ class PokemonFragment : Fragment() {
         autoCompleteTextView.setOnItemClickListener { _, _, position, _ ->
             val selectedPlayer = run.players[position]
             displayPokemon(selectedPlayer, teamTableLayout, boxTableLayout, daycareTableLayout, graveTableLayout, run)
+        }
+
+        // Set up FloatingActionButton to open AddPokemonActivity
+        addFab.setOnClickListener {
+            val intent = Intent(requireContext(), AddPokemonActivity::class.java)
+            startActivity(intent)
         }
 
         return view
