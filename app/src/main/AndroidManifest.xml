@@ -51,6 +51,9 @@
         <activity
             android:name=".activity.LoginUserActivity"
             android:exported="true" />
+        <activity
+            android:name=".activity.ForgotPasswordActivity"
+            android:exported="true" />
     </application>
 
 </manifest>
