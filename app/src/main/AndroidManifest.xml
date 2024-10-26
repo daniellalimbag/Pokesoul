@@ -37,6 +37,10 @@
         <activity
             android:name=".activity.AddTimelineLogActivity"
             android:exported="true" />
+        <!-- AddRunActivity -->
+        <activity
+            android:name=".activity.AddRunActivity"
+            android:exported="true" />
     </application>
 
 </manifest>
