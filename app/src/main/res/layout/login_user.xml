@@ -167,7 +167,8 @@
                     android:focusable="true"
                     android:fontFamily="@font/satoshi_regular"
                     android:text="Sign up now"
-                    android:textColor="@color/lavender_indigo" />
+                    android:textColor="@color/lavender_indigo"
+                    tools:ignore="TouchTargetSizeCheck" />
             </LinearLayout>
 
         </LinearLayout>
