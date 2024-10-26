@@ -48,6 +48,9 @@
         <activity
         android:name=".activity.RegisterUserActivity"
         android:exported="true" />
+        <activity
+            android:name=".activity.LoginUserActivity"
+            android:exported="true" />
     </application>
 
 </manifest>
