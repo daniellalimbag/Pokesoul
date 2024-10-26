@@ -6,6 +6,7 @@ import com.mobdeve.s21.pokesoul.model.Notification
 import com.mobdeve.s21.pokesoul.model.Pokemon
 import com.mobdeve.s21.pokesoul.model.Post
 import com.mobdeve.s21.pokesoul.model.Run
+import com.mobdeve.s21.pokesoul.model.TimelineLog
 import com.mobdeve.s21.pokesoul.model.User
 import kotlinx.datetime.Instant
 import java.text.SimpleDateFormat
@@ -76,11 +77,26 @@ object DataHelper {
             OwnedPokemon(pokemon5, "Test", user3)
         )
 
+        val logTeam1 = listOf(
+            OwnedPokemon(pokemon1, "Ron", user1),
+            OwnedPokemon(pokemon3, "Izzy", user2),
+            OwnedPokemon(pokemon8, "Fish", user3),
+        )
+
+        // Create TimelineLog instances for run1
+        val run1Logs = listOf(
+            TimelineLog("Run started", "New Bark Town", formatInstant(Instant.parse("2024-10-14T17:15:23.000Z")), logTeam1),
+            TimelineLog("Caught Quilava", "New Bark Town", formatInstant(Instant.parse("2024-10-14T18:00:00.000Z")), logTeam1),
+            TimelineLog("Team evolved to Croconaw", "New Bark Town",formatInstant(Instant.parse("2024-10-14T19:30:00.000Z")), logTeam1),
+            TimelineLog("Player 1 defeated Gym Leader", "New Bark Town",formatInstant(Instant.parse("2024-10-14T20:00:00.000Z")), logTeam1)
+        )
+
         val run1 = Run(
             runName = "Best Run Ever",
             gameTitle = "SoulSilver",
             players = listOf(user1, user2, user3),
-            updatedTime = formatInstant(Instant.parse("2024-10-14T17:15:23.000Z"))
+            updatedTime = formatInstant(Instant.parse("2024-10-14T17:15:23.000Z")),
+            logs = run1Logs
         ).apply {
             team = linkedTeam1
             box = box1

@@ -7,7 +7,7 @@ import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.model.TimelineLog
 import com.mobdeve.s21.pokesoul.viewholder.TimelineLogViewHolder
 
-class TimelineLogAdapter(private val timelineLogs: List<TimelineLog>) : RecyclerView.Adapter<TimelineLogViewHolder>() {
+class TimelineLogAdapter(private var timelineLogs: List<TimelineLog>) : RecyclerView.Adapter<TimelineLogViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimelineLogViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_timelinelog, parent, false)
@@ -21,5 +21,11 @@ class TimelineLogAdapter(private val timelineLogs: List<TimelineLog>) : Recycler
 
     override fun getItemCount(): Int {
         return timelineLogs.size
+    }
+
+    // Method to update logs
+    fun setLogs(newLogs: List<TimelineLog>) {
+        timelineLogs = newLogs
+        notifyDataSetChanged()
     }
 }

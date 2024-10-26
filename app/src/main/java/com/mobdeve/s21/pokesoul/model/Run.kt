@@ -10,13 +10,15 @@ data class Run(
     var box: List<OwnedPokemon>,
     var daycare: List<OwnedPokemon>,
     var grave: List<OwnedPokemon>,
-    var updatedTime: String
+    var updatedTime: String,
+    var logs: List<TimelineLog> = mutableListOf()
 ) : Serializable {
     constructor(
         runName: String,
         gameTitle: String,
         players: List<User>,
-        updatedTime: String
+        updatedTime: String,
+        logs: List<TimelineLog> = mutableListOf()
     ) : this(
         runName,
         gameTitle,
@@ -25,6 +27,7 @@ data class Run(
         mutableListOf(),
         mutableListOf(),
         mutableListOf(),
-        updatedTime
+        updatedTime,
+        logs
     )
 }

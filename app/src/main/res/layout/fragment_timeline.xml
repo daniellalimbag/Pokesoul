@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:padding="32dp">
+    android:paddingLeft="32dp"
+    android:paddingTop="16dp"
+    android:paddingRight="32dp">
 
     <TextView
         android:layout_width="wrap_content"
@@ -15,9 +18,19 @@
         android:textColor="@color/white"
         android:textSize="24sp" />
 
+    <TextView
+        android:id="@+id/noLogsTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/satoshi_medium"
+        android:text="Nothing here..."
+        android:textColor="@color/white" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/logRv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tools:visibility="visible" />
 
 </LinearLayout>
