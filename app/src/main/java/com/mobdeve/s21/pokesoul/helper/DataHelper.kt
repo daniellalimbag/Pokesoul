@@ -1,6 +1,7 @@
 package com.mobdeve.s21.pokesoul.helper
 
 import com.mobdeve.s21.pokesoul.R
+import com.mobdeve.s21.pokesoul.model.Comment
 import com.mobdeve.s21.pokesoul.model.OwnedPokemon
 import com.mobdeve.s21.pokesoul.model.Notification
 import com.mobdeve.s21.pokesoul.model.Pokemon
@@ -201,5 +202,32 @@ object DataHelper {
         )
 
         return notifications
+    }
+
+    fun loadCommentData(): ArrayList<Comment>{
+        var comments = ArrayList<Comment>()
+
+        comments.add(
+            Comment(
+                user = "Danixen",
+                time = "10 Min ago",
+                content = "this sounds so cool!!"
+            ))
+
+        comments.add(
+            Comment(
+                user = "ItsYaBoiNeon",
+                time = "2 Min ago",
+                content = "Next ZZZZ..."
+            ))
+
+        comments.add(
+            Comment(
+                user = "...",
+                time = "20 Min ago",
+                content = "New phone who dis?"
+            ))
+
+        return comments
     }
 }

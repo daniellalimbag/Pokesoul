@@ -1,24 +1,16 @@
 package com.mobdeve.s21.pokesoul.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mobdeve.s21.pokesoul.R
-import com.mobdeve.s21.pokesoul.activity.AddPostActivity
 import com.mobdeve.s21.pokesoul.adapter.NotificationAdapter
-import com.mobdeve.s21.pokesoul.adapter.PostAdapter
 import com.mobdeve.s21.pokesoul.helper.DataHelper
 import com.mobdeve.s21.pokesoul.model.Notification
-import com.mobdeve.s21.pokesoul.model.Post
 
 class NotificationFragment : Fragment() {
     private lateinit var notificationRv: RecyclerView
