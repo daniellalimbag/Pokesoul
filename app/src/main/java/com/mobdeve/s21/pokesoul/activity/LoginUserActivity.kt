@@ -16,6 +16,7 @@ import kotlin.math.log
 class LoginUserActivity: AppCompatActivity(), View.OnClickListener {
     lateinit var loginBtn : Button
     lateinit var registerTv : TextView
+    lateinit var forgotPassTv : TextView
 
     lateinit var usernameInput : EditText
     lateinit var passwordInput : EditText
@@ -28,17 +29,23 @@ class LoginUserActivity: AppCompatActivity(), View.OnClickListener {
 
         loginBtn = findViewById(R.id.loginBtn)
         registerTv = findViewById(R.id.registerTv)
+        forgotPassTv = findViewById(R.id.forgotPassTv)
 
         usernameInput = findViewById(R.id.usernameEt)
         passwordInput = findViewById(R.id.passwordEt)
 
         loginBtn.setOnClickListener(this)
         registerTv.setOnClickListener(this)
+        forgotPassTv.setOnClickListener(this)
     }
     override fun onClick(v: View?) {
     when(v?.id){
         R.id.registerTv ->{
             val intent = Intent(this, RegisterUserActivity::class.java)
+            startActivity(intent)
+        }
+        R.id.forgotPassTv ->{
+            val intent = Intent(this, ForgotPasswordActivity::class.java)
             startActivity(intent)
         }
         R.id.loginBtn ->{
