@@ -23,6 +23,7 @@ class TimelineLogViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
     private val capturesLl: View = itemView.findViewById(R.id.capturesLl)
     private val capturesRv: RecyclerView = itemView.findViewById(R.id.capturesRv)
 
+    private val notesLl: View = itemView.findViewById(R.id.notesLl)
     private val notesTv: TextView = itemView.findViewById(R.id.notesTv)
 
     fun bind(timelineLog: TimelineLog) {
@@ -54,9 +55,13 @@ class TimelineLogViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
         } else {
             capturesLl.visibility = View.GONE
         }
-
-        // Set notes or hide if empty
-        notesTv.text = timelineLog.notes ?: ""
-        notesTv.visibility = if (timelineLog.notes.isNullOrEmpty()) View.GONE else View.VISIBLE
+        if (!timelineLog.notes.isNullOrEmpty()) {
+            notesLl.visibility = View.VISIBLE
+            notesTv.visibility = View.VISIBLE
+            notesTv.text = timelineLog.notes ?: ""
+        } else {
+            notesLl.visibility = View.GONE
+            notesTv.visibility = View.GONE
+        }
     }
 }

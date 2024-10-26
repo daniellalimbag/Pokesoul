@@ -174,20 +174,27 @@
 
     </LinearLayout>
 
-    <TextView
+    <LinearLayout
+        android:id="@+id/notesLl"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/satoshi_bold"
-        android:text="Notes"
-        android:textColor="@color/white" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/notesTv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/satoshi_medium"
-        android:text="TextView"
-        android:textColor="@color/white" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/satoshi_bold"
+            android:text="Notes"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/notesTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/satoshi_medium"
+            android:text="TextView"
+            android:textColor="@color/boulder" />
+    </LinearLayout>
 
 </LinearLayout>
