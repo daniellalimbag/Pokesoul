@@ -33,6 +33,10 @@
         <activity
             android:name=".activity.AddPokemonActivity"
             android:exported="true" />
+        <!-- AddTimelineLogActivity -->
+        <activity
+            android:name=".activity.AddTimelineLogActivity"
+            android:exported="true" />
     </application>
 
 </manifest>

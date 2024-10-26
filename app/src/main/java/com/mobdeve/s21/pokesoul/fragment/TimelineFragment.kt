@@ -1,5 +1,6 @@
 package com.mobdeve.s21.pokesoul.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,7 +10,9 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mobdeve.s21.pokesoul.R
+import com.mobdeve.s21.pokesoul.activity.AddTimelineLogActivity
 import com.mobdeve.s21.pokesoul.adapter.TimelineLogAdapter
 import com.mobdeve.s21.pokesoul.model.Run
 
@@ -23,6 +26,7 @@ class TimelineFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_timeline, container, false)
+        val addFab = view.findViewById<FloatingActionButton>(R.id.addFab)
 
         run = arguments?.getSerializable("RUN_INSTANCE") as? Run ?: return view
 
@@ -42,7 +46,11 @@ class TimelineFragment : Fragment() {
             noLogsText.visibility = View.GONE
             Log.d("TimelineFragment", "Logs loaded: ${run.logs.size}")
         }
-
+        // Set up FloatingActionButton to open AddTimelineLogActivity
+        addFab.setOnClickListener {
+            val intent = Intent(requireContext(), AddTimelineLogActivity::class.java)
+            startActivity(intent)
+        }
         return view
     }
 
