@@ -2,11 +2,15 @@ package com.mobdeve.s21.pokesoul.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import androidx.activity.result.ActivityResultLauncher
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s21.pokesoul.R
@@ -19,7 +23,19 @@ class RunFragment : Fragment() {
 
     private lateinit var runsRv: RecyclerView
     private lateinit var runAdapter: RunAdapter
-    private lateinit var runList: List<Run>
+    private var runList: MutableList<Run> = mutableListOf() // Change to MutableList
+    private val addRunResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result: ActivityResult ->
+        if (result.resultCode == AppCompatActivity.RESULT_OK && result.data != null) {
+            val newRun = result.data?.getSerializableExtra("new_run") as? Run
+            newRun?.let {
+                runList.add(0, it) // Add new run to the top of the list
+                runAdapter.notifyItemInserted(0)
+                runsRv.scrollToPosition(0)
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,23 +45,18 @@ class RunFragment : Fragment() {
 
         // Initialize RecyclerView
         runsRv = view.findViewById(R.id.runsRv)
-        loadRuns()
-
-        runsRv.layoutManager = LinearLayoutManager(requireContext())
+        runList = DataHelper.loadRunData().toMutableList() // Load runs data
         runAdapter = RunAdapter(runList, "Player 1") // Note: Hardcoded username
+        runsRv.layoutManager = LinearLayoutManager(requireContext())
         runsRv.adapter = runAdapter
 
         // Initialize add button and set click listener
         val addIbtn = view.findViewById<ImageButton>(R.id.addIbtn)
         addIbtn.setOnClickListener {
             val intent = Intent(requireContext(), AddRunActivity::class.java)
-            startActivity(intent)
+            addRunResultLauncher.launch(intent) // Launch AddRunActivity
         }
 
         return view
-    }
-
-    private fun loadRuns() {
-        runList = DataHelper.loadRunData()
     }
 }

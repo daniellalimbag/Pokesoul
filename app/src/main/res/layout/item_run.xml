@@ -72,24 +72,31 @@
             android:scrollbars="horizontal" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/teamTv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Team"
-        android:textColor="@color/white" />
+        <LinearLayout
+            android:id="@+id/teamLl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/teamRv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_weight="1"
-        android:clipToPadding="false"
-        android:orientation="horizontal"
-        android:paddingLeft="6dp" />
+            <TextView
+                android:id="@+id/teamTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Team"
+                android:textColor="@color/white" />
 
-    <View
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/teamRv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_weight="1"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                android:paddingLeft="6dp" />
+        </LinearLayout>
+
+        <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="12dp"
