@@ -12,8 +12,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.imageview.ShapeableImageView
 import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.activity.AddPostActivity
+import com.mobdeve.s21.pokesoul.activity.ProfileDetailsActivity
 import com.mobdeve.s21.pokesoul.adapter.PostAdapter
 import com.mobdeve.s21.pokesoul.helper.DataHelper
 import com.mobdeve.s21.pokesoul.model.Post
@@ -42,6 +44,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
+        val profileSiv = view.findViewById<ShapeableImageView>(R.id.profileSiv)
 
         postRv = view.findViewById(R.id.postsRv)
         postRv.layoutManager = LinearLayoutManager(requireContext())
@@ -53,6 +56,12 @@ class HomeFragment : Fragment() {
         addFab.setOnClickListener {
             val intent = Intent(requireContext(), AddPostActivity::class.java)
             addPostResultLauncher.launch(intent)
+        }
+
+        // Set up profileSiv to open ProfileDetailsActivity
+        profileSiv.setOnClickListener {
+            val intent = Intent(requireContext(), ProfileDetailsActivity::class.java)
+            startActivity(intent)
         }
 
         return view
