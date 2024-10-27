@@ -146,7 +146,7 @@ object DataHelper {
                 dislikeCount = 1,
                 liked = false,
                 disliked = false,
-                shared = false
+                saved = false
             )
         )
 
@@ -161,7 +161,7 @@ object DataHelper {
                 dislikeCount = 3,
                 liked = false,
                 disliked = false,
-                shared = false
+                saved = false
             )
         )
 
@@ -176,7 +176,7 @@ object DataHelper {
                 dislikeCount = 0,
                 liked = false,
                 disliked = false,
-                shared = false,
+                saved = false,
             )
         )
 

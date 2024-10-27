@@ -12,5 +12,5 @@ data class Post(
     val dislikeCount: Int,
     val liked : Boolean,
     val disliked : Boolean,
-    val shared : Boolean
+    val saved : Boolean
 ) : Serializable
