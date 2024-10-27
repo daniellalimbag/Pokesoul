@@ -60,6 +60,9 @@
         <activity
             android:name=".activity.SearchActivity"
             android:exported="true" />
+        <activity
+            android:name=".activity.AddCommentActivity"
+            android:exported="true" />
     </application>
 
 </manifest>

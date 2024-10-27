@@ -3,10 +3,12 @@ package com.mobdeve.s21.pokesoul.adapter
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s21.pokesoul.R
+import com.mobdeve.s21.pokesoul.activity.AddCommentActivity
 import com.mobdeve.s21.pokesoul.activity.ViewPostActivity
 import com.mobdeve.s21.pokesoul.model.Post
 import com.mobdeve.s21.pokesoul.model.User
@@ -30,6 +32,11 @@ class PostAdapter(private val posts: List<Post>) : RecyclerView.Adapter<PostView
         holder.commentCountTv.text = post.commentCount.toString()
         holder.likeCountTv.text = post.likeCount.toString()
         holder.dislikeCountTv.text = post.dislikeCount.toString()
+
+        holder.commentIv.setOnClickListener{
+            val intent = Intent(holder.itemView.context, AddCommentActivity::class.java)
+            holder.itemView.context.startActivity(intent)
+        }
 
         holder.postContainer.setOnClickListener{
             val intent = Intent(holder.itemView.context, ViewPostActivity::class.java)
@@ -81,7 +88,6 @@ class PostAdapter(private val posts: List<Post>) : RecyclerView.Adapter<PostView
                 holder.savedImageButton.setImageResource(R.drawable.bookmark_active)
             }
         }
-
     }
 
     override fun getItemCount(): Int {
