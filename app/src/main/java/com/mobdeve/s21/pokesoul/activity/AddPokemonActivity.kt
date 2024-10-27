@@ -2,6 +2,7 @@ package com.mobdeve.s21.pokesoul.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
@@ -16,6 +17,8 @@ import com.mobdeve.s21.pokesoul.model.User
 class AddPokemonActivity : AppCompatActivity() {
     private lateinit var searchIbtn: ImageButton
     private lateinit var pokemonTv: TextView
+    private lateinit var deleteBtn: Button
+    private lateinit var saveBtn: Button
 
     companion object {
         private const val REQUEST_CODE_SEARCH = 1
@@ -27,12 +30,22 @@ class AddPokemonActivity : AppCompatActivity() {
 
         pokemonTv = findViewById(R.id.pokemonTv)
         searchIbtn = findViewById(R.id.searchIbtn)
+        deleteBtn = findViewById(R.id.deleteBtn)
+        saveBtn = findViewById(R.id.saveBtn)
 
         // Set OnClickListener for the searchIbtn to open SearchActivity
         searchIbtn.setOnClickListener {
             val intent = Intent(this, SearchActivity::class.java)
             intent.putExtra("isFromAddPokemon", true)
             startActivityForResult(intent, REQUEST_CODE_SEARCH)
+        }
+        // Set click listener for the delete button
+        deleteBtn.setOnClickListener {
+            finish()
+        }
+        // Set click listener for the save button
+        saveBtn.setOnClickListener {
+            finish()
         }
     }
 

@@ -8,7 +8,8 @@ import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.model.OwnedPokemon
 
 class PokemonDetailsActivity : AppCompatActivity() {
-
+    private lateinit var deleteBtn: Button
+    private lateinit var saveBtn: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.pokemon_details)
@@ -22,9 +23,18 @@ class PokemonDetailsActivity : AppCompatActivity() {
         val playerActv = findViewById<AutoCompleteTextView>(R.id.playerActv)
         val locationTv = findViewById<AutoCompleteTextView>(R.id.locationTv)
         val saveTv = findViewById<AutoCompleteTextView>(R.id.saveTv)
-        val saveBtn = findViewById<Button>(R.id.saveBtn)
-        val deleteBtn = findViewById<Button>(R.id.deleteBtn)
 
+        deleteBtn = findViewById(R.id.deleteBtn)
+        saveBtn = findViewById(R.id.saveBtn)
+
+        // Set click listener for the delete button
+        deleteBtn.setOnClickListener {
+            finish()
+        }
+        // Set click listener for the save button
+        saveBtn.setOnClickListener {
+            finish()
+        }
         // Populate the UI with the OwnedPokemon data
         pokemon?.let {
             pokemonSiv.setImageResource(it.pokemon.imageId) // Assumes imageId is a drawable resource ID
@@ -33,6 +43,5 @@ class PokemonDetailsActivity : AppCompatActivity() {
             saveTv.setText(it.savedLocation)
         }
 
-        // Button click listeners can be added here as needed
     }
 }
