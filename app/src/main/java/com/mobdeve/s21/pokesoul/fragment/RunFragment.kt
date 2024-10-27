@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
-import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,7 +19,6 @@ import com.mobdeve.s21.pokesoul.helper.DataHelper
 import com.mobdeve.s21.pokesoul.model.Run
 
 class RunFragment : Fragment() {
-
     private lateinit var runsRv: RecyclerView
     private lateinit var runAdapter: RunAdapter
     private var runList: MutableList<Run> = mutableListOf() // Change to MutableList
@@ -54,7 +52,7 @@ class RunFragment : Fragment() {
         val addIbtn = view.findViewById<ImageButton>(R.id.addIbtn)
         addIbtn.setOnClickListener {
             val intent = Intent(requireContext(), AddRunActivity::class.java)
-            addRunResultLauncher.launch(intent) // Launch AddRunActivity
+            addRunResultLauncher.launch(intent)
         }
 
         return view

@@ -57,6 +57,9 @@
         <activity
             android:name=".activity.ViewPostActivity"
             android:exported="true" />
+        <activity
+            android:name=".activity.SearchActivity"
+            android:exported="true" />
     </application>
 
 </manifest>
