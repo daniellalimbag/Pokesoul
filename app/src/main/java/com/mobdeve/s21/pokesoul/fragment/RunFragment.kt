@@ -40,20 +40,6 @@ class RunFragment : Fragment() {
     }
 
     // Result launcher for editing an existing run
-    private val editRunResultLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result: ActivityResult ->
-        if (result.resultCode == AppCompatActivity.RESULT_OK && result.data != null) {
-            val editedRun = result.data?.getSerializableExtra("edited_run") as? Run
-            editedRun?.let { updatedRun ->
-                val index = runList.indexOfFirst { it.id == updatedRun.id }
-                if (index != -1) {
-                    runList[index] = updatedRun // Replace with edited run
-                    runAdapter.notifyItemChanged(index)
-                }
-            }
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -73,17 +59,6 @@ class RunFragment : Fragment() {
         addIbtn.setOnClickListener {
             val intent = Intent(requireContext(), AddRunActivity::class.java)
             addRunResultLauncher.launch(intent)
-        }
-
-        // Edit button logic
-        val editBtn = view.findViewById<Button>(R.id.editBtn)
-        editBtn.setOnClickListener {
-            if (runList.isNotEmpty()) {
-                val intent = Intent(requireContext(), EditRunActivity::class.java)
-                // Pass an existing Run to EditRunActivity (e.g., the first run in the list)
-                intent.putExtra("run_to_edit", runList[0]) // or any selected run from the list
-                editRunResultLauncher.launch(intent)
-            }
         }
 
         return view
