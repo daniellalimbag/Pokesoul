@@ -45,6 +45,10 @@
         <activity
             android:name=".activity.EditRunActivity"
             android:exported="true" />
+        <!-- EditProfileActivity -->
+        <activity
+            android:name=".activity.EditProfileActivity"
+            android:exported="true" />
         <!-- ProfileDetailsActivity -->
         <activity
             android:name=".activity.ProfileDetailsActivity"
