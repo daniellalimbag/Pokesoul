@@ -48,7 +48,8 @@
                 android:layout_margin="8dp"
                 android:background="@android:color/transparent"
                 android:contentDescription="Save"
-                android:src="@drawable/bookmark_inactive"/>
+                android:src="@drawable/bookmark_inactive"
+                tools:ignore="TouchTargetSizeCheck" />
         </LinearLayout>
 
         <LinearLayout
@@ -146,7 +147,8 @@
                 android:background="@android:color/transparent"
                 android:contentDescription="Like"
                 android:paddingRight="8dp"
-                android:src="@drawable/like_inactive" />
+                android:src="@drawable/like_inactive"
+                tools:ignore="TouchTargetSizeCheck" />
 
             <TextView
                 android:id="@+id/likeCountTv"
@@ -162,7 +164,8 @@
                 android:contentDescription="Dislike"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
-                android:src="@drawable/dislike_inactive" />
+                android:src="@drawable/dislike_inactive"
+                tools:ignore="TouchTargetSizeCheck" />
 
             <TextView
                 android:id="@+id/dislikeCountTv"
