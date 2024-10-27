@@ -1,24 +1,28 @@
 package com.mobdeve.s21.pokesoul.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.mobdeve.s21.pokesoul.R
+import com.mobdeve.s21.pokesoul.activity.EditRunActivity
 import com.mobdeve.s21.pokesoul.model.Run
 import com.mobdeve.s21.pokesoul.model.User
 import com.google.android.material.imageview.ShapeableImageView
 
 class SummaryFragment : Fragment() {
-
+    private lateinit var editBtn: Button
     private lateinit var runTitleTv: TextView
     private lateinit var gameTitleTv: TextView
     private lateinit var playersTableLayout: TableLayout
+    private var run: Run? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,13 +33,20 @@ class SummaryFragment : Fragment() {
         runTitleTv = view.findViewById(R.id.runTitleTv)
         gameTitleTv = view.findViewById(R.id.gameTitleTv)
         playersTableLayout = view.findViewById(R.id.playersTl)
+        editBtn = view.findViewById(R.id.editBtn) // Initialize edit button
 
-        val run = arguments?.getSerializable("RUN_INSTANCE") as? Run
+        run = arguments?.getSerializable("RUN_INSTANCE") as? Run
 
         run?.let {
             runTitleTv.text = it.runName
             gameTitleTv.text = it.gameTitle
             populatePlayers(it.players)
+        }
+
+        editBtn.setOnClickListener {
+            val intent = Intent(requireContext(), EditRunActivity::class.java)
+            intent.putExtra("RUN_INSTANCE", run) // Pass the current Run instance to EditRunActivity
+            startActivity(intent)
         }
 
         return view
