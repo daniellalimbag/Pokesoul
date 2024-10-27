@@ -2,6 +2,7 @@ package com.mobdeve.s21.pokesoul.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.model.Post
@@ -31,6 +32,16 @@ class PostAdapter(private val posts: List<Post>) : RecyclerView.Adapter<PostView
 
         holder.dislikeImageButton.setOnClickListener {
             // Handle dislike action
+        }
+        holder.savedImageButton.setOnClickListener{
+            if(post.saved){
+                post.saved = false
+                holder.savedImageButton.setImageResource(R.drawable.bookmark_inactive)
+            }
+            else{
+                post.saved = true
+                holder.savedImageButton.setImageResource(R.drawable.bookmark_active)
+            }
         }
     }
 

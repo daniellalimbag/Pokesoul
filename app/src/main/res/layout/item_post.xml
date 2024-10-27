@@ -48,8 +48,7 @@
                 android:layout_margin="8dp"
                 android:background="@android:color/transparent"
                 android:contentDescription="Save"
-                android:src="@drawable/bookmark_inactive"
-                app:tint="@color/white" />
+                android:src="@drawable/bookmark_inactive"/>
         </LinearLayout>
 
         <LinearLayout
