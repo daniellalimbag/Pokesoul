@@ -25,7 +25,7 @@ class AddRunActivity : AppCompatActivity() {
     private val playersList = mutableListOf<User>()
 
     companion object {
-        private const val REQUEST_CODE_SEARCH = 1
+        const val REQUEST_CODE_SEARCH = 1
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

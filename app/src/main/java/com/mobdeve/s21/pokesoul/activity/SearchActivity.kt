@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.adapter.SearchResultAdapter
 import com.mobdeve.s21.pokesoul.helper.DataHelper
+import com.mobdeve.s21.pokesoul.model.Pokemon
 import com.mobdeve.s21.pokesoul.model.User
 import java.util.*
 
@@ -17,7 +18,13 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var resultsRv: RecyclerView
     private lateinit var searchView: SearchView
     private var allUsers = ArrayList<User>()
+    private var allPokemon = ArrayList<Pokemon>()
+    private var isSearchingPokemon: Boolean = false
     private lateinit var searchResultAdapter: SearchResultAdapter
+
+    companion object {
+        private const val REQUEST_CODE_SEARCH = 1
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,24 +38,30 @@ class SearchActivity : AppCompatActivity() {
         resultsRv.setHasFixedSize(true)
         resultsRv.layoutManager = LinearLayoutManager(this)
 
-        // Initialize users list
-        addUserDataToList() // Populate the user list
-        val isFromAddRun = intent.getBooleanExtra("isFromAddRun", false)
-        if (isFromAddRun) {
+        // Initialize lists
+        addUserDataToList()
+        addPokemonDataToList()
 
-            // Initialize the adapter
-            searchResultAdapter = SearchResultAdapter(allUsers, object : SearchResultAdapter.OnItemClickListener {
-                override fun onItemClick(user: User) {
-                    // Create an intent to return to AddRunActivity with the selected user
-                    val resultIntent = Intent() // Create a result intent without a new Activity
-                    resultIntent.putExtra("selectedPlayer", user) // Pass the user instance
-                    setResult(RESULT_OK, resultIntent) // Set the result to pass data back
-                    finish() // Close SearchActivity
-                }
-            })
-            resultsRv.adapter = searchResultAdapter
+        // Determine the context of the search
+        isSearchingPokemon = intent.getBooleanExtra("isFromAddPokemon", false)
 
-        }
+        // Initialize the adapter based on context
+        searchResultAdapter = SearchResultAdapter(if (isSearchingPokemon) allPokemon else allUsers, object : SearchResultAdapter.OnItemClickListener {
+            override fun onUserClick(user: User) {
+                val resultIntent = Intent()
+                resultIntent.putExtra("selectedPlayer", user)
+                setResult(RESULT_OK, resultIntent)
+                finish()
+            }
+
+            override fun onPokemonClick(pokemon: Pokemon) {
+                val resultIntent = Intent()
+                resultIntent.putExtra("selectedPokemon", pokemon)
+                setResult(RESULT_OK, resultIntent)
+                finish()
+            }
+        })
+        resultsRv.adapter = searchResultAdapter
 
         // Set up SearchView
         setupSearchView()
@@ -69,18 +82,28 @@ class SearchActivity : AppCompatActivity() {
 
     private fun filterList(query: String?) {
         if (query != null) {
-            val filteredList = ArrayList<User>()
-            for (user in allUsers) {
-                if (user.username.lowercase(Locale.ROOT).contains(query.lowercase(Locale.ROOT))) {
-                    filteredList.add(user)
-                }
+            val filteredList = if (isSearchingPokemon) {
+                allPokemon.filter { it.name.lowercase(Locale.ROOT).contains(query.lowercase(Locale.ROOT)) }
+            } else {
+                allUsers.filter { it.username.lowercase(Locale.ROOT).contains(query.lowercase(Locale.ROOT)) }
             }
-            searchResultAdapter.updateData(filteredList)
+            searchResultAdapter.updateData(ArrayList(filteredList)) // Ensure the type matches ArrayList<Serializable>
         }
     }
 
     private fun addUserDataToList() {
         allUsers.add(DataHelper.user2)
         allUsers.add(DataHelper.user3)
+    }
+
+    private fun addPokemonDataToList() {
+        allPokemon.add(DataHelper.pokemon1)
+        allPokemon.add(DataHelper.pokemon2)
+        allPokemon.add(DataHelper.pokemon3)
+        allPokemon.add(DataHelper.pokemon4)
+        allPokemon.add(DataHelper.pokemon5)
+        allPokemon.add(DataHelper.pokemon6)
+        allPokemon.add(DataHelper.pokemon7)
+        allPokemon.add(DataHelper.pokemon8)
     }
 }

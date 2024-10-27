@@ -13,7 +13,7 @@
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:gravity="left|center_vertical"
         android:padding="14dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -25,17 +25,6 @@
             android:scaleType="centerCrop"
             android:src="@drawable/player1"
             app:shapeAppearanceOverlay="@style/roundedImageView" />
-
-        <ImageButton
-            android:id="@+id/searchIbtn"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentEnd="true"
-            android:background="@android:color/transparent"
-            android:contentDescription="Search"
-            android:padding="8dp"
-            android:src="@drawable/search_icon"
-            app:tint="@color/white" />
 
     </RelativeLayout>
 
