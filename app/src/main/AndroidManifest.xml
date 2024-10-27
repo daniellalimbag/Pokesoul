@@ -70,6 +70,9 @@
         <activity
             android:name=".activity.PokemonDetailsActivity"
             android:exported="true" />
+        <activity
+            android:name=".activity.TimelineLogDetailsActivity"
+            android:exported="true" />
     </application>
 
 </manifest>
