@@ -12,6 +12,7 @@
         android:id="@+id/playerSiv"
         android:layout_width="36dp"
         android:layout_height="36dp"
+        android:layout_marginRight="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearanceOverlay="@style/roundedImageView"
