@@ -124,6 +124,8 @@
                 android:id="@+id/imageView"
                 android:layout_width="26dp"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
                 app:srcCompat="@drawable/comment" />
 
             <TextView
