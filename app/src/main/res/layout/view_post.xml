@@ -16,7 +16,11 @@
         android:focusable="true"
         app:srcCompat="@drawable/back_button"
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-
+<include
+    layout="@layout/item_post"
+    android:clickable="false"
+    android:focusable="false"
+    />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/commentRv"
         android:layout_width="match_parent"
