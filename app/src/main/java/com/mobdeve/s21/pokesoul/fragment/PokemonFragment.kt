@@ -18,6 +18,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.imageview.ShapeableImageView
 import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.activity.AddPokemonActivity
+import com.mobdeve.s21.pokesoul.activity.PokemonDetailsActivity
 import com.mobdeve.s21.pokesoul.model.OwnedPokemon
 import com.mobdeve.s21.pokesoul.model.Run
 import com.mobdeve.s21.pokesoul.model.User
@@ -135,8 +136,15 @@ class PokemonFragment : Fragment() {
         val params = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
         pokemonView.layoutParams = params
 
+        pokemonView.setOnClickListener {
+            val intent = Intent(requireContext(), PokemonDetailsActivity::class.java).apply {
+                putExtra("POKEMON_INSTANCE", pokemon)
+            }
+            startActivity(intent)
+        }
         return pokemonView
     }
+
 
     private fun dpToPx(dp: Int): Int {
         return (dp * resources.displayMetrics.density).toInt()
