@@ -22,6 +22,9 @@ class AddCommentActivity : AppCompatActivity(),  View.OnClickListener{
         backImgBtn = findViewById(R.id.backImgBtn)
         backImgBtn.setOnClickListener(this)
 
+        val referencePost = intent.getSerializableExtra("post_reference")
+
+
         commentBtn = findViewById(R.id.commentBtn)
         commentBtn.setOnClickListener(this)
 
