@@ -1,6 +1,5 @@
 package com.mobdeve.s21.pokesoul.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
@@ -13,9 +12,9 @@ import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.adapter.ProfileAdapter
 import com.mobdeve.s21.pokesoul.helper.DataHelper
 
-class ProfileDetailsActivity : AppCompatActivity() {
+class EditProfileActivity : AppCompatActivity() {
     private lateinit var backBtn: ImageButton
-    private lateinit var editBtn: Button
+    private lateinit var saveBtn: Button
     private lateinit var userFriends: RecyclerView
     private lateinit var userPosts: RecyclerView
     private var friendItems: MutableList<Any> = mutableListOf()
@@ -23,10 +22,10 @@ class ProfileDetailsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.profile_details)
+        setContentView(R.layout.profile_edit)
 
         backBtn = findViewById(R.id.backIbtn)
-        editBtn = findViewById(R.id.editBtn)
+        saveBtn = findViewById(R.id.saveBtn)
 
         userFriends = findViewById(R.id.friendsRv)
         userFriends.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -40,10 +39,6 @@ class ProfileDetailsActivity : AppCompatActivity() {
         val userName = findViewById<TextView>(R.id.usernameTv)
         userName.setText(DataHelper.user1.username)
 
-        val userBio = findViewById<TextView>(R.id.bioTv)
-        userBio.setText(DataHelper.user1.bio)
-
-        DataHelper.loadFriendsData()
         friendItems.addAll(DataHelper.user1.friends)
         userFriends.adapter = ProfileAdapter(friendItems, showNames = true)
 
@@ -57,10 +52,9 @@ class ProfileDetailsActivity : AppCompatActivity() {
             finish()
         }
 
-        // Set click listener for the edit button
-        editBtn.setOnClickListener {
-            val intent = Intent(this, EditProfileActivity::class.java)
-            startActivity(intent)
+        // Set click listener for the save button
+        saveBtn.setOnClickListener {
+            finish()
         }
     }
 }
