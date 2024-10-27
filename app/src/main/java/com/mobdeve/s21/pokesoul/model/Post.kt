@@ -9,5 +9,8 @@ data class Post(
     val content: String,
     val commentCount: Int,
     val likeCount: Int,
-    val dislikeCount: Int
+    val dislikeCount: Int,
+    var liked : Boolean,
+    var disliked : Boolean,
+    var saved : Boolean
 ) : Serializable

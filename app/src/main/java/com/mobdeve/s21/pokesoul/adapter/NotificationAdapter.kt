@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.model.Notification
 import com.mobdeve.s21.pokesoul.viewholder.NotificationViewHolder
-import com.mobdeve.s21.pokesoul.viewholder.PlayerViewHolder
 
 class NotificationAdapter(
     private val notificationList : List<Notification>

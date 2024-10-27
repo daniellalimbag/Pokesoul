@@ -1,6 +1,7 @@
 package com.mobdeve.s21.pokesoul.helper
 
 import com.mobdeve.s21.pokesoul.R
+import com.mobdeve.s21.pokesoul.model.Comment
 import com.mobdeve.s21.pokesoul.model.OwnedPokemon
 import com.mobdeve.s21.pokesoul.model.Notification
 import com.mobdeve.s21.pokesoul.model.Pokemon
@@ -151,7 +152,10 @@ object DataHelper {
                 content = "I want to get 2000 coins from the game corner to trade for a Dratini but I suck at Voltorb Flip. Any tips on how to beat it?",
                 commentCount = 5,
                 likeCount = 20,
-                dislikeCount = 1
+                dislikeCount = 1,
+                liked = false,
+                disliked = false,
+                saved = false
             )
         )
 
@@ -163,7 +167,10 @@ object DataHelper {
                 content = "I hate this game",
                 commentCount = 8,
                 likeCount = 35,
-                dislikeCount = 3
+                dislikeCount = 3,
+                liked = false,
+                disliked = false,
+                saved = false
             )
         )
 
@@ -175,7 +182,10 @@ object DataHelper {
                 content = "Finally finished my HeartGold run. I love this game.",
                 commentCount = 3,
                 likeCount = 15,
-                dislikeCount = 0
+                dislikeCount = 0,
+                liked = false,
+                disliked = false,
+                saved = false,
             )
         )
 
@@ -210,5 +220,32 @@ object DataHelper {
         )
 
         return notifications
+    }
+
+    fun loadCommentData(): ArrayList<Comment>{
+        var comments = ArrayList<Comment>()
+
+        comments.add(
+            Comment(
+                user = "Danixen",
+                time = "10 Min ago",
+                content = "this sounds so cool!!"
+            ))
+
+        comments.add(
+            Comment(
+                user = "ItsYaBoiNeon",
+                time = "2 Min ago",
+                content = "Next ZZZZ..."
+            ))
+
+        comments.add(
+            Comment(
+                user = "...",
+                time = "20 Min ago",
+                content = "New phone who dis?"
+            ))
+
+        return comments
     }
 }
