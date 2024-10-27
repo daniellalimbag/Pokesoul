@@ -35,7 +35,8 @@
             android:layout_height="50dp"
             android:background="@android:color/transparent"
             android:contentDescription="Add run"
-            android:src="@drawable/add_active" />
+            android:src="@android:drawable/ic_input_add"
+            android:tint="@color/white" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
