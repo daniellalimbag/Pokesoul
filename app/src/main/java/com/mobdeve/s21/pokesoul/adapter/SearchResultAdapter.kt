@@ -4,16 +4,20 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s21.pokesoul.R
+import com.mobdeve.s21.pokesoul.model.Pokemon
 import com.mobdeve.s21.pokesoul.model.User
 import com.mobdeve.s21.pokesoul.viewholder.SearchResultViewHolder
+import java.io.Serializable
+import java.util.ArrayList
 
 class SearchResultAdapter(
-    private var userList: List<User>,
+    private var itemList: ArrayList<out Serializable>,
     private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<SearchResultViewHolder>() {
 
     interface OnItemClickListener {
-        fun onItemClick(user: User)
+        fun onUserClick(user: User)
+        fun onPokemonClick(pokemon: Pokemon)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchResultViewHolder {
@@ -22,16 +26,16 @@ class SearchResultAdapter(
     }
 
     override fun onBindViewHolder(holder: SearchResultViewHolder, position: Int) {
-        val user = userList[position]
-        holder.bind(user, listener)
+        val item = itemList[position]
+        holder.bind(item, listener) // Pass the item directly
     }
 
     override fun getItemCount(): Int {
-        return userList.size
+        return itemList.size
     }
 
-    fun updateData(newList: List<User>) {
-        userList = newList
+    fun updateData(newList: ArrayList<Serializable>) {
+        itemList = newList
         notifyDataSetChanged()
     }
 }
