@@ -8,12 +8,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.activity.AddRunActivity
+import com.mobdeve.s21.pokesoul.activity.EditRunActivity
 import com.mobdeve.s21.pokesoul.adapter.RunAdapter
 import com.mobdeve.s21.pokesoul.helper.DataHelper
 import com.mobdeve.s21.pokesoul.model.Run
@@ -21,7 +23,9 @@ import com.mobdeve.s21.pokesoul.model.Run
 class RunFragment : Fragment() {
     private lateinit var runsRv: RecyclerView
     private lateinit var runAdapter: RunAdapter
-    private var runList: MutableList<Run> = mutableListOf() // Change to MutableList
+    private var runList: MutableList<Run> = mutableListOf()
+
+    // Result launcher for adding a new run
     private val addRunResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result: ActivityResult ->
@@ -31,6 +35,22 @@ class RunFragment : Fragment() {
                 runList.add(0, it) // Add new run to the top of the list
                 runAdapter.notifyItemInserted(0)
                 runsRv.scrollToPosition(0)
+            }
+        }
+    }
+
+    // Result launcher for editing an existing run
+    private val editRunResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result: ActivityResult ->
+        if (result.resultCode == AppCompatActivity.RESULT_OK && result.data != null) {
+            val editedRun = result.data?.getSerializableExtra("edited_run") as? Run
+            editedRun?.let { updatedRun ->
+                val index = runList.indexOfFirst { it.id == updatedRun.id }
+                if (index != -1) {
+                    runList[index] = updatedRun // Replace with edited run
+                    runAdapter.notifyItemChanged(index)
+                }
             }
         }
     }
@@ -53,6 +73,17 @@ class RunFragment : Fragment() {
         addIbtn.setOnClickListener {
             val intent = Intent(requireContext(), AddRunActivity::class.java)
             addRunResultLauncher.launch(intent)
+        }
+
+        // Edit button logic
+        val editBtn = view.findViewById<Button>(R.id.editBtn)
+        editBtn.setOnClickListener {
+            if (runList.isNotEmpty()) {
+                val intent = Intent(requireContext(), EditRunActivity::class.java)
+                // Pass an existing Run to EditRunActivity (e.g., the first run in the list)
+                intent.putExtra("run_to_edit", runList[0]) // or any selected run from the list
+                editRunResultLauncher.launch(intent)
+            }
         }
 
         return view
