@@ -55,7 +55,7 @@
             android:name=".activity.ForgotPasswordActivity"
             android:exported="true" />
         <activity
-            android:name=".activity.ViewCommentsActivity"
+            android:name=".activity.ViewPostActivity"
             android:exported="true" />
     </application>
 

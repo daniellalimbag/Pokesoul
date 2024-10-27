@@ -2,11 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/postContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     android:background="@color/black"
+    android:clickable="true"
+    android:focusable="true"
     android:paddingBottom="8dp">
 
     <View
@@ -47,6 +50,7 @@
                 android:layout_height="26dp"
                 android:layout_margin="8dp"
                 android:background="@android:color/transparent"
+                android:clickable="true"
                 android:contentDescription="Save"
                 android:src="@drawable/bookmark_inactive"
                 tools:ignore="TouchTargetSizeCheck" />
@@ -162,6 +166,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
+                android:clickable="true"
                 android:contentDescription="Dislike"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"

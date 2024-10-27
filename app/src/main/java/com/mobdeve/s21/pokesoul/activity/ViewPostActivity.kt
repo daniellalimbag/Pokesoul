@@ -2,7 +2,6 @@ package com.mobdeve.s21.pokesoul.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
@@ -11,11 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.adapter.CommentAdapter
-import com.mobdeve.s21.pokesoul.adapter.NotificationAdapter
 import com.mobdeve.s21.pokesoul.helper.DataHelper
 import com.mobdeve.s21.pokesoul.model.Comment
 
-class ViewCommentsActivity: AppCompatActivity(), View.OnClickListener{
+class ViewPostActivity: AppCompatActivity(), View.OnClickListener{
     lateinit var backIv  : ImageView
 
     private lateinit var commentsRv : RecyclerView
@@ -24,7 +22,7 @@ class ViewCommentsActivity: AppCompatActivity(), View.OnClickListener{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        setContentView(R.layout.view_comment)
+        setContentView(R.layout.view_post)
 
         backIv = findViewById(R.id.backIv)
 

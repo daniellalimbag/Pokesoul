@@ -1,10 +1,13 @@
 package com.mobdeve.s21.pokesoul.adapter
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s21.pokesoul.R
+import com.mobdeve.s21.pokesoul.activity.ViewPostActivity
 import com.mobdeve.s21.pokesoul.model.Post
 import com.mobdeve.s21.pokesoul.viewholder.PostViewHolder
 
@@ -15,6 +18,7 @@ class PostAdapter(private val posts: List<Post>) : RecyclerView.Adapter<PostView
         return PostViewHolder(view)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         val post = posts[position]
         holder.titleTv.text = post.title
@@ -26,6 +30,10 @@ class PostAdapter(private val posts: List<Post>) : RecyclerView.Adapter<PostView
         holder.likeCountTv.text = post.likeCount.toString()
         holder.dislikeCountTv.text = post.dislikeCount.toString()
 
+        holder.postContainer.setOnClickListener{
+            val intent = Intent(holder.itemView.context, ViewPostActivity::class.java)
+            holder.itemView.context.startActivity(intent)
+        }
         holder.likeImageButton.setOnClickListener {
             if(!post.disliked){
                 if(post.liked){
@@ -62,6 +70,7 @@ class PostAdapter(private val posts: List<Post>) : RecyclerView.Adapter<PostView
                 holder.savedImageButton.setImageResource(R.drawable.bookmark_active)
             }
         }
+
     }
 
     override fun getItemCount(): Int {
