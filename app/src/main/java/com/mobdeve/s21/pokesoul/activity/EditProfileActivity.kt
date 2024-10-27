@@ -39,7 +39,12 @@ class EditProfileActivity : AppCompatActivity() {
         val userName = findViewById<TextView>(R.id.usernameTv)
         userName.setText(DataHelper.user1.username)
 
-        friendItems.addAll(DataHelper.user1.friends)
+        DataHelper.loadFriendsData()
+        DataHelper.user1.friends.forEach { friend ->
+            if (friend !in friendItems) {
+                friendItems.add(friend)
+            }
+        }
         userFriends.adapter = ProfileAdapter(friendItems, showNames = true)
 
         // Filter the posts for the current profile user

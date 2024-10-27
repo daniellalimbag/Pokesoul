@@ -43,8 +43,13 @@ class ProfileDetailsActivity : AppCompatActivity() {
         val userBio = findViewById<TextView>(R.id.bioTv)
         userBio.setText(DataHelper.user1.bio)
 
+        // Load friends data and add only unique friends to friendItems
         DataHelper.loadFriendsData()
-        friendItems.addAll(DataHelper.user1.friends)
+        DataHelper.user1.friends.forEach { friend ->
+            if (friend !in friendItems) {
+                friendItems.add(friend)
+            }
+        }
         userFriends.adapter = ProfileAdapter(friendItems, showNames = true)
 
         // Filter the posts for the current profile user
