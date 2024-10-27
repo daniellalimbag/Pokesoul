@@ -2,12 +2,10 @@ package com.mobdeve.s21.pokesoul.viewholder
 
 import android.view.View
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.imageview.ShapeableImageView
 import com.mobdeve.s21.pokesoul.R
-import com.mobdeve.s21.pokesoul.model.Post
 
 class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val titleTv: TextView = itemView.findViewById(R.id.titleTv)
@@ -23,16 +21,36 @@ class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val savedImageButton : ImageButton = itemView.findViewById(R.id.saveImageButton)
 
     private var isSaved = false
+    private var isLiked = false
+    private var isDisliked = false
 
-    fun bind(post: Post){
-        savedImageButton.setOnClickListener{
-            if(isSaved){
+    fun bind() {
+        savedImageButton.setOnClickListener {
+            if (isSaved) {
                 isSaved = false
                 savedImageButton.setImageResource(R.drawable.bookmark_inactive)
-            }
-            else{
+            } else {
                 isSaved = true
                 savedImageButton.setImageResource(R.drawable.bookmark_active)
+            }
+        }
+        likeImageButton.setOnClickListener {
+
+            if (isLiked) {
+                isLiked = false
+                likeImageButton.setImageResource(R.drawable.like_inactive)
+            } else {
+                isLiked = true
+                likeImageButton.setImageResource(R.drawable.like_active)
+            }
+            dislikeImageButton.setOnClickListener {
+                if (isDisliked) {
+                    isDisliked = false
+                    dislikeImageButton.setImageResource(R.drawable.dislike_inactive)
+                } else {
+                    isDisliked = true
+                    dislikeImageButton.setImageResource(R.drawable.dislike_active)
+                }
             }
         }
     }

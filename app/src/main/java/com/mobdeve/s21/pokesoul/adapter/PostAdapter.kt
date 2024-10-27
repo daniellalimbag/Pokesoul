@@ -27,11 +27,30 @@ class PostAdapter(private val posts: List<Post>) : RecyclerView.Adapter<PostView
         holder.dislikeCountTv.text = post.dislikeCount.toString()
 
         holder.likeImageButton.setOnClickListener {
-            // Handle like action
+            if(!post.disliked){
+                if(post.liked){
+                    post.liked = false
+                    holder.likeImageButton.setImageResource(R.drawable.like_inactive)
+                }
+                else{
+                    post.liked = true
+                    holder.likeImageButton.setImageResource(R.drawable.like_active)
+                }
+            }
         }
 
         holder.dislikeImageButton.setOnClickListener {
-            // Handle dislike action
+            if(!post.liked){
+                if(post.disliked){
+                    post.disliked = false
+                    holder.dislikeImageButton.setImageResource(R.drawable.dislike_inactive)
+                }
+                else{
+                    post.disliked = true
+                    holder.dislikeImageButton.setImageResource(R.drawable.dislike_active)
+                }
+            }
+
         }
         holder.savedImageButton.setOnClickListener{
             if(post.saved){
