@@ -15,9 +15,9 @@ import java.util.Locale
 
 object DataHelper {
 
-    val user1 = User("Player 1", R.drawable.player1, "I like men and women", mutableListOf(), mutableListOf())
-    val user2 = User("Player 2", R.drawable.player2, "I like men and women", mutableListOf(), mutableListOf())
-    val user3 = User("Player 3", R.drawable.player3, "I like men and women", mutableListOf(), mutableListOf())
+    val user1 = User("Player 1", R.drawable.player1, "I want to play DND", mutableListOf(), mutableListOf())
+    val user2 = User("Player 2", R.drawable.player2, "I love MOBDEVE", mutableListOf(), mutableListOf())
+    val user3 = User("Player 3", R.drawable.player3, "Redemption Arc for AC1", mutableListOf(), mutableListOf())
     val pokemon1 = Pokemon("Quilava", 156, R.drawable.quilava)
     val pokemon2 = Pokemon("Ampharos", 181, R.drawable.ampharos)
     val pokemon3 = Pokemon("Drowzee", 96, R.drawable.drowzee)
