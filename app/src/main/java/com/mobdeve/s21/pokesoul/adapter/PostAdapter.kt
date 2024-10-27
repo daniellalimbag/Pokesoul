@@ -35,6 +35,7 @@ class PostAdapter(private val posts: List<Post>) : RecyclerView.Adapter<PostView
 
         holder.commentIv.setOnClickListener{
             val intent = Intent(holder.itemView.context, AddCommentActivity::class.java)
+            intent.putExtra("post_reference", post)
             holder.itemView.context.startActivity(intent)
         }
 
