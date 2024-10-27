@@ -21,7 +21,6 @@
         android:id="@+id/usernameTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
         android:layout_weight="1"
         android:text="Name" />
 </LinearLayout>

@@ -24,6 +24,15 @@ object DataHelper {
         return dateFormatter.format(date)
     }
 
+    fun loadFriendsData() {
+        user1.friends.add(user2)
+        user1.friends.add(user3)
+        user2.friends.add(user1)
+        user2.friends.add(user3)
+        user3.friends.add(user1)
+        user3.friends.add(user2)
+    }
+
     fun loadRunData(): ArrayList<Run> {
         val data = ArrayList<Run>()
 
