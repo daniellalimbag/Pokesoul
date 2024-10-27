@@ -143,7 +143,10 @@ object DataHelper {
                 content = "I want to get 2000 coins from the game corner to trade for a Dratini but I suck at Voltorb Flip. Any tips on how to beat it?",
                 commentCount = 5,
                 likeCount = 20,
-                dislikeCount = 1
+                dislikeCount = 1,
+                liked = false,
+                disliked = false,
+                shared = false
             )
         )
 
@@ -155,7 +158,10 @@ object DataHelper {
                 content = "I hate this game",
                 commentCount = 8,
                 likeCount = 35,
-                dislikeCount = 3
+                dislikeCount = 3,
+                liked = false,
+                disliked = false,
+                shared = false
             )
         )
 
@@ -167,7 +173,10 @@ object DataHelper {
                 content = "Finally finished my HeartGold run. I love this game.",
                 commentCount = 3,
                 likeCount = 15,
-                dislikeCount = 0
+                dislikeCount = 0,
+                liked = false,
+                disliked = false,
+                shared = false,
             )
         )
 
