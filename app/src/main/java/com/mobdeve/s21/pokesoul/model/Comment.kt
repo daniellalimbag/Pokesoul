@@ -4,6 +4,6 @@ import java.io.Serializable
 
 class Comment (
     val user: String,
-    val content: String,
+    var content: String?,
     val time: String
 ) : Serializable

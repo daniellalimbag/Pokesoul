@@ -25,4 +25,8 @@ class CommentAdapter(private val commentList : ArrayList<Comment>): Adapter<Comm
         Log.d("DEBUG", "Binding item at position: $position with content: ${commentList[position].content}")
         holder.bind(commentList[position])
     }
+    fun addComment(newComment : Comment){
+        commentList.add(0,newComment)
+        notifyItemInserted(0)
+    }
 }

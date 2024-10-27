@@ -62,11 +62,34 @@ class ViewPostActivity: AppCompatActivity(), View.OnClickListener{
 
         backIv.setOnClickListener(this)
 
+        val user = intent.getStringExtra("comment_user")
+        val content = intent.getStringExtra("comment_content")
+        val time = intent.getStringExtra("comment_time")
+
+        val newComment = user?.let { u ->
+            if (content != null && time != null) {
+                Comment(u, content, time)
+            } else {
+                null
+            }
+        }
+
+
+
 
         commentsRv = findViewById<RecyclerView>(R.id.commentRv)
         commentsRv.adapter = CommentAdapter(this.commentList)
+
+        var commentsAdapter = CommentAdapter(commentList)
+
+
+
         commentsRv.layoutManager = LinearLayoutManager(this)
         (commentsRv.layoutManager as LinearLayoutManager).orientation = LinearLayoutManager.VERTICAL
+
+        if (newComment != null) {
+            commentsAdapter.addComment(newComment)
+        }
     }
 
     override fun onClick(v: View?) {

@@ -19,7 +19,7 @@ class AddCommentActivity : AppCompatActivity(),  View.OnClickListener{
     private lateinit var backImgBtn : ImageButton
     private lateinit var commentBtn : Button
 
-    private lateinit var contentTv : TextView
+    private lateinit var contentTv : EditText
 
     lateinit var ref_post : Post
     lateinit var ref_user : User
@@ -32,7 +32,7 @@ class AddCommentActivity : AppCompatActivity(),  View.OnClickListener{
 
         ref_user = User("Player 1", R.drawable.player1, "I like men and women", mutableListOf(), mutableListOf())
 
-        contentTv = findViewById(R.id.contentTv)
+        contentTv = findViewById(R.id.commentEt)
 
         backImgBtn = findViewById(R.id.backImgBtn)
         backImgBtn.setOnClickListener(this)
