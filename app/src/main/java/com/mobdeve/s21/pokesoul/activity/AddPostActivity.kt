@@ -52,7 +52,10 @@ class AddPostActivity : AppCompatActivity() {
                     content = postContent,
                     commentCount = 0,
                     likeCount = 0,
-                    dislikeCount = 0
+                    dislikeCount = 0,
+                    disliked = false,
+                    liked = false,
+                    saved = false
                 )
 
                 val intent = Intent()
