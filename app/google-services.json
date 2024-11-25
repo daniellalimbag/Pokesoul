@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "338511215535",
+    "project_id": "pokesoul-55229",
+    "storage_bucket": "pokesoul-55229.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:338511215535:android:3f36cc4549bd676ea9cd5a",
+        "android_client_info": {
+          "package_name": "com.mobdeve.s21.pokesoul"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQQFJ9XgjryLNcHulxSbCUr6o5xoBWR2M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
