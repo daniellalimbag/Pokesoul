@@ -1,5 +1,6 @@
 package com.mobdeve.s21.pokesoul.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +10,7 @@ import com.mobdeve.s21.pokesoul.model.Notification
 import com.mobdeve.s21.pokesoul.viewholder.NotificationViewHolder
 
 class NotificationAdapter(
-    private val notificationList : List<Notification>
+    private var notificationList : List<Notification>
 ): RecyclerView.Adapter<NotificationViewHolder>(){
 
 
@@ -25,6 +26,12 @@ class NotificationAdapter(
 
     override fun onBindViewHolder(holder: NotificationViewHolder, position: Int) {
         holder.bind(notificationList[position])
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateNotifications(newNotification: List<Notification>){
+        notificationList = newNotification
+        notifyDataSetChanged()
     }
 
 }
