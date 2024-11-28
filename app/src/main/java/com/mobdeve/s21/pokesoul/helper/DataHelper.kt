@@ -192,36 +192,6 @@ object DataHelper {
         return posts
     }
 
-    fun loadNotificationData(): ArrayList<Notification>{
-        val notifications = ArrayList<Notification>()
-
-        notifications.add(
-            Notification(
-                title = "Who wants to Join?",
-                time = "30 Mins ago",
-                content = "I'm a new player and would love to learn how to play a Soulink"
-            )
-        )
-
-        notifications.add(
-            Notification(
-                title = "A player died to a Stantler and made us lose...",
-                time = "2 Hrs ago",
-                content = "Title ^^^"
-            )
-        )
-
-        notifications.add(
-            Notification(
-                title = "Looking for one more person for soulink",
-                time = "10 Hrs ago",
-                content = "We're a group of 3 and looking for one more person to join this runthrough. Comment if interested!"
-            )
-        )
-
-        return notifications
-    }
-
     fun loadCommentData(): ArrayList<Comment>{
         var comments = ArrayList<Comment>()
 

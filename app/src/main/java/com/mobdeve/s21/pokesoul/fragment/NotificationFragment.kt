@@ -16,9 +16,9 @@ import com.mobdeve.s21.pokesoul.model.Notification
 class NotificationFragment : Fragment() {
     private lateinit var notificationRv: RecyclerView
     private lateinit var notificationAdapter: NotificationAdapter
-    private var notifications: MutableList<Notification> = mutableListOf() // Initialize here
+    private var notifications: MutableList<Notification> = mutableListOf()
+    private val db = FirebaseFirestore.getInstance() // Firestore instance
 
-    private val db = FirebaseFirestore.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,31 +34,38 @@ class NotificationFragment : Fragment() {
         notificationAdapter = NotificationAdapter(notifications)
         notificationRv.adapter = notificationAdapter
 
-        // Fetch notifications from Firestore
-        fetchNotificationsFromFirestore()
+
+        fetchNotifications()
 
         return view
     }
 
-    // Fetch notifications from Firestore and update the RecyclerView
-    private fun fetchNotificationsFromFirestore() {
-        val db = FirebaseFirestore.getInstance()
+    private fun fetchNotifications() {
         db.collection("Notification")
-            .get()
+            .get() // Fetch the documents in the collection
             .addOnSuccessListener { documents ->
-                if (!documents.isEmpty) {
-                    // Handle the notifications data
-                    for (document in documents) {
-                        val notification = document.toObject(Notification::class.java)
-                        // Process notification
-                    }
-                } else {
-                    // No notifications found
+                // Clear the list in the fragment before adding new notifications
+                notifications.clear()
+
+                // Add notifications from Firestore to the list
+                for (document in documents) {
+                    // Create a Notification object from each document
+                    val notification = document.toObject(Notification::class.java)
+                    notifications.add(notification)
                 }
+
+
+                // Update the adapter with the new notifications
+                notificationAdapter.updateNotifications()
+
+                // Log the notifications to verify
+
             }
             .addOnFailureListener { exception ->
-                Log.w("TAG", "Error getting documents: ", exception)
+                // Log any errors
+                Log.w("Notification", "Error getting documents: ", exception)
             }
     }
 
-    }
+
+}

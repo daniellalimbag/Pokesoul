@@ -1,10 +1,8 @@
 package com.mobdeve.s21.pokesoul.model
 
+import com.google.firebase.database.IgnoreExtraProperties
 import java.io.Serializable
 
-class Notification (
-    val title: String,
-    val time: String,
-    val content: String
-) : Serializable
+@IgnoreExtraProperties
+data class Notification(val title: String? = null, val time: String? = null, val content: String? = null) : Serializable
 

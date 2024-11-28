@@ -10,7 +10,7 @@ import com.mobdeve.s21.pokesoul.model.Notification
 import com.mobdeve.s21.pokesoul.viewholder.NotificationViewHolder
 
 class NotificationAdapter(
-    private var notificationList : List<Notification>
+    private var notificationList : MutableList<Notification>
 ): RecyclerView.Adapter<NotificationViewHolder>(){
 
 
@@ -29,9 +29,9 @@ class NotificationAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateNotifications(newNotification: List<Notification>){
-        notificationList = newNotification
-        notifyDataSetChanged()
+    fun updateNotifications() {
+        notifyDataSetChanged()  // Notify the adapter that the data has changed
     }
+
 
 }
