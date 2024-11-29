@@ -22,6 +22,7 @@ import com.mobdeve.s21.pokesoul.activity.PokemonDetailsActivity
 import com.mobdeve.s21.pokesoul.model.OwnedPokemon
 import com.mobdeve.s21.pokesoul.model.Run
 import com.mobdeve.s21.pokesoul.model.User
+import com.squareup.picasso.Picasso
 
 class PokemonFragment : Fragment() {
     private lateinit var run: Run
@@ -126,8 +127,15 @@ class PokemonFragment : Fragment() {
         val nicknameTextView = pokemonView.findViewById<TextView>(R.id.nicknameTv)
 
         pokemonView.orientation = LinearLayout.HORIZONTAL
-
-        pokemonImageView.setImageResource(pokemon.pokemon.imageId)
+        pokemon?.let {
+            Picasso.get()
+                .load(it.pokemon.sprite)
+                .resize(100, 100)
+                .centerCrop()
+                .placeholder(R.drawable.magikarp)
+                .error(R.drawable.player1)
+                .into(pokemonImageView)
+        }
         nicknameTextView.text = pokemon.nickname
 
         val paddingInPx = dpToPx(8)

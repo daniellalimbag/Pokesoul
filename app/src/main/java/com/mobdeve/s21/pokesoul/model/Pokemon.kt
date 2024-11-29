@@ -4,6 +4,10 @@ import java.io.Serializable
 
 class Pokemon(
     val name: String,
-    val dexId: Int,
-    val imageId: Int,
+    val url: String,
+    val sprite: String
+) : Serializable
+
+data class PokemonListResponse(
+    val results: List<Pokemon>
 ) : Serializable

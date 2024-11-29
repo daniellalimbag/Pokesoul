@@ -6,6 +6,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.model.OwnedPokemon
+import com.squareup.picasso.Picasso
 
 class PokemonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -13,7 +14,13 @@ class PokemonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val pokemonNicknameTextView: TextView = itemView.findViewById(R.id.nicknameTv)
 
     fun bind(ownedPokemon: OwnedPokemon) {
-        pokemonImageView.setImageResource(ownedPokemon.pokemon.imageId)
         pokemonNicknameTextView.text = ownedPokemon.nickname
+        Picasso.get()
+            .load(ownedPokemon.pokemon.sprite)
+            .resize(100, 100)
+            .centerCrop()
+            .placeholder(R.drawable.magikarp)
+            .error(R.drawable.player1)
+            .into(pokemonImageView)
     }
 }

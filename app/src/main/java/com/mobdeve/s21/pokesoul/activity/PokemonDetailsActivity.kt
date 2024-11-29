@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.imageview.ShapeableImageView
 import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.model.OwnedPokemon
+import com.squareup.picasso.Picasso
 
 class PokemonDetailsActivity : AppCompatActivity() {
     private lateinit var deleteBtn: Button
@@ -37,7 +38,14 @@ class PokemonDetailsActivity : AppCompatActivity() {
         }
         // Populate the UI with the OwnedPokemon data
         pokemon?.let {
-            pokemonSiv.setImageResource(it.pokemon.imageId) // Assumes imageId is a drawable resource ID
+            Picasso.get()
+                .load(it.pokemon.sprite)
+                .resize(100, 100)
+                .centerCrop()
+                .placeholder(R.drawable.magikarp)
+                .error(R.drawable.player1)
+                .into(pokemonSiv)
+
             nicknameText.setText(it.nickname)
             locationTv.setText(it.caughtLocation)
             saveTv.setText(it.savedLocation)

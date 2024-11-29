@@ -55,4 +55,7 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.google.firebase.analytics)
     implementation(libs.play.services.base)
+    implementation(libs.retrofit)
+    implementation(libs.gson)
+    implementation("com.squareup.picasso:picasso:2.71828")
 }

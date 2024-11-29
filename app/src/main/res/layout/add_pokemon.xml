@@ -80,8 +80,8 @@
         android:layout_margin="16dp"
         android:background="@color/white"
         android:scaleType="centerCrop"
-        android:src="@drawable/ampharos"
-        app:shapeAppearanceOverlay="@style/roundedImageView" />
+        app:shapeAppearanceOverlay="@style/roundedImageView"
+        android:contentDescription="Pokemon Sprite" />
 
     <EditText
         android:id="@+id/nicknameText"

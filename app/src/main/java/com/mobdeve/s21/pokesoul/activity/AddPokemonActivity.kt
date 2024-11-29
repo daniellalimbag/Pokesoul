@@ -7,18 +7,21 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.imageview.ShapeableImageView
 import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.activity.AddRunActivity.Companion
 import com.mobdeve.s21.pokesoul.adapter.PlayerAdapter
 import com.mobdeve.s21.pokesoul.adapter.PokemonAdapter
 import com.mobdeve.s21.pokesoul.model.Pokemon
 import com.mobdeve.s21.pokesoul.model.User
+import com.squareup.picasso.Picasso
 
 class AddPokemonActivity : AppCompatActivity() {
     private lateinit var searchIbtn: ImageButton
     private lateinit var pokemonTv: TextView
     private lateinit var deleteBtn: Button
     private lateinit var saveBtn: Button
+    private lateinit var pokemonSiv: ShapeableImageView
 
     companion object {
         private const val REQUEST_CODE_SEARCH = 1
@@ -28,10 +31,12 @@ class AddPokemonActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.add_pokemon)
 
+        // Initialize views
         pokemonTv = findViewById(R.id.pokemonTv)
         searchIbtn = findViewById(R.id.searchIbtn)
         deleteBtn = findViewById(R.id.deleteBtn)
         saveBtn = findViewById(R.id.saveBtn)
+        pokemonSiv = findViewById(R.id.pokemonSiv) // Initialize the sprite ImageView
 
         // Set OnClickListener for the searchIbtn to open SearchActivity
         searchIbtn.setOnClickListener {
@@ -39,10 +44,12 @@ class AddPokemonActivity : AppCompatActivity() {
             intent.putExtra("isFromAddPokemon", true)
             startActivityForResult(intent, REQUEST_CODE_SEARCH)
         }
+
         // Set click listener for the delete button
         deleteBtn.setOnClickListener {
             finish()
         }
+
         // Set click listener for the save button
         saveBtn.setOnClickListener {
             finish()
@@ -55,6 +62,9 @@ class AddPokemonActivity : AppCompatActivity() {
             val selectedPokemon = data?.getSerializableExtra("selectedPokemon") as? Pokemon
             selectedPokemon?.let {
                 pokemonTv.text = selectedPokemon.name
+                Picasso.get()
+                    .load(it.sprite)
+                    .into(pokemonSiv)
             }
         }
     }
