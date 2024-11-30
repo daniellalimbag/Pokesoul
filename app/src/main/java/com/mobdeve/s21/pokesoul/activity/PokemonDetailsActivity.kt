@@ -22,7 +22,7 @@ class PokemonDetailsActivity : AppCompatActivity() {
         val pokemonSiv = findViewById<ShapeableImageView>(R.id.pokemonSiv)
         val nicknameText = findViewById<EditText>(R.id.nicknameText)
         val playerActv = findViewById<AutoCompleteTextView>(R.id.playerActv)
-        val locationTv = findViewById<AutoCompleteTextView>(R.id.locationTv)
+        val locationTv = findViewById<EditText>(R.id.locationTv)
         val saveTv = findViewById<AutoCompleteTextView>(R.id.saveTv)
 
         deleteBtn = findViewById(R.id.deleteBtn)
