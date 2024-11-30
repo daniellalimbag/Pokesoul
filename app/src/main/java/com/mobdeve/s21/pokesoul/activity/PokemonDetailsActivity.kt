@@ -6,22 +6,26 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.imageview.ShapeableImageView
 import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.model.OwnedPokemon
+import com.mobdeve.s21.pokesoul.model.Run
 import com.squareup.picasso.Picasso
 
 class PokemonDetailsActivity : AppCompatActivity() {
     private lateinit var deleteBtn: Button
     private lateinit var saveBtn: Button
+    private lateinit var playerActv: AutoCompleteTextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.pokemon_details)
 
-        // Retrieve the OwnedPokemon instance from the Intent
+        // Retrieve the OwnedPokemon instance and Run instance from the Intent
         val pokemon = intent.getSerializableExtra("POKEMON_INSTANCE") as? OwnedPokemon
+        val run = intent.getSerializableExtra("RUN_INSTANCE") as? Run
 
         // Initialize UI elements
         val pokemonSiv = findViewById<ShapeableImageView>(R.id.pokemonSiv)
         val nicknameText = findViewById<EditText>(R.id.nicknameText)
-        val playerActv = findViewById<AutoCompleteTextView>(R.id.playerActv)
+        playerActv = findViewById(R.id.playerActv) // Reference to the AutoCompleteTextView
         val locationTv = findViewById<EditText>(R.id.locationTv)
         val saveTv = findViewById<AutoCompleteTextView>(R.id.saveTv)
 
@@ -36,6 +40,7 @@ class PokemonDetailsActivity : AppCompatActivity() {
         saveBtn.setOnClickListener {
             finish()
         }
+
         // Populate the UI with the OwnedPokemon data
         pokemon?.let {
             Picasso.get()
@@ -49,7 +54,21 @@ class PokemonDetailsActivity : AppCompatActivity() {
             nicknameText.setText(it.nickname)
             locationTv.setText(it.caughtLocation)
             saveTv.setText(it.savedLocation)
+            playerActv.setText(it.owner.username, false)
+
         }
 
+        // Set up the AutoCompleteTextView with player names from the run data
+        run?.let {
+            val playerNames = it.players.map { player -> player.username }
+            val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, playerNames)
+            playerActv.setAdapter(adapter)
+
+            // Set up the item click listener for the AutoCompleteTextView
+            playerActv.setOnItemClickListener { _, _, position, _ ->
+                val selectedPlayer = it.players[position]
+                // Handle the selected player (e.g., display player details or update UI)
+            }
+        }
     }
 }

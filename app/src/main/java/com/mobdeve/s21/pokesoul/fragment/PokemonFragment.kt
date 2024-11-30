@@ -147,6 +147,7 @@ class PokemonFragment : Fragment() {
         pokemonView.setOnClickListener {
             val intent = Intent(requireContext(), PokemonDetailsActivity::class.java).apply {
                 putExtra("POKEMON_INSTANCE", pokemon)
+                putExtra("RUN_INSTANCE", run)
             }
             startActivity(intent)
         }
