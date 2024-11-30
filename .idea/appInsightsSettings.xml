@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.mobdeve.s21.pokesoul" />
-                  <option name="mobileSdkAppId" value="1:338511215535:android:3f36cc4549bd676ea9cd5a" />
-                  <option name="projectId" value="pokesoul-55229" />
-                  <option name="projectNumber" value="338511215535" />
+                  <option name="appId" value="PLACEHOLDER" />
+                  <option name="mobileSdkAppId" value="" />
+                  <option name="projectId" value="" />
+                  <option name="projectNumber" value="" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

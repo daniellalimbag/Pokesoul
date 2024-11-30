@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("com.google.gms.google-services")
 }
 
 android {
@@ -47,15 +46,9 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.navigation.fragment)
     implementation(libs.androidx.swiperefreshlayout)
-    implementation(libs.firebase.firestore.ktx)
-    implementation(libs.firebase.database.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.google.firebase.analytics)
-    implementation(libs.play.services.base)
     implementation(libs.retrofit)
     implementation(libs.gson)
-    implementation("com.squareup.picasso:picasso:2.71828")
 }
