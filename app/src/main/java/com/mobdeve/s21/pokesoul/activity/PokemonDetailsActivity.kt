@@ -13,6 +13,7 @@ class PokemonDetailsActivity : AppCompatActivity() {
     private lateinit var deleteBtn: Button
     private lateinit var saveBtn: Button
     private lateinit var playerActv: AutoCompleteTextView
+    private lateinit var saveTv: AutoCompleteTextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,9 +26,9 @@ class PokemonDetailsActivity : AppCompatActivity() {
         // Initialize UI elements
         val pokemonSiv = findViewById<ShapeableImageView>(R.id.pokemonSiv)
         val nicknameText = findViewById<EditText>(R.id.nicknameText)
-        playerActv = findViewById(R.id.playerActv) // Reference to the AutoCompleteTextView
+        playerActv = findViewById(R.id.playerActv)
         val locationTv = findViewById<EditText>(R.id.locationTv)
-        val saveTv = findViewById<AutoCompleteTextView>(R.id.saveTv)
+        saveTv = findViewById(R.id.saveTv)
 
         deleteBtn = findViewById(R.id.deleteBtn)
         saveBtn = findViewById(R.id.saveBtn)
@@ -36,6 +37,7 @@ class PokemonDetailsActivity : AppCompatActivity() {
         deleteBtn.setOnClickListener {
             finish()
         }
+
         // Set click listener for the save button
         saveBtn.setOnClickListener {
             finish()
@@ -55,7 +57,6 @@ class PokemonDetailsActivity : AppCompatActivity() {
             locationTv.setText(it.caughtLocation)
             saveTv.setText(it.savedLocation)
             playerActv.setText(it.owner.username, false)
-
         }
 
         // Set up the AutoCompleteTextView with player names from the run data
@@ -69,6 +70,11 @@ class PokemonDetailsActivity : AppCompatActivity() {
                 val selectedPlayer = it.players[position]
                 // Handle the selected player (e.g., display player details or update UI)
             }
+
+            // Add the 4 locations to the saveTv AutoCompleteTextView
+            val locations = listOf("Team", "Box", "Daycare", "Grave")
+            val locationAdapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, locations)
+            saveTv.setAdapter(locationAdapter)
         }
     }
 }

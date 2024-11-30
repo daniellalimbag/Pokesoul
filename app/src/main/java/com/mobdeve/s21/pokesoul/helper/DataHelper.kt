@@ -47,15 +47,15 @@ object DataHelper {
 
 
         val ownedPokemonLists = listOf(
-            OwnedPokemon(pokemon1, "Ron", user1, "New Bark Town", "Goldenrod City"),
-            OwnedPokemon(pokemon2, "Rov", user1, "Route 32", "Azalea Town"),
-            OwnedPokemon(pokemon3, "Izzy", user2, "Ilex Forest", "Ecruteak City"),
-            OwnedPokemon(pokemon4, "Julian", user2, "Mt. Mortar", "Olivine City"),
-            OwnedPokemon(pokemon5, "Hiro", user1, "National Park", "Blackthorn City"),
-            OwnedPokemon(pokemon6, "Ilan", user2, "Lake of Rage", "Mahogany Town"),
-            OwnedPokemon(pokemon7, "Marc", user3, "Ice Path", "Violet City"),
-            OwnedPokemon(pokemon8, "Fish", user3, "Route 42", "Pallet Town"),
-            OwnedPokemon(pokemon1, "Weaver", user3, "Sprout Tower", "Viridian City")
+            OwnedPokemon(pokemon1, "Ron", user1, "New Bark Town", "Team"),
+            OwnedPokemon(pokemon2, "Rov", user1, "Route 32", "Team"),
+            OwnedPokemon(pokemon3, "Izzy", user2, "Ilex Forest", "Team"),
+            OwnedPokemon(pokemon4, "Julian", user2, "Mt. Mortar", "Team"),
+            OwnedPokemon(pokemon5, "Hiro", user1, "National Park", "Team"),
+            OwnedPokemon(pokemon6, "Ilan", user2, "Lake of Rage", "Team"),
+            OwnedPokemon(pokemon7, "Marc", user3, "Ice Path", "Team"),
+            OwnedPokemon(pokemon8, "Fish", user3, "Route 42", "Team"),
+            OwnedPokemon(pokemon1, "Weaver", user3, "Sprout Tower", "Team")
         )
 
         // Link Pokémon together
@@ -70,27 +70,27 @@ object DataHelper {
         ownedPokemonLists[8].link(ownedPokemonLists[0])
 
         val linkedTeam1 = listOf(
-            OwnedPokemon(pokemon1, "Ron", user1, "New Bark Town", "Goldenrod City"),
-            OwnedPokemon(pokemon2, "Rov", user1, "Route 32", "Azalea Town"),
-            OwnedPokemon(pokemon3, "Izzy", user2, "Ilex Forest", "Ecruteak City"),
-            OwnedPokemon(pokemon4, "Julian", user2, "Mt. Mortar", "Olivine City"),
-            OwnedPokemon(pokemon5, "Hiro", user1, "National Park", "Blackthorn City"),
-            OwnedPokemon(pokemon6, "Ilan", user2, "Lake of Rage", "Mahogany Town"),
-            OwnedPokemon(pokemon7, "Marc", user3, "Ice Path", "Violet City"),
-            OwnedPokemon(pokemon8, "Fish", user3, "Route 42", "Pallet Town"),
-            OwnedPokemon(pokemon5, "Test", user2, "Sprout Tower", "Pewter City")
+            OwnedPokemon(pokemon1, "Ron", user1, "New Bark Town", "Team"),
+            OwnedPokemon(pokemon2, "Rov", user1, "Route 32", "Team"),
+            OwnedPokemon(pokemon3, "Izzy", user2, "Ilex Forest", "Team"),
+            OwnedPokemon(pokemon4, "Julian", user2, "Mt. Mortar", "Team"),
+            OwnedPokemon(pokemon5, "Hiro", user1, "National Park", "Team"),
+            OwnedPokemon(pokemon6, "Ilan", user2, "Lake of Rage", "Team"),
+            OwnedPokemon(pokemon7, "Marc", user3, "Ice Path", "Team"),
+            OwnedPokemon(pokemon8, "Fish", user3, "Route 42", "Team"),
+            OwnedPokemon(pokemon5, "Test", user2, "Sprout Tower", "Team")
         )
 
         val box1 = listOf(
-            OwnedPokemon(pokemon5, "Test", user1, "National Park", "Fuchsia City"),
-            OwnedPokemon(pokemon5, "Test", user2, "Route 35", "Cinnabar Island"),
-            OwnedPokemon(pokemon5, "Test", user3, "Route 12", "Saffron City")
+            OwnedPokemon(pokemon5, "Test", user1, "National Park", "Box"),
+            OwnedPokemon(pokemon5, "Test", user2, "Route 35", "Box"),
+            OwnedPokemon(pokemon5, "Test", user3, "Route 12", "Box")
         )
 
         val logTeam1 = listOf(
-            OwnedPokemon(pokemon1, "Ron", user1, "New Bark Town", "Goldenrod City"),
-            OwnedPokemon(pokemon3, "Izzy", user2, "Ilex Forest", "Ecruteak City"),
-            OwnedPokemon(pokemon8, "Fish", user3, "Route 42", "Pallet Town")
+            OwnedPokemon(pokemon1, "Ron", user1, "New Bark Town", "Team"),
+            OwnedPokemon(pokemon3, "Izzy", user2, "Ilex Forest", "Team"),
+            OwnedPokemon(pokemon8, "Fish", user3, "Route 42", "Team")
         )
 
         // Create TimelineLog instances for run1
@@ -119,8 +119,8 @@ object DataHelper {
         user3.runs.add(run1)
 
         val linkedTeam2 = listOf(
-            OwnedPokemon(pokemon4, "Drew", user1, "Lake of Rage", "Goldenrod City"),
-            OwnedPokemon(pokemon2, "Tin", user3, "Route 39", "Vermilion City")
+            OwnedPokemon(pokemon4, "Drew", user1, "Lake of Rage", "Team"),
+            OwnedPokemon(pokemon2, "Tin", user3, "Route 39", "Team")
         )
 
         linkedTeam2[0].link(linkedTeam2[1])
