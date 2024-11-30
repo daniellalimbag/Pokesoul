@@ -6,7 +6,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.imageview.ShapeableImageView
 import com.mobdeve.s21.pokesoul.R
-import com.mobdeve.s21.pokesoul.activity.ProfileDetailsActivity
 import com.mobdeve.s21.pokesoul.model.User
 
 class PlayerViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -20,9 +19,9 @@ class PlayerViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         playerImageView.setOnClickListener {
             val context = itemView.context
-            val intent = Intent(context, ProfileDetailsActivity::class.java)
-            intent.putExtra("USER_INSTANCE", user) // Pass the user instance to ProfileDetailsActivity
-            context.startActivity(intent)
+            //val intent = Intent(context, ProfileDetailsActivity::class.java)
+            //intent.putExtra("USER_INSTANCE", user) // Pass the user instance to ProfileDetailsActivity
+            //context.startActivity(intent)
         }
     }
 }

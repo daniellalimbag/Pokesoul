@@ -24,5 +24,6 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/satoshi_medium"
         android:text="Name"
+        android:textColor="@color/white"
         android:textSize="12sp" />
 </LinearLayout>

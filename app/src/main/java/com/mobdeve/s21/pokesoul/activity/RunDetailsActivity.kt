@@ -10,9 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.google.android.material.navigation.NavigationView
 import com.mobdeve.s21.pokesoul.R
-import com.mobdeve.s21.pokesoul.fragment.PokemonFragment
 import com.mobdeve.s21.pokesoul.fragment.SummaryFragment
 import com.mobdeve.s21.pokesoul.fragment.TimelineFragment
+import com.mobdeve.s21.pokesoul.fragment.PokemonFragment
 import com.mobdeve.s21.pokesoul.model.Run
 
 class RunDetailsActivity : AppCompatActivity() {

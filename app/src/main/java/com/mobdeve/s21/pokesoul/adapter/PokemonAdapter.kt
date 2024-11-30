@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s21.pokesoul.R
-import com.mobdeve.s21.pokesoul.activity.AddCommentActivity
 import com.mobdeve.s21.pokesoul.activity.PokemonDetailsActivity
 import com.mobdeve.s21.pokesoul.model.OwnedPokemon
 import com.mobdeve.s21.pokesoul.viewholder.PokemonViewHolder

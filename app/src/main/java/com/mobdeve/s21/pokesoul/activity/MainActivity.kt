@@ -8,24 +8,18 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mobdeve.s21.pokesoul.R
+import com.mobdeve.s21.pokesoul.fragment.RunFragment
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var navController: NavController
-    private lateinit var navbar: BottomNavigationView
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         setContentView(R.layout.activity_main)
 
-
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHostFragment.navController
-
-        navbar = findViewById(R.id.navbarBnv)
-
-        // Automatically connect BottomNavigationView with NavController
-        navbar.setupWithNavController(navController)
+        // Load RunFragment
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, RunFragment())
+                .commit()
+        }
     }
 }
