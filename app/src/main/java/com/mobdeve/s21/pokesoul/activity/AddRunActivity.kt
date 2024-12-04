@@ -41,7 +41,7 @@ class AddRunActivity : AppCompatActivity() {
         addIbtn = findViewById(R.id.addIbtn)
 
         // Static data
-        val user1 = User("Player 1", R.drawable.player1, "I like men and women", mutableListOf(), mutableListOf())
+        val user1 = User("Player 1", R.drawable.player1, mutableListOf())
         playersList.add(user1)
 
         // Initialize the PlayerAdapter with playersList

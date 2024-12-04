@@ -33,7 +33,7 @@ class TimelineFragment : Fragment() {
 
         logRv = view.findViewById(R.id.logRv)
         val noLogsText: TextView = view.findViewById(R.id.noLogsTv)
-        val currentUser = User("Austin", R.drawable.player1, "I like men and women")
+        val currentUser = User("Austin", R.drawable.player1)
 
         logRv.layoutManager = LinearLayoutManager(requireContext())
         timelineLogAdapter = TimelineLogAdapter(run.logs, currentUser, run)

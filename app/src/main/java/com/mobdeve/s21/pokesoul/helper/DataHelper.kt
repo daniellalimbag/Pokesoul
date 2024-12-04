@@ -12,9 +12,9 @@ import java.util.Locale
 
 object DataHelper {
 
-    val user1 = User("Player 1", R.drawable.player1, "I want to play DND", mutableListOf(), mutableListOf())
-    val user2 = User("Player 2", R.drawable.player2, "I love MOBDEVE", mutableListOf(), mutableListOf())
-    val user3 = User("Player 3", R.drawable.player3, "Redemption Arc for AC1", mutableListOf(), mutableListOf())
+    val user1 = User("Player 1", R.drawable.player1, mutableListOf())
+    val user2 = User("Player 2", R.drawable.player2, mutableListOf())
+    val user3 = User("Player 3", R.drawable.player3, mutableListOf())
     val pokemon1 = Pokemon("Quilava", "https://pokeapi.co/api/v2/pokemon/Quilava", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/156.png")
     val pokemon2 = Pokemon("Ampharos", "https://pokeapi.co/api/v2/pokemon/Ampharos","https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/181.png")
     val pokemon3 = Pokemon("Drowzee", "https://pokeapi.co/api/v2/pokemon/Drowzee","https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/96.png")
@@ -28,15 +28,6 @@ object DataHelper {
         val dateFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
         val date = java.util.Date(instant.toEpochMilliseconds())
         return dateFormatter.format(date)
-    }
-
-    fun loadFriendsData() {
-        user1.friends.add(user2)
-        user1.friends.add(user3)
-        user2.friends.add(user1)
-        user2.friends.add(user3)
-        user3.friends.add(user1)
-        user3.friends.add(user2)
     }
 
     fun loadRunData(): ArrayList<Run> {
