@@ -33,9 +33,6 @@ class DatabaseManager(context: Context) {
     }
     fun deleteRunEntry(id: Long): Int {
         val db: SQLiteDatabase = dbHelper.writableDatabase
-        val values = ContentValues().apply {
-            put(MyDatabaseHelper.RUN_ID, id)
-        }
         return db.delete(
             MyDatabaseHelper.RUN_TABLE,
             "${MyDatabaseHelper.RUN_ID} = ?",
@@ -80,9 +77,6 @@ class DatabaseManager(context: Context) {
     }
     fun deleteOwnedPokemonEntry(id: Long): Int {
         val db: SQLiteDatabase = dbHelper.writableDatabase
-        val values = ContentValues().apply {
-            put(MyDatabaseHelper.OWNED_POKEMON_ID, id)
-        }
         return db.delete(
             MyDatabaseHelper.OWNED_POKEMON_TABLE,
             "${MyDatabaseHelper.OWNED_POKEMON_ID} = ?",
@@ -122,9 +116,6 @@ class DatabaseManager(context: Context) {
 
     fun deleteTimelineLogEntry(id: Long){
         val db: SQLiteDatabase = dbHelper.writableDatabase
-        val values = ContentValues().apply {
-            put(MyDatabaseHelper.TIMELINE_LOG_ID, id)
-        }
         db.delete(
             MyDatabaseHelper.TIMELINE_LOG_TABLE,
             "${MyDatabaseHelper.TIMELINE_LOG_ID} = ?",
@@ -156,9 +147,6 @@ class DatabaseManager(context: Context) {
     }
     fun deleteTeamEntry(id: Long){
         val db: SQLiteDatabase = dbHelper.writableDatabase
-        val values = ContentValues().apply {
-            put(MyDatabaseHelper.TEAM_ID, id)
-        }
         db.delete(
             MyDatabaseHelper.TEAM_TABLE,
             "${MyDatabaseHelper.TEAM_ID} = ?",
@@ -190,9 +178,6 @@ class DatabaseManager(context: Context) {
     }
     fun deleteBoxEntry(id: Long){
         val db: SQLiteDatabase = dbHelper.writableDatabase
-        val values = ContentValues().apply {
-            put(MyDatabaseHelper.BOX_ID, id)
-        }
         db.delete(
             MyDatabaseHelper.BOX_TABLE,
             "${MyDatabaseHelper.BOX_ID} = ?",
@@ -224,14 +209,41 @@ class DatabaseManager(context: Context) {
     }
     fun deleteGraveEntry(id: Long){
         val db: SQLiteDatabase = dbHelper.writableDatabase
-        val values = ContentValues().apply {
-            put(MyDatabaseHelper.GRAVE_ID, id)
-        }
         db.delete(
             MyDatabaseHelper.GRAVE_TABLE,
             "${MyDatabaseHelper.GRAVE_ID} = ?",
             arrayOf(id.toString())
         )
+    }
+
+    //Insert, Update, Delete Daycare
+    fun insertDaycareEntry(ownedPokemonId: Long, runId: Long): Long {
+        val db: SQLiteDatabase = dbHelper.writableDatabase
+        val values = ContentValues().apply {
+            put(MyDatabaseHelper.OWNED_POKEMON_ID, ownedPokemonId)
+            put(MyDatabaseHelper.RUN_ID, runId)
+        }
+        return db.insert(MyDatabaseHelper.DAYCARE_TABLE, null, values).also { db.close() }
+    }
+    fun updateDaycareEntry(id: Long, ownedPokemonId: Long, runId: Long){
+        val db: SQLiteDatabase = dbHelper.writableDatabase
+        val values = ContentValues().apply {
+            put(MyDatabaseHelper.OWNED_POKEMON_ID, ownedPokemonId)
+            put(MyDatabaseHelper.RUN_ID, runId)
+        }
+        db.update(
+            MyDatabaseHelper.DAYCARE_TABLE,
+            values,
+            "${MyDatabaseHelper.DAYCARE_ID} = ?",
+            arrayOf(id.toString()))
+    }
+    fun deleteDaycareEntry(id: Long){
+        val db: SQLiteDatabase = dbHelper.writableDatabase
+        db.delete(
+            MyDatabaseHelper.DAYCARE_TABLE,
+            "${MyDatabaseHelper.DAYCARE_ID} = ?",
+            arrayOf(id.toString())
+        ).also { db.close() }
     }
 }
 
