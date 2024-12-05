@@ -165,5 +165,33 @@ class DatabaseManager(context: Context) {
             arrayOf(id.toString())
         ).also { db.close() }
     }
+
+    //Insert, Update, Delete Box
+    fun insertBoxEntry(ownedPokemonId: Long, runId: Long): Long {
+        val db: SQLiteDatabase = dbHelper.writableDatabase
+        val values = ContentValues().apply {
+            put(MyDatabaseHelper.OWNED_POKEMON_ID, ownedPokemonId)
+            put(MyDatabaseHelper.RUN_ID, runId)
+        }
+        return db.insert(MyDatabaseHelper.BOX_TABLE, null, values).also { db.close() }
+    }
+    fun updateBoxEntry(id: Long, ownedPokemonId: Long, runId: Long) {
+        val db: SQLiteDatabase = dbHelper.writableDatabase
+        val values = ContentValues().apply {
+            put(MyDatabaseHelper.OWNED_POKEMON_ID, ownedPokemonId)
+            put(MyDatabaseHelper.RUN_ID, runId)
+        }
+    }
+    fun deleteBoxEntry(id: Long){
+        val db: SQLiteDatabase = dbHelper.writableDatabase
+        val values = ContentValues().apply {
+            put(MyDatabaseHelper.BOX_ID, id)
+        }
+        db.delete(
+            MyDatabaseHelper.BOX_TABLE,
+            "${MyDatabaseHelper.BOX_ID} = ?",
+            arrayOf(id.toString())
+        ).also { db.close() }
+    }
 }
 
