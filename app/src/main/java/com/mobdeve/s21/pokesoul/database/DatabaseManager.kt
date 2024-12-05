@@ -3,6 +3,7 @@ package com.mobdeve.s21.pokesoul.database
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import com.mobdeve.s21.pokesoul.model.TimelineLog
 
 class DatabaseManager(context: Context) {
     private val dbHelper = MyDatabaseHelper(context)
@@ -121,6 +122,27 @@ class DatabaseManager(context: Context) {
             "${MyDatabaseHelper.TIMELINE_LOG_ID} = ?",
             arrayOf(id.toString())
         ).also { db.close() }
+    }
+    fun getTimelineLogEntries(): ArrayList<TimelineLog> {
+        val result = ArrayList<TimelineLog>()
+        val db: SQLiteDatabase = dbHelper.readableDatabase
+        val cursor = db.query(MyDatabaseHelper.TIMELINE_LOG_TABLE, null, null, null, null, null, null)
+        if(cursor.moveToFirst()){
+            do{
+                val timelineLog = TimelineLog(
+                    cursor.getString(cursor.getColumnIndexOrThrow(MyDatabaseHelper.TIMELINE_LOG_EVENT_NAME)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(MyDatabaseHelper.TIMELINE_LOG_LOCATION)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(MyDatabaseHelper.TIMELINE_LOG_TIME)),
+                    cursor.getInt(cursor.getColumnIndexOrThrow(MyDatabaseHelper.TIMELINE_LOG_DISPLAY_TEAM)) == 1,
+                    cursor.getLong(cursor.getColumnIndexOrThrow(MyDatabaseHelper.RUN_ID)),
+                    cursor.getLong(cursor.getColumnIndexOrThrow(MyDatabaseHelper.TEAM_ID))
+                )
+                result.add(timelineLog)
+            }while (cursor.moveToNext())
+        }
+        cursor.close()
+        db.close()
+        return result
     }
 
     //Insert, Update, Delete Team
