@@ -19,6 +19,8 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
         const val OWNED_POKEMON_NICKNAME = "nickname"
         const val OWNED_POKEMON_CAUGHT_LOCATION = "caughtLocation"
         const val OWNED_POKEMON_SAVED_LOCATION = "savedLocation"
+        const val OWNED_POKEMON_URL = "url"
+        const val OWNED_POKEMON_SPRITE = "sprite"
 
         //Table: Run
         const val RUN_TABLE = "Run"
@@ -70,7 +72,9 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
         $OWNED_POKEMON_ID INTEGER PRIMARY KEY AUTOINCREMENT,
         $OWNED_POKEMON_NICKNAME TEXT NOT NULL,
         $OWNED_POKEMON_CAUGHT_LOCATION TEXT NOT NULL,
-        $OWNED_POKEMON_SAVED_LOCATION TEXT NOT NULL
+        $OWNED_POKEMON_SAVED_LOCATION TEXT NOT NULL,
+        $OWNED_POKEMON_URL TEXT NOT NULL,
+        $OWNED_POKEMON_SPRITE TEXT NOT NULL
     )
 """.trimIndent()
 
@@ -162,8 +166,8 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
             )
         """.trimIndent()
 
-        db?.execSQL(createRunQuery)
         db?.execSQL(createOwnedPokemonQuery)
+        db?.execSQL(createRunQuery)
         db?.execSQL(createTeamQuery)
         db?.execSQL(createBoxQuery)
         db?.execSQL(createGraveQuery)
@@ -218,6 +222,8 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
         contentValues.put(OWNED_POKEMON_NICKNAME, "Pikachu")
         contentValues.put(OWNED_POKEMON_CAUGHT_LOCATION, "PokeCenter")
         contentValues.put(OWNED_POKEMON_SAVED_LOCATION, "Gym")
+        contentValues.put(OWNED_POKEMON_URL, "https://pokeapi.co/api/v2/pokemon/pikachu")
+        contentValues.put(OWNED_POKEMON_SPRITE, "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png")
         db.insert(OWNED_POKEMON_TABLE, null, contentValues)
 
     }
