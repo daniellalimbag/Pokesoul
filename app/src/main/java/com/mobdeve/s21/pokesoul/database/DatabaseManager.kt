@@ -28,7 +28,8 @@ class DatabaseManager(context: Context) {
             MyDatabaseHelper.RUN_TABLE,
             values,
             "${MyDatabaseHelper.RUN_ID} = ?",
-            arrayOf(id.toString())).also { db.close() }
+            arrayOf(id.toString())
+        ).also { db.close() }
     }
     fun deleteRunEntry(id: Long): Int {
         val db: SQLiteDatabase = dbHelper.writableDatabase
@@ -42,20 +43,28 @@ class DatabaseManager(context: Context) {
         ).also { db.close() }
     }
 
-
     //Insert,Update,Delete OwnedPokemon
-    fun insertOwnedPokemonEntry(nickname: String, caughtLocation: String, savedLocation: String, runId: Long): Long {
+    fun insertOwnedPokemonEntry(
+        nickname: String,
+        caughtLocation: String,
+        savedLocation: String,
+        runId: Long
+    ): Long {
         val db: SQLiteDatabase = dbHelper.writableDatabase
-            val values = ContentValues().apply {
-                put(MyDatabaseHelper.OWNED_POKEMON_NICKNAME, nickname)
-                put(MyDatabaseHelper.OWNED_POKEMON_CAUGHT_LOCATION, caughtLocation)
-                put(MyDatabaseHelper.OWNED_POKEMON_SAVED_LOCATION, savedLocation)
-                put(MyDatabaseHelper.RUN_ID, runId)
-            }
-            return  db.insert(MyDatabaseHelper.OWNED_POKEMON_TABLE, null, values).also { db.close() }
+        val values = ContentValues().apply {
+            put(MyDatabaseHelper.OWNED_POKEMON_NICKNAME, nickname)
+            put(MyDatabaseHelper.OWNED_POKEMON_CAUGHT_LOCATION, caughtLocation)
+            put(MyDatabaseHelper.OWNED_POKEMON_SAVED_LOCATION, savedLocation)
+            put(MyDatabaseHelper.RUN_ID, runId)
+        }
+        return db.insert(MyDatabaseHelper.OWNED_POKEMON_TABLE, null, values).also { db.close() }
     }
-
-    fun updateOwnedPokemonEntry(id: Long, nickname: String, caughtLocation: String, savedLocation: String): Int {
+    fun updateOwnedPokemonEntry(
+        id: Long,
+        nickname: String,
+        caughtLocation: String,
+        savedLocation: String
+    ): Int {
         val db: SQLiteDatabase = dbHelper.writableDatabase
         val values = ContentValues().apply {
             put(MyDatabaseHelper.OWNED_POKEMON_NICKNAME, nickname)
@@ -69,7 +78,6 @@ class DatabaseManager(context: Context) {
             arrayOf(id.toString())
         ).also { db.close() }
     }
-
     fun deleteOwnedPokemonEntry(id: Long): Int {
         val db: SQLiteDatabase = dbHelper.writableDatabase
         val values = ContentValues().apply {
@@ -82,4 +90,53 @@ class DatabaseManager(context: Context) {
         ).also { db.close() }
     }
 
+    //Insert,Update,Delete TimeLineLog
+    fun insertTimelineLogEntry(
+        eventName: String,
+        location: String,
+        time: String,
+        displayTeam: Boolean,
+        runId: Long
+    ): Long {
+        val db: SQLiteDatabase = dbHelper.writableDatabase
+        val values = ContentValues().apply {
+            put(MyDatabaseHelper.TIMELINE_LOG_EVENT_NAME, eventName)
+            put(MyDatabaseHelper.TIMELINE_LOG_LOCATION, location)
+            put(MyDatabaseHelper.TIMELINE_LOG_TIME, time)
+            put(MyDatabaseHelper.TIMELINE_LOG_DISPLAY_TEAM, displayTeam)
+            put(MyDatabaseHelper.RUN_ID, runId)
+        }
+        return db.insert(MyDatabaseHelper.TIMELINE_LOG_TABLE, null, values).also { db.close() }
+    }
+
+    fun updateTimelineLogEntry(id: Long, eventName: String, location: String, time: String, displayTeam: Boolean) {
+        val db: SQLiteDatabase = dbHelper.writableDatabase
+        val values = ContentValues().apply {
+            put(MyDatabaseHelper.TIMELINE_LOG_EVENT_NAME, eventName)
+            put(MyDatabaseHelper.TIMELINE_LOG_LOCATION, location)
+            put(MyDatabaseHelper.TIMELINE_LOG_TIME, time)
+            put(MyDatabaseHelper.TIMELINE_LOG_DISPLAY_TEAM, displayTeam)
+        }
+        db.update(
+            MyDatabaseHelper.TIMELINE_LOG_TABLE,
+            values,
+            "${MyDatabaseHelper.TIMELINE_LOG_ID} = ?",
+            arrayOf(id.toString())
+        ).also { db.close() }
+    }
+
+    fun deleteTimelineLogEntry(id: Long){
+        val db: SQLiteDatabase = dbHelper.writableDatabase
+        val values = ContentValues().apply {
+            put(MyDatabaseHelper.TIMELINE_LOG_ID, id)
+        }
+        db.delete(
+            MyDatabaseHelper.TIMELINE_LOG_TABLE,
+            "${MyDatabaseHelper.TIMELINE_LOG_ID} = ?",
+            arrayOf(id.toString())
+        ).also { db.close() }
+    }
+
+    
 }
+
