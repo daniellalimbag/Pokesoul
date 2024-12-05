@@ -9,13 +9,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
         private const val pokesoulDB = "my_database.db"
         private const val DB_ver = 1
 
-        //Table: Pokemon
-        const val POKEMON_TABLE = "Pokemon"
-        const val POKEMON_ID = "pokemon_id"
-        const val POKEMON_NAME = "name"
-        const val POKEMON_URL = "url"
-        const val POKEMON_SPRITE = "sprite"
-
         //Table: OwnedPokemon
         const val OWNED_POKEMON_TABLE = "OwnedPokemon"
         const val OWNED_POKEMON_ID = "owned_pokemon_id"
@@ -72,22 +65,12 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
 
     override fun onCreate(db: SQLiteDatabase?) {
 
-        val createPokemonQuery = """
-            CREATE TABLE $POKEMON_TABLE (
-                $POKEMON_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                $POKEMON_NAME TEXT NOT NULL,
-                $POKEMON_URL TEXT NOT NULL,
-                $POKEMON_SPRITE TEXT NOT NULL
-            )
-        """.trimIndent()
-
         val createOwnedPokemonQuery = """
             CREATE TABLE $OWNED_POKEMON_TABLE (
                 $OWNED_POKEMON_ID INTEGER PRIMARY KEY AUTOINCREMENT,
                 $OWNED_POKEMON_NICKNAME TEXT NOT NULL,
                 $OWNED_POKEMON_CAUGHT_LOCATION TEXT NOT NULL,
                 $OWNED_POKEMON_SAVED_LOCATION TEXT NOT NULL,
-                FOREIGN KEY (POKEMON_ID) REFERENCES $POKEMON_TABLE(POKEMON_ID),
                 FOREIGN KEY (RUN_ID) REFERENCES $RUN_TABLE(RUN_ID)
                 )
         """.trimIndent()
@@ -168,7 +151,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
             )
         """.trimIndent()
 
-        db?.execSQL(createPokemonQuery)
         db?.execSQL(createOwnedPokemonQuery)
         db?.execSQL(createRunQuery)
         db?.execSQL(createTeamQuery)
@@ -183,7 +165,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int){
-        db?.execSQL("DROP TABLE IF EXISTS $POKEMON_TABLE")
         db?.execSQL("DROP TABLE IF EXISTS $OWNED_POKEMON_TABLE")
         db?.execSQL("DROP TABLE IF EXISTS $RUN_TABLE")
         db?.execSQL("DROP TABLE IF EXISTS $TIMELINE_LOG_TABLE")
