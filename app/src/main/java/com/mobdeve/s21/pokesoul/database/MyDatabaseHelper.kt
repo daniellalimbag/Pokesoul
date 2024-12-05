@@ -9,12 +9,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
         private const val pokesoulDB = "my_database.db"
         private const val DB_ver = 1
 
-        //Table: User
-        const val USERS_TABLE = "User"
-        const val USER_ID = "user_id"
-        const val USERNAME = "username"
-        const val IMAGE = "image"
-
         //Table: Pokemon
         const val POKEMON_TABLE = "Pokemon"
         const val POKEMON_ID = "pokemon_id"
@@ -26,20 +20,20 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
         const val OWNED_POKEMON_TABLE = "OwnedPokemon"
         const val OWNED_POKEMON_ID = "owned_pokemon_id"
         const val OWNED_POKEMON_NICKNAME = "nickname"
-        const val OWNED_POKEMON_CAUGHT_LOCATION = "caught_location"
-        const val OWNED_POKEMON_SAVED_LOCATION = "saved_location"
+        const val OWNED_POKEMON_CAUGHT_LOCATION = "caughtLocation"
+        const val OWNED_POKEMON_SAVED_LOCATION = "savedLocation"
 
         //Table: Run
         const val RUN_TABLE = "Run"
         const val RUN_ID = "run_id"
-        const val RUN_NAME = "run_name"
-        const val RUN_GAME_TITLE = "game_title"
-        const val RUN_UPDATED_TIME = "updated_time"
+        const val RUN_NAME = "runName"
+        const val RUN_GAME_TITLE = "gameTitle"
+        const val RUN_UPDATED_TIME = "updatedTime"
 
         //Table: timelineLog
         const val TIMELINE_LOG_TABLE = "TimelineLog"
         const val TIMELINE_LOG_ID = "timeline_log_id"
-        const val TIMELINE_LOG_EVENT_NAME = "event_name"
+        const val TIMELINE_LOG_EVENT_NAME = "evenName"
         const val TIMELINE_LOG_LOCATION = "location"
         const val TIMELINE_LOG_TIME = "time"
         const val TIMELINE_LOG_NOTES = "notes"
@@ -77,13 +71,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
-        val createUserQuery = """
-            CREATE TABLE $USERS_TABLE (
-                $USER_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                $USERNAME TEXT NOT NULL,
-                $IMAGE INTEGER NOT NULL
-            )
-        """.trimIndent()
 
         val createPokemonQuery = """
             CREATE TABLE $POKEMON_TABLE (
@@ -100,7 +87,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
                 $OWNED_POKEMON_NICKNAME TEXT NOT NULL,
                 $OWNED_POKEMON_CAUGHT_LOCATION TEXT NOT NULL,
                 $OWNED_POKEMON_SAVED_LOCATION TEXT NOT NULL,
-                FOREIGN KEY (USER_ID) REFERENCES $USERS_TABLE(USER_ID),
                 FOREIGN KEY (POKEMON_ID) REFERENCES $POKEMON_TABLE(POKEMON_ID),
                 FOREIGN KEY (RUN_ID) REFERENCES $RUN_TABLE(RUN_ID)
                 )
@@ -178,12 +164,10 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
         val createUserRunQuery = """
             CREATE TABLE $USER_RUN_TABLE(
             $USER_RUN_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-            FOREIGN KEY (USER_ID) REFERENCES $USERS_TABLE(USER_ID),
             FOREIGN KEY (RUN_ID) REFERENCES $RUN_TABLE(RUN_ID)
             )
         """.trimIndent()
 
-        db?.execSQL(createUserQuery)
         db?.execSQL(createPokemonQuery)
         db?.execSQL(createOwnedPokemonQuery)
         db?.execSQL(createRunQuery)
@@ -199,7 +183,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int){
-        db?.execSQL("DROP TABLE IF EXISTS $USERS_TABLE")
         db?.execSQL("DROP TABLE IF EXISTS $POKEMON_TABLE")
         db?.execSQL("DROP TABLE IF EXISTS $OWNED_POKEMON_TABLE")
         db?.execSQL("DROP TABLE IF EXISTS $RUN_TABLE")
