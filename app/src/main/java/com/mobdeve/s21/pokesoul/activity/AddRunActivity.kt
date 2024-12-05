@@ -84,9 +84,11 @@ class AddRunActivity : AppCompatActivity() {
         // Get text input values
         val title = titleEt.text.toString()
         val game = gameEt.text.toString()
+        val runId = 1 // Replace with your logic to generate a unique ID
 
         // Create new Run object
-        val newRun = Run(runName = title, gameTitle = game, players = playersList, updatedTime = System.currentTimeMillis().toString())
+        val newRun = Run(runId = runId,
+            runName = title, gameTitle = game, players = playersList, updatedTime = System.currentTimeMillis().toString())
 
         // Pass the new Run back to RunFragment
         val resultIntent = Intent()

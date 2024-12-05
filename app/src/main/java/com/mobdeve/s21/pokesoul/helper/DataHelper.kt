@@ -90,6 +90,7 @@ object DataHelper {
         )
 
         val run1 = Run(
+            runId = 1,
             runName = "Best Run Ever",
             gameTitle = "SoulSilver",
             players = listOf(user1, user2, user3),
@@ -114,6 +115,7 @@ object DataHelper {
         linkedTeam2[0].link(linkedTeam2[1])
 
         val run2 = Run(
+            runId = 1,
             runName = "Another Run",
             gameTitle = "HeartGold",
             players = listOf(user1, user3),

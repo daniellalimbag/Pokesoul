@@ -84,7 +84,8 @@ class EditRunActivity : AppCompatActivity() {
     private fun saveRun() {
         val title = titleEt.text.toString()
         val game = gameEt.text.toString()
-        val editedRun = Run(runName = title, gameTitle = game, players = playersList, updatedTime = System.currentTimeMillis().toString())
+        val runId = 1
+        val editedRun = Run(runId = runId, runName = title, gameTitle = game, players = playersList, updatedTime = System.currentTimeMillis().toString())
 
         val resultIntent = Intent().apply {
             putExtra("edited_run", editedRun)

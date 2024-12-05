@@ -11,7 +11,7 @@ import android.util.Log
 class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB, null, DB_VER) {
     companion object {
         private const val pokesoulDB = "my_database.db"
-        private const val DB_VER = 2
+        private const val DB_VER = 3
 
         //Table: OwnedPokemon
         const val OWNED_POKEMON_TABLE = "OwnedPokemon"
@@ -178,6 +178,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
 
 
         if (db != null) {
+            Log.d("DatabaseCheck", "Insert being called")
             insertRunDummyValues(db)
             insertOwnedPokemonDummyValues(db)
             insertTeamDummyValues(db)
@@ -233,7 +234,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
 
     }
 
-    @SuppressLint("Range")
+    @SuppressLint("Range", "Recycle")
     private fun insertTimelineLogDummyValues(db: SQLiteDatabase){
         val contentValues = ContentValues()
         contentValues.put(TIMELINE_LOG_EVENT_NAME, "Event 1")
@@ -244,6 +245,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
         contentValues.put(RUN_ID, 1)
         contentValues.put(TEAM_ID, 1)
         db.insert(TIMELINE_LOG_TABLE, null, contentValues)
+        Log.d("DatabaseCheck", "Log Dummy called")
 
     }
 

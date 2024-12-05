@@ -1,5 +1,6 @@
 package com.mobdeve.s21.pokesoul.database
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -123,6 +124,33 @@ class DatabaseManager(context: Context) {
             arrayOf(id.toString())
         ).also { db.close() }
     }
+    @SuppressLint("Range")
+    fun getTimelineLogsByRun(runId: Int): List<TimelineLog> {
+        val db: SQLiteDatabase = dbHelper.readableDatabase
+        val cursor = db.query(
+            MyDatabaseHelper.TIMELINE_LOG_TABLE,
+            null,
+            "${MyDatabaseHelper.RUN_ID} = ?",
+            arrayOf(runId.toString()),
+            null, null, null
+        )
+
+        val logs = mutableListOf<TimelineLog>()
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                // Create TimelineLog object from cursor data
+                val id = cursor.getLong(cursor.getColumnIndex(MyDatabaseHelper.TIMELINE_LOG_ID))
+                val eventName = cursor.getString(cursor.getColumnIndex(MyDatabaseHelper.TIMELINE_LOG_EVENT_NAME))
+                val location = cursor.getString(cursor.getColumnIndex(MyDatabaseHelper.TIMELINE_LOG_LOCATION))
+                val time = cursor.getString(cursor.getColumnIndex(MyDatabaseHelper.TIMELINE_LOG_TIME))
+                val displayTeam = cursor.getInt(cursor.getColumnIndex(MyDatabaseHelper.TIMELINE_LOG_DISPLAY_TEAM)) == 1
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        db.close()
+        return logs
+    }
+
 
     //Insert, Update, Delete Team
     fun insertTeamEntry(ownedPokemonId: Long, runId: Long): Long {
