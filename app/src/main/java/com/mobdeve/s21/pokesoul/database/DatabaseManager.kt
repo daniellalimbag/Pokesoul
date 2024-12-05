@@ -91,13 +91,7 @@ class DatabaseManager(context: Context) {
     }
 
     //Insert,Update,Delete TimeLineLog
-    fun insertTimelineLogEntry(
-        eventName: String,
-        location: String,
-        time: String,
-        displayTeam: Boolean,
-        runId: Long
-    ): Long {
+    fun insertTimelineLogEntry(eventName: String, location: String, time: String, displayTeam: Boolean, runId: Long, teamId: Long): Long {
         val db: SQLiteDatabase = dbHelper.writableDatabase
         val values = ContentValues().apply {
             put(MyDatabaseHelper.TIMELINE_LOG_EVENT_NAME, eventName)
@@ -105,6 +99,7 @@ class DatabaseManager(context: Context) {
             put(MyDatabaseHelper.TIMELINE_LOG_TIME, time)
             put(MyDatabaseHelper.TIMELINE_LOG_DISPLAY_TEAM, displayTeam)
             put(MyDatabaseHelper.RUN_ID, runId)
+            put(MyDatabaseHelper.TEAM_ID, teamId)
         }
         return db.insert(MyDatabaseHelper.TIMELINE_LOG_TABLE, null, values).also { db.close() }
     }
@@ -137,6 +132,38 @@ class DatabaseManager(context: Context) {
         ).also { db.close() }
     }
 
-    
+    //Insert, Update, Delete Team
+    fun insertTeamEntry(ownedPokemonId: Long, runId: Long): Long {
+        val db: SQLiteDatabase = dbHelper.writableDatabase
+        val values = ContentValues().apply {
+            put(MyDatabaseHelper.OWNED_POKEMON_ID, ownedPokemonId)
+            put(MyDatabaseHelper.RUN_ID, runId)
+        }
+        return db.insert(MyDatabaseHelper.TEAM_TABLE, null, values).also { db.close() }
+    }
+    fun updateTeamEntry(id: Long, ownedPokemonId: Long, runId: Long) {
+        val db: SQLiteDatabase = dbHelper.writableDatabase
+        val values = ContentValues().apply {
+            put(MyDatabaseHelper.OWNED_POKEMON_ID, ownedPokemonId)
+            put(MyDatabaseHelper.RUN_ID, runId)
+        }
+        db.update(
+            MyDatabaseHelper.TEAM_TABLE,
+            values,
+            "${MyDatabaseHelper.TEAM_ID} = ?",
+            arrayOf(id.toString())
+        ).also { db.close() }
+    }
+    fun deleteTeamEntry(id: Long){
+        val db: SQLiteDatabase = dbHelper.writableDatabase
+        val values = ContentValues().apply {
+            put(MyDatabaseHelper.TEAM_ID, id)
+        }
+        db.delete(
+            MyDatabaseHelper.TEAM_TABLE,
+            "${MyDatabaseHelper.TEAM_ID} = ?",
+            arrayOf(id.toString())
+        ).also { db.close() }
+    }
 }
 
