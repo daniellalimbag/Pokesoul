@@ -167,11 +167,15 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
     private fun insertRunDummyValues(db: SQLiteDatabase){
         val contentValues = ContentValues()
 
-        contentValues.put(RUN_NAME, "Run 1")
-        contentValues.put(RUN_GAME_TITLE, "Game 1")
-        contentValues.put(RUN_UPDATED_TIME, "2023-09-01 12:00:00")
+        contentValues.put(RUN_NAME, "Best Run Ever")
+        contentValues.put(RUN_GAME_TITLE, "SoulSilver")
+        contentValues.put(RUN_UPDATED_TIME, "2024-10-14T17:15:23.000Z")
         db.insert(RUN_TABLE, null, contentValues)
 
+        contentValues.put(RUN_NAME, "Another Run")
+        contentValues.put(RUN_GAME_TITLE, "HeartGold")
+        contentValues.put(RUN_UPDATED_TIME, "2024-10-17T22:19:44.000Z")
+        db.insert(RUN_TABLE, null, contentValues)
     }
 
     @SuppressLint("Range")
@@ -198,10 +202,10 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
     @SuppressLint("Range", "Recycle")
     private fun insertTimelineLogDummyValues(db: SQLiteDatabase){
         val contentValues = ContentValues()
-        contentValues.put(TIMELINE_LOG_EVENT_NAME, "Event 1")
-        contentValues.put(TIMELINE_LOG_LOCATION, "Location 1")
-        contentValues.put(TIMELINE_LOG_TIME, "2023-09-01 12:00:00")
-        contentValues.put(TIMELINE_LOG_NOTES, "Notes 1")
+        contentValues.put(TIMELINE_LOG_EVENT_NAME, "Run started")
+        contentValues.put(TIMELINE_LOG_LOCATION, "New Bark Town")
+        contentValues.put(TIMELINE_LOG_TIME, "2024-10-14T17:15:23.000Z")
+        contentValues.put(TIMELINE_LOG_NOTES, "")
         contentValues.put(TIMELINE_LOG_DISPLAY_TEAM, true)
         contentValues.put(RUN_ID, 1)
         contentValues.put(TEAM_ID, 1)
