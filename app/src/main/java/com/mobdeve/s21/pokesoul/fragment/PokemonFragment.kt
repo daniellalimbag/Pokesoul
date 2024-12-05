@@ -84,14 +84,8 @@ class PokemonFragment : Fragment() {
         graveTableLayout.removeAllViews()
 
         val team = run.team.filter { it.owner.username == selectedPlayer.username }
-        val box = run.box.filter { it.owner.username == selectedPlayer.username }
-        val daycare = run.daycare.filter { it.owner.username == selectedPlayer.username }
-        val grave = run.grave.filter { it.owner.username == selectedPlayer.username }
 
         populatePokemonTable(team, teamTableLayout)
-        populatePokemonTable(box, boxTableLayout)
-        populatePokemonTable(daycare, daycareTableLayout)
-        populatePokemonTable(grave, graveTableLayout)
     }
 
     private fun populatePokemonTable(pokemonList: List<OwnedPokemon>, tableLayout: TableLayout) {

@@ -89,7 +89,6 @@ object DataHelper {
             logs = run1Logs
         ).apply {
             team = linkedTeam1
-            box = box1
         }
 
         data.add(run1)
