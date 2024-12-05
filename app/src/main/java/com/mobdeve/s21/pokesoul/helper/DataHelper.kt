@@ -74,10 +74,10 @@ object DataHelper {
 
         // Create TimelineLog instances for run1
         val run1Logs = listOf(
-            TimelineLog("Run started", "New Bark Town", formatInstant(Instant.parse("2024-10-14T17:15:23.000Z")), logTeam1),
-            TimelineLog("Caught Quilava", "New Bark Town", formatInstant(Instant.parse("2024-10-14T18:00:00.000Z")), logTeam1),
-            TimelineLog("Team evolved to Croconaw", "New Bark Town", formatInstant(Instant.parse("2024-10-14T19:30:00.000Z")), logTeam1),
-            TimelineLog("Player 1 defeated Gym Leader", "New Bark Town", formatInstant(Instant.parse("2024-10-14T20:00:00.000Z")), logTeam1)
+            TimelineLog(1,"Run started", "New Bark Town", formatInstant(Instant.parse("2024-10-14T17:15:23.000Z")), logTeam1),
+            TimelineLog(2,"Caught Quilava", "New Bark Town", formatInstant(Instant.parse("2024-10-14T18:00:00.000Z")), logTeam1),
+            TimelineLog(3,"Team evolved to Croconaw", "New Bark Town", formatInstant(Instant.parse("2024-10-14T19:30:00.000Z")), logTeam1),
+            TimelineLog(4,"Player 1 defeated Gym Leader", "New Bark Town", formatInstant(Instant.parse("2024-10-14T20:00:00.000Z")), logTeam1)
         )
 
         val run1 = Run(
