@@ -8,12 +8,10 @@ import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.activity.TimelineLogDetailsActivity
 import com.mobdeve.s21.pokesoul.model.Run
 import com.mobdeve.s21.pokesoul.model.TimelineLog
-import com.mobdeve.s21.pokesoul.model.User
 import com.mobdeve.s21.pokesoul.viewholder.TimelineLogViewHolder
 
 class TimelineLogAdapter(
     private var timelineLogs: List<TimelineLog>,
-    private var selectedPlayer: User, // Pass the selected player here
     private var run: Run // Pass the run instance here
 ) : RecyclerView.Adapter<TimelineLogViewHolder>() {
 
@@ -39,11 +37,5 @@ class TimelineLogAdapter(
     fun setLogs(newLogs: List<TimelineLog>) {
         timelineLogs = newLogs
         notifyDataSetChanged()
-    }
-
-    // Method to update the selected player
-    fun setSelectedPlayer(player: User) {
-        selectedPlayer = player
-        notifyDataSetChanged() // Refresh the adapter with the new player selection
     }
 }

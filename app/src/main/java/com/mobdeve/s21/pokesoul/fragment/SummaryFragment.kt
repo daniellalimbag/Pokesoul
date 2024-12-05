@@ -14,8 +14,8 @@ import androidx.fragment.app.Fragment
 import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.activity.EditRunActivity
 import com.mobdeve.s21.pokesoul.model.Run
-import com.mobdeve.s21.pokesoul.model.User
 import com.google.android.material.imageview.ShapeableImageView
+import com.mobdeve.s21.pokesoul.model.Player
 
 class SummaryFragment : Fragment() {
     private lateinit var editBtn: Button
@@ -52,7 +52,7 @@ class SummaryFragment : Fragment() {
         return view
     }
 
-    private fun populatePlayers(players: List<User>) {
+    private fun populatePlayers(players: List<Player>) {
         playersTableLayout.removeAllViews()
 
         for (i in players.indices step 2) {

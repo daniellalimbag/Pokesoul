@@ -5,11 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s21.pokesoul.R
-import com.mobdeve.s21.pokesoul.model.User
+import com.mobdeve.s21.pokesoul.model.Player
 import com.mobdeve.s21.pokesoul.viewholder.PlayerViewHolder
 
 class PlayerAdapter(
-    private val playerList: List<User>,
+    private val playerList: List<Player>,
     private val showNames: Boolean
 ) : RecyclerView.Adapter<PlayerViewHolder>() {
 

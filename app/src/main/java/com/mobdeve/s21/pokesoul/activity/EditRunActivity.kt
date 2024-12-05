@@ -11,8 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.adapter.PlayerAdapter
+import com.mobdeve.s21.pokesoul.helper.DataHelper
+import com.mobdeve.s21.pokesoul.model.Player
 import com.mobdeve.s21.pokesoul.model.Run
-import com.mobdeve.s21.pokesoul.model.User
 
 class EditRunActivity : AppCompatActivity() {
 
@@ -23,7 +24,7 @@ class EditRunActivity : AppCompatActivity() {
     private lateinit var playersRv: RecyclerView
     private lateinit var addIbtn: ImageButton
     private lateinit var playerAdapter: PlayerAdapter
-    private val playersList = mutableListOf<User>()
+    private val playersList = mutableListOf<Player>()
 
     companion object {
         private const val REQUEST_CODE_SEARCH = 1
@@ -72,7 +73,7 @@ class EditRunActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_SEARCH && resultCode == RESULT_OK) {
-            val selectedPlayer = data?.getSerializableExtra("selectedPlayer") as? User
+            val selectedPlayer = data?.getSerializableExtra("selectedPlayer") as? Player
             selectedPlayer?.let {
                 playersList.add(it)
                 playerAdapter.notifyItemInserted(playersList.size - 1)

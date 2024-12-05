@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s21.pokesoul.R
+import com.mobdeve.s21.pokesoul.model.Player
 import com.mobdeve.s21.pokesoul.model.Pokemon
-import com.mobdeve.s21.pokesoul.model.User
 import com.mobdeve.s21.pokesoul.viewholder.SearchResultViewHolder
 import java.io.Serializable
 import java.util.ArrayList
@@ -16,7 +16,7 @@ class SearchResultAdapter(
 ) : RecyclerView.Adapter<SearchResultViewHolder>() {
 
     interface OnItemClickListener {
-        fun onUserClick(user: User)
+        fun onUserClick(user: Player)
         fun onPokemonClick(pokemon: Pokemon)
     }
 

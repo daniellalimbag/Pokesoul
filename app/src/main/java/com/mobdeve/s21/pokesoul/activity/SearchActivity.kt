@@ -12,9 +12,9 @@ import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.adapter.SearchResultAdapter
 import com.mobdeve.s21.pokesoul.api.PokemonAPIClient
 import com.mobdeve.s21.pokesoul.helper.DataHelper
+import com.mobdeve.s21.pokesoul.model.Player
 import com.mobdeve.s21.pokesoul.model.Pokemon
 import com.mobdeve.s21.pokesoul.model.PokemonListResponse
-import com.mobdeve.s21.pokesoul.model.User
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,7 +25,7 @@ class SearchActivity : AppCompatActivity() {
 
     private lateinit var resultsRv: RecyclerView
     private lateinit var searchView: SearchView
-    private var allUsers = ArrayList<User>()
+    private var allUsers = ArrayList<Player>()
     private var allPokemon = ArrayList<Pokemon>()
     private var isSearchingPokemon: Boolean = false
     private lateinit var searchResultAdapter: SearchResultAdapter
@@ -54,7 +54,7 @@ class SearchActivity : AppCompatActivity() {
 
         // Initialize the adapter based on context
         searchResultAdapter = SearchResultAdapter(if (isSearchingPokemon) allPokemon else allUsers, object : SearchResultAdapter.OnItemClickListener {
-            override fun onUserClick(user: User) {
+            override fun onUserClick(user: Player) {
                 val resultIntent = Intent()
                 resultIntent.putExtra("selectedPlayer", user)
                 setResult(RESULT_OK, resultIntent)

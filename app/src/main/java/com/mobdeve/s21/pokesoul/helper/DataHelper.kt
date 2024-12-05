@@ -2,19 +2,19 @@ package com.mobdeve.s21.pokesoul.helper
 
 import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.model.OwnedPokemon
+import com.mobdeve.s21.pokesoul.model.Player
 import com.mobdeve.s21.pokesoul.model.Pokemon
 import com.mobdeve.s21.pokesoul.model.Run
 import com.mobdeve.s21.pokesoul.model.TimelineLog
-import com.mobdeve.s21.pokesoul.model.User
 import kotlinx.datetime.Instant
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 object DataHelper {
 
-    val user1 = User("Player 1", R.drawable.player1, mutableListOf())
-    val user2 = User("Player 2", R.drawable.player2, mutableListOf())
-    val user3 = User("Player 3", R.drawable.player3, mutableListOf())
+    val user1 = Player("Player 1", R.drawable.player1)
+    val user2 = Player("Player 2", R.drawable.player2)
+    val user3 = Player("Player 3", R.drawable.player3)
     val pokemon1 = Pokemon("Quilava", "https://pokeapi.co/api/v2/pokemon/Quilava", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/156.png")
     val pokemon2 = Pokemon("Ampharos", "https://pokeapi.co/api/v2/pokemon/Ampharos","https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/181.png")
     val pokemon3 = Pokemon("Drowzee", "https://pokeapi.co/api/v2/pokemon/Drowzee","https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/96.png")
@@ -93,10 +93,6 @@ object DataHelper {
 
         data.add(run1)
 
-        user1.runs.add(run1)
-        user2.runs.add(run1)
-        user3.runs.add(run1)
-
         val linkedTeam2 = listOf(
             OwnedPokemon(25, pokemon4, "Drew", user1, "Lake of Rage", "Team", pokemon1.url, pokemon1.sprite),
             OwnedPokemon(26, pokemon2, "Tin", user3, "Route 39", "Team", pokemon2.url, pokemon2.sprite)
@@ -113,9 +109,6 @@ object DataHelper {
         }
 
         data.add(run2)
-
-        user1.runs.add(run2)
-        user3.runs.add(run2)
 
         return data
     }

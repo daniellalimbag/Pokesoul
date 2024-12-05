@@ -11,7 +11,7 @@ import com.mobdeve.s21.pokesoul.adapter.PokemonAdapter
 import com.mobdeve.s21.pokesoul.model.OwnedPokemon
 import com.mobdeve.s21.pokesoul.model.Run
 import com.mobdeve.s21.pokesoul.model.TimelineLog
-import com.mobdeve.s21.pokesoul.model.User
+import com.mobdeve.s21.pokesoul.model.Player
 
 class TimelineLogViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -76,7 +76,7 @@ class TimelineLogViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
     }
 
     // Function to update team UI based on selected player
-    private fun updateTeamUI(selectedPlayer: User, run: Run) {
+    private fun updateTeamUI(selectedPlayer: Player, run: Run) {
         val team = run.team.filter { it.owner.username == selectedPlayer.username }
         teamRv.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
         teamRv.adapter = PokemonAdapter(team)

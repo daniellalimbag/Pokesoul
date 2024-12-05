@@ -6,7 +6,7 @@ data class Run(
     var runId: Int,
     var runName: String,
     val gameTitle: String,
-    var players: List<User>,
+    var players: List<Player>,
     var team: List<OwnedPokemon>,
     var updatedTime: String,
     var logs: List<TimelineLog> = mutableListOf()
@@ -15,7 +15,7 @@ data class Run(
         runId: Int,
         runName: String,
         gameTitle: String,
-        players: List<User>,
+        players: List<Player>,
         updatedTime: String,
         logs: List<TimelineLog> = mutableListOf()
     ) : this(

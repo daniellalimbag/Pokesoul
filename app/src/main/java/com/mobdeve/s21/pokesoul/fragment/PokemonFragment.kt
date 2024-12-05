@@ -20,8 +20,8 @@ import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.activity.AddPokemonActivity
 import com.mobdeve.s21.pokesoul.activity.PokemonDetailsActivity
 import com.mobdeve.s21.pokesoul.model.OwnedPokemon
+import com.mobdeve.s21.pokesoul.model.Player
 import com.mobdeve.s21.pokesoul.model.Run
-import com.mobdeve.s21.pokesoul.model.User
 import com.squareup.picasso.Picasso
 
 class PokemonFragment : Fragment() {
@@ -71,7 +71,7 @@ class PokemonFragment : Fragment() {
     }
 
     private fun displayPokemon(
-        selectedPlayer: User,
+        selectedPlayer: Player,
         teamTableLayout: TableLayout,
         boxTableLayout: TableLayout,
         daycareTableLayout: TableLayout,

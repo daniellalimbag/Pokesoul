@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.adapter.PlayerAdapter
+import com.mobdeve.s21.pokesoul.model.Player
 import com.mobdeve.s21.pokesoul.model.Run
-import com.mobdeve.s21.pokesoul.model.User
 
 class AddRunActivity : AppCompatActivity() {
 
@@ -22,7 +22,7 @@ class AddRunActivity : AppCompatActivity() {
     private lateinit var playersRv: RecyclerView
     private lateinit var addIbtn: ImageButton
     private lateinit var playerAdapter: PlayerAdapter
-    private val playersList = mutableListOf<User>()
+    private val playersList = mutableListOf<Player>()
 
     companion object {
         const val REQUEST_CODE_SEARCH = 1
@@ -41,7 +41,7 @@ class AddRunActivity : AppCompatActivity() {
         addIbtn = findViewById(R.id.addIbtn)
 
         // Static data
-        val user1 = User("Player 1", R.drawable.player1, mutableListOf())
+        val user1 = Player("Player 1", R.drawable.player1)
         playersList.add(user1)
 
         // Initialize the PlayerAdapter with playersList
@@ -72,7 +72,7 @@ class AddRunActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_SEARCH && resultCode == RESULT_OK) {
-            val selectedPlayer = data?.getSerializableExtra("selectedPlayer") as? User
+            val selectedPlayer = data?.getSerializableExtra("selectedPlayer") as? Player
             selectedPlayer?.let {
                 playersList.add(it) // Add the selected player to the list
                 playerAdapter.notifyItemInserted(playersList.size - 1) // Notify the adapter
