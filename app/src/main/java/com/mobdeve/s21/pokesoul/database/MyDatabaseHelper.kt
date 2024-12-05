@@ -65,7 +65,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
 
     override fun onCreate(db: SQLiteDatabase?) {
         Log.d("DatabaseCheck", "onCreate called")
-
         val createOwnedPokemonQuery = """
     CREATE TABLE $OWNED_POKEMON_TABLE (
         $OWNED_POKEMON_ID INTEGER PRIMARY KEY AUTOINCREMENT,

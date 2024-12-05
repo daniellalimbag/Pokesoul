@@ -8,6 +8,7 @@ data class Run(
     val gameTitle: String,
     var players: List<User>,
     var team: List<OwnedPokemon>,
+    //TODO: Remove box, daycare, grave, and updated time
     var box: List<OwnedPokemon>,
     var daycare: List<OwnedPokemon>,
     var grave: List<OwnedPokemon>,
