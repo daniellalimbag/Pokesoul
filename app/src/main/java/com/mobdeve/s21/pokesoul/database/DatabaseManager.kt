@@ -245,5 +245,38 @@ class DatabaseManager(context: Context) {
             arrayOf(id.toString())
         ).also { db.close() }
     }
+
+    //Insert, Update, Delete Death
+    fun insertDeathEntry(timelineLogId: Long, ownedPokemonId: Long){
+        val db: SQLiteDatabase = dbHelper.writableDatabase
+        val values = ContentValues().apply {
+            put(MyDatabaseHelper.TIMELINE_LOG_ID, timelineLogId)
+            put(MyDatabaseHelper.OWNED_POKEMON_ID,ownedPokemonId)
+    }
+        db.insert(MyDatabaseHelper.DEATHS_TABLE, null, values).also { db.close() }
+    }
+    fun updateDeathEntry(id: Long, timelineLogId: Long, ownedPokemonId: Long){
+        val db: SQLiteDatabase = dbHelper.writableDatabase
+        val values = ContentValues().apply {
+            put(MyDatabaseHelper.TIMELINE_LOG_ID, timelineLogId)
+            put(MyDatabaseHelper.OWNED_POKEMON_ID,ownedPokemonId)
+        }
+        db.update(
+            MyDatabaseHelper.DEATHS_TABLE,
+            values,
+            "${MyDatabaseHelper.DEATHS_ID} = ?",
+            arrayOf(id.toString()))
+    }
+    fun deleteDeathEntry(id: Long){
+        val db: SQLiteDatabase = dbHelper.writableDatabase
+        db.delete(
+            MyDatabaseHelper.DEATHS_TABLE,
+            "${MyDatabaseHelper.DEATHS_ID} = ?",
+            arrayOf(id.toString())
+        ).also { db.close() }
+    }
+
+    
+
 }
 
