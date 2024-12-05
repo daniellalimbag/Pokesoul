@@ -181,6 +181,12 @@ class DatabaseManager(context: Context) {
             put(MyDatabaseHelper.OWNED_POKEMON_ID, ownedPokemonId)
             put(MyDatabaseHelper.RUN_ID, runId)
         }
+        db.update(
+            MyDatabaseHelper.BOX_TABLE,
+            values,
+            "${MyDatabaseHelper.BOX_ID} = ?",
+            arrayOf(id.toString())
+        )
     }
     fun deleteBoxEntry(id: Long){
         val db: SQLiteDatabase = dbHelper.writableDatabase
@@ -192,6 +198,40 @@ class DatabaseManager(context: Context) {
             "${MyDatabaseHelper.BOX_ID} = ?",
             arrayOf(id.toString())
         ).also { db.close() }
+    }
+
+    //Insert, Update, Delete Grave
+    fun insertGraveEntry(ownedPokemonId: Long, runId: Long): Long {
+        val db: SQLiteDatabase = dbHelper.writableDatabase
+        val values = ContentValues().apply {
+            put(MyDatabaseHelper.OWNED_POKEMON_ID, ownedPokemonId)
+            put(MyDatabaseHelper.RUN_ID, runId)
+        }
+        return db.insert(MyDatabaseHelper.GRAVE_TABLE, null, values).also { db.close() }
+    }
+    fun updateGraveEntry(id: Long, ownedPokemonId: Long, runId: Long){
+        val db: SQLiteDatabase = dbHelper.writableDatabase
+        val values = ContentValues().apply {
+            put(MyDatabaseHelper.OWNED_POKEMON_ID, ownedPokemonId)
+            put(MyDatabaseHelper.RUN_ID, runId)
+        }
+        db.update(
+            MyDatabaseHelper.GRAVE_TABLE,
+            values,
+            "${MyDatabaseHelper.GRAVE_ID} = ?",
+            arrayOf(id.toString())
+        ).also { db.close() }
+    }
+    fun deleteGraveEntry(id: Long){
+        val db: SQLiteDatabase = dbHelper.writableDatabase
+        val values = ContentValues().apply {
+            put(MyDatabaseHelper.GRAVE_ID, id)
+        }
+        db.delete(
+            MyDatabaseHelper.GRAVE_TABLE,
+            "${MyDatabaseHelper.GRAVE_ID} = ?",
+            arrayOf(id.toString())
+        )
     }
 }
 
