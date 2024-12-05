@@ -174,7 +174,7 @@ class DatabaseManager(context: Context) {
             values,
             "${MyDatabaseHelper.BOX_ID} = ?",
             arrayOf(id.toString())
-        )
+        ).also { db.close() }
     }
     fun deleteBoxEntry(id: Long){
         val db: SQLiteDatabase = dbHelper.writableDatabase
@@ -213,7 +213,7 @@ class DatabaseManager(context: Context) {
             MyDatabaseHelper.GRAVE_TABLE,
             "${MyDatabaseHelper.GRAVE_ID} = ?",
             arrayOf(id.toString())
-        )
+        ).also { db.close() }
     }
 
     //Insert, Update, Delete Daycare
@@ -235,7 +235,7 @@ class DatabaseManager(context: Context) {
             MyDatabaseHelper.DAYCARE_TABLE,
             values,
             "${MyDatabaseHelper.DAYCARE_ID} = ?",
-            arrayOf(id.toString()))
+            arrayOf(id.toString())).also { db.close() }
     }
     fun deleteDaycareEntry(id: Long){
         val db: SQLiteDatabase = dbHelper.writableDatabase
@@ -265,7 +265,7 @@ class DatabaseManager(context: Context) {
             MyDatabaseHelper.DEATHS_TABLE,
             values,
             "${MyDatabaseHelper.DEATHS_ID} = ?",
-            arrayOf(id.toString()))
+            arrayOf(id.toString())).also { db.close() }
     }
     fun deleteDeathEntry(id: Long){
         val db: SQLiteDatabase = dbHelper.writableDatabase
@@ -276,7 +276,34 @@ class DatabaseManager(context: Context) {
         ).also { db.close() }
     }
 
-    
+    //Insert, Update, Delete Capture
+    fun insertCaptureEntry(timelineLogId: Long, ownedPokemonId: Long){
+        val db: SQLiteDatabase = dbHelper.writableDatabase
+        val values = ContentValues().apply {
+            put(MyDatabaseHelper.TIMELINE_LOG_ID, timelineLogId)
+            put(MyDatabaseHelper.OWNED_POKEMON_ID,ownedPokemonId)
+        }
+        db.insert(MyDatabaseHelper.CAPTURES_TABLE, null, values).also { db.close() }
+    }
+    fun updateCaptureEntry(id: Long, timelineLogId: Long, ownedPokemonId: Long){
+        val db: SQLiteDatabase = dbHelper.writableDatabase
+        val values = ContentValues().apply {
+            put(MyDatabaseHelper.TIMELINE_LOG_ID, timelineLogId)
+            put(MyDatabaseHelper.OWNED_POKEMON_ID,ownedPokemonId)
+        }
+        db.update(
+            MyDatabaseHelper.CAPTURES_TABLE,
+            values,
+            "${MyDatabaseHelper.CAPTURES_ID} = ?",
+            arrayOf(id.toString())).also { db.close() }
+    }
+    fun deleteCaptureEntry(id: Long){
+        val db: SQLiteDatabase = dbHelper.writableDatabase
+        db.delete(
+            MyDatabaseHelper.CAPTURES_TABLE,
+            "${MyDatabaseHelper.CAPTURES_ID} = ?",
+            arrayOf(id.toString())).also { db.close() }
+    }
 
 }
 
