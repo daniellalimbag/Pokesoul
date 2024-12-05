@@ -1,5 +1,6 @@
 package com.mobdeve.s21.pokesoul.database
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
@@ -26,7 +27,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
         //Table: timelineLog
         const val TIMELINE_LOG_TABLE = "TimelineLog"
         const val TIMELINE_LOG_ID = "timeline_log_id"
-        const val TIMELINE_LOG_EVENT_NAME = "evenName"
+        const val TIMELINE_LOG_EVENT_NAME = "eventName"
         const val TIMELINE_LOG_LOCATION = "location"
         const val TIMELINE_LOG_TIME = "time"
         const val TIMELINE_LOG_NOTES = "notes"
@@ -150,6 +151,13 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
         db?.execSQL(createCapturesQuery)
         db?.execSQL(createTimelineLogQuery)
 
+
+        if (db != null) {
+            insertRunDummyValues(db)
+            insertOwnedPokemonDummyValues(db)
+            insertTeamDummyValues(db)
+            insertTimelineLogDummyValues(db)
+        }
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int){
@@ -165,4 +173,40 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
 
     }
 
+    private fun insertRunDummyValues(db: SQLiteDatabase){
+        val contentValues = ContentValues()
+
+        contentValues.put(RUN_NAME, "Run 1")
+        contentValues.put(RUN_GAME_TITLE, "Game 1")
+        contentValues.put(RUN_UPDATED_TIME, "2023-09-01 12:00:00")
+        db.insert(RUN_TABLE, null, contentValues)
+
+    }
+
+    private fun insertOwnedPokemonDummyValues(db: SQLiteDatabase){
+        val contentValues = ContentValues()
+        contentValues.put(OWNED_POKEMON_NICKNAME, "Pikachu")
+        contentValues.put(OWNED_POKEMON_CAUGHT_LOCATION, "PokeCenter")
+        contentValues.put(OWNED_POKEMON_SAVED_LOCATION, "Gym")
+        db.insert(OWNED_POKEMON_TABLE, null, contentValues)
+    }
+
+    private fun insertTeamDummyValues(db: SQLiteDatabase){
+        val contentValues = ContentValues()
+        contentValues.put(OWNED_POKEMON_ID, 1)
+        contentValues.put(RUN_ID, 1)
+        db.insert(TEAM_TABLE, null, contentValues)
+    }
+
+    private fun insertTimelineLogDummyValues(db: SQLiteDatabase){
+        val contentValues = ContentValues()
+        contentValues.put(TIMELINE_LOG_EVENT_NAME, "Event 1")
+        contentValues.put(TIMELINE_LOG_LOCATION, "Location 1")
+        contentValues.put(TIMELINE_LOG_TIME, "2023-09-01 12:00:00")
+        contentValues.put(TIMELINE_LOG_NOTES, "Notes 1")
+        contentValues.put(TIMELINE_LOG_DISPLAY_TEAM, true)
+        contentValues.put(RUN_ID, 1)
+        contentValues.put(TEAM_ID, 1)
+        db.insert(TIMELINE_LOG_TABLE, null, contentValues)
+    }
 }
