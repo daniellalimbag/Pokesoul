@@ -32,10 +32,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
         const val TIMELINE_LOG_NOTES = "notes"
         const val TIMELINE_LOG_DISPLAY_TEAM = "displayTeam"
 
-        //Table: user_run
-        const val USER_RUN_TABLE = "UserRun"
-        const val USER_RUN_ID = "userRun_id"
-
         //Table: deaths
         const val DEATHS_TABLE = "Deaths"
         const val DEATHS_ID = "Death_id"
@@ -144,13 +140,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
             )
         """.trimIndent()
 
-        val createUserRunQuery = """
-            CREATE TABLE $USER_RUN_TABLE(
-            $USER_RUN_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-            FOREIGN KEY (RUN_ID) REFERENCES $RUN_TABLE(RUN_ID)
-            )
-        """.trimIndent()
-
         db?.execSQL(createOwnedPokemonQuery)
         db?.execSQL(createRunQuery)
         db?.execSQL(createTeamQuery)
@@ -160,7 +149,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
         db?.execSQL(createDeathQuery)
         db?.execSQL(createCapturesQuery)
         db?.execSQL(createTimelineLogQuery)
-        db?.execSQL(createUserRunQuery)
 
     }
 
@@ -174,7 +162,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
         db?.execSQL("DROP TABLE IF EXISTS $DAYCARE_TABLE")
         db?.execSQL("DROP TABLE IF EXISTS $DEATHS_TABLE")
         db?.execSQL("DROP TABLE IF EXISTS $CAPTURES_TABLE")
-        db?.execSQL("DROP TABLE IF EXISTS $USER_RUN_TABLE")
 
     }
 

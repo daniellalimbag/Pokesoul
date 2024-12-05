@@ -304,6 +304,5 @@ class DatabaseManager(context: Context) {
             "${MyDatabaseHelper.CAPTURES_ID} = ?",
             arrayOf(id.toString())).also { db.close() }
     }
-
 }
 
