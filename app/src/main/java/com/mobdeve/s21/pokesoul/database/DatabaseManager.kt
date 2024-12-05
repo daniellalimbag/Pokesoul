@@ -123,27 +123,6 @@ class DatabaseManager(context: Context) {
             arrayOf(id.toString())
         ).also { db.close() }
     }
-    fun getTimelineLogEntries(): ArrayList<TimelineLog> {
-        val result = ArrayList<TimelineLog>()
-        val db: SQLiteDatabase = dbHelper.readableDatabase
-        val cursor = db.query(MyDatabaseHelper.TIMELINE_LOG_TABLE, null, null, null, null, null, null)
-        if(cursor.moveToFirst()){
-            do{
-                val timelineLog = TimelineLog(
-                    cursor.getString(cursor.getColumnIndexOrThrow(MyDatabaseHelper.TIMELINE_LOG_EVENT_NAME)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(MyDatabaseHelper.TIMELINE_LOG_LOCATION)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(MyDatabaseHelper.TIMELINE_LOG_TIME)),
-                    cursor.getInt(cursor.getColumnIndexOrThrow(MyDatabaseHelper.TIMELINE_LOG_DISPLAY_TEAM)) == 1,
-                    cursor.getLong(cursor.getColumnIndexOrThrow(MyDatabaseHelper.RUN_ID)),
-                    cursor.getLong(cursor.getColumnIndexOrThrow(MyDatabaseHelper.TEAM_ID))
-                )
-                result.add(timelineLog)
-            }while (cursor.moveToNext())
-        }
-        cursor.close()
-        db.close()
-        return result
-    }
 
     //Insert, Update, Delete Team
     fun insertTeamEntry(ownedPokemonId: Long, runId: Long): Long {
