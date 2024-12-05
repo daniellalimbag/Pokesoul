@@ -1,14 +1,17 @@
 package com.mobdeve.s21.pokesoul.database
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.provider.ContactsContract.CommonDataKinds.Nickname
+import android.util.Log
 
-class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB, null, DB_ver) {
+class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB, null, DB_VER) {
     companion object {
         private const val pokesoulDB = "my_database.db"
-        private const val DB_ver = 1
+        private const val DB_VER = 2
 
         //Table: OwnedPokemon
         const val OWNED_POKEMON_TABLE = "OwnedPokemon"
@@ -61,16 +64,18 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
+        Log.d("DatabaseCheck", "onCreate called")
 
         val createOwnedPokemonQuery = """
-            CREATE TABLE $OWNED_POKEMON_TABLE (
-                $OWNED_POKEMON_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                $OWNED_POKEMON_NICKNAME TEXT NOT NULL,
-                $OWNED_POKEMON_CAUGHT_LOCATION TEXT NOT NULL,
-                $OWNED_POKEMON_SAVED_LOCATION TEXT NOT NULL,
-                FOREIGN KEY (RUN_ID) REFERENCES $RUN_TABLE(RUN_ID)
-                )
-        """.trimIndent()
+    CREATE TABLE $OWNED_POKEMON_TABLE (
+        $OWNED_POKEMON_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+        $OWNED_POKEMON_NICKNAME TEXT NOT NULL,
+        $OWNED_POKEMON_CAUGHT_LOCATION TEXT NOT NULL,
+        $OWNED_POKEMON_SAVED_LOCATION TEXT NOT NULL,
+        $RUN_ID INTEGER,
+        FOREIGN KEY ($RUN_ID) REFERENCES $RUN_TABLE($RUN_ID)
+    )
+""".trimIndent()
 
         val createRunQuery = """
             CREATE TABLE $RUN_TABLE (
@@ -81,75 +86,95 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
         """.trimIndent()
 
         val createTeamQuery = """
-            CREATE TABLE $TEAM_TABLE(
-                $TEAM_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                FOREIGN KEY (RUN_ID) REFERENCES $RUN_TABLE(RUN_ID),
-                FOREIGN KEY (OWNED_POKEMON_ID) REFERENCES $OWNED_POKEMON_ID(OWNED_POKEMON_ID)
-            )
-        """.trimIndent()
+    CREATE TABLE $TEAM_TABLE(
+        $TEAM_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+        $RUN_ID INTEGER,
+        $OWNED_POKEMON_ID INTEGER, 
+        FOREIGN KEY ($RUN_ID) REFERENCES $RUN_TABLE($RUN_ID),
+        FOREIGN KEY ($OWNED_POKEMON_ID) REFERENCES $OWNED_POKEMON_TABLE($OWNED_POKEMON_ID)
+    )
+""".trimIndent()
+
 
         val createBoxQuery = """
-            CREATE TABLE $BOX_TABLE(
-                $BOX_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                FOREIGN KEY (RUN_ID) REFERENCES $RUN_TABLE(RUN_ID),
-                FOREIGN KEY (OWNED_POKEMON_ID) REFERENCES $OWNED_POKEMON_ID(OWNED_POKEMON_ID)
-            )
-        """.trimIndent()
+    CREATE TABLE $BOX_TABLE(
+        $BOX_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+        $RUN_ID INTEGER,  -- Add the RUN_ID column
+        $OWNED_POKEMON_ID INTEGER,  -- Add the OWNED_POKEMON_ID column
+        FOREIGN KEY ($RUN_ID) REFERENCES $RUN_TABLE($RUN_ID),
+        FOREIGN KEY ($OWNED_POKEMON_ID) REFERENCES $OWNED_POKEMON_TABLE($OWNED_POKEMON_ID)
+    )
+""".trimIndent()
+
 
         val createGraveQuery = """
-            CREATE TABLE $GRAVE_TABLE(
-                $GRAVE_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                FOREIGN KEY (RUN_ID) REFERENCES $RUN_TABLE(RUN_ID),
-                FOREIGN KEY (OWNED_POKEMON_ID) REFERENCES $OWNED_POKEMON_ID(OWNED_POKEMON_ID)
-            )
-        """.trimIndent()
+    CREATE TABLE $GRAVE_TABLE(
+        $GRAVE_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+        $RUN_ID INTEGER,  -- Define the RUN_ID column explicitly here
+        $OWNED_POKEMON_ID INTEGER,  -- Define the OWNED_POKEMON_ID column here
+        FOREIGN KEY ($RUN_ID) REFERENCES $RUN_TABLE($RUN_ID),  -- Add the foreign key for RUN_ID
+        FOREIGN KEY ($OWNED_POKEMON_ID) REFERENCES $OWNED_POKEMON_TABLE($OWNED_POKEMON_ID)  -- Add the foreign key for OWNED_POKEMON_ID
+    )
+""".trimIndent()
+
 
         val createDaycareQuery = """
             CREATE TABLE $DAYCARE_TABLE(
                 $DAYCARE_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                $RUN_ID INTEGER,
+                $OWNED_POKEMON_ID INTEGER,
                 FOREIGN KEY (RUN_ID) REFERENCES $RUN_TABLE(RUN_ID),
                 FOREIGN KEY (OWNED_POKEMON_ID) REFERENCES $OWNED_POKEMON_ID(OWNED_POKEMON_ID)
             )
         """.trimIndent()
 
         val createTimelineLogQuery = """
-            CREATE TABLE $TIMELINE_LOG_TABLE (
-                $TIMELINE_LOG_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                $TIMELINE_LOG_EVENT_NAME TEXT NOT NULL,
-                $TIMELINE_LOG_LOCATION TEXT NOT NULL,
-                $TIMELINE_LOG_TIME TEXT NOT NULL,
-                $TIMELINE_LOG_NOTES TEXT NOT NULL,
-                $TIMELINE_LOG_DISPLAY_TEAM BOOLEAN NOT NULL,
-                FOREIGN KEY (RUN_ID) REFERENCES $RUN_TABLE(RUN_ID),
-                FOREIGN KEY (TEAM_ID) REFERENCES $TEAM_TABLE(TEAM_ID)
-                )
-        """.trimIndent()
+    CREATE TABLE $TIMELINE_LOG_TABLE (
+        $TIMELINE_LOG_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+        $TIMELINE_LOG_EVENT_NAME TEXT NOT NULL,
+        $TIMELINE_LOG_LOCATION TEXT NOT NULL,
+        $TIMELINE_LOG_TIME TEXT NOT NULL,
+        $TIMELINE_LOG_NOTES TEXT NOT NULL,
+        $TIMELINE_LOG_DISPLAY_TEAM BOOLEAN NOT NULL,
+        $RUN_ID INTEGER,  -- Define RUN_ID column here
+        $TEAM_ID INTEGER,  -- Define TEAM_ID column here
+        FOREIGN KEY ($RUN_ID) REFERENCES $RUN_TABLE($RUN_ID),
+        FOREIGN KEY ($TEAM_ID) REFERENCES $TEAM_TABLE($TEAM_ID)
+    )
+""".trimIndent()
 
-        val createDeathQuery = """
-            CREATE TABLE $DEATHS_TABLE(
-            $DEATHS_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-            FOREIGN KEY (TIMELINE_LOG_ID) REFERENCES $TIMELINE_LOG_TABLE(TIMELINE_LOG_ID),
-            FOREIGN KEY (OWNED_POKEMON_ID) REFERENCES $OWNED_POKEMON_ID(OWNED_POKEMON_ID)
-            )
-        """.trimIndent()
+
+        val createDeathsQuery = """
+    CREATE TABLE $DEATHS_TABLE (
+        $DEATHS_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+        $TIMELINE_LOG_ID INTEGER,  -- Define the TIMELINE_LOG_ID column here
+        $OWNED_POKEMON_ID INTEGER,  -- Define the OWNED_POKEMON_ID column here
+        FOREIGN KEY ($TIMELINE_LOG_ID) REFERENCES $TIMELINE_LOG_TABLE($TIMELINE_LOG_ID),  -- Add the foreign key for TIMELINE_LOG_ID
+        FOREIGN KEY ($OWNED_POKEMON_ID) REFERENCES $OWNED_POKEMON_TABLE($OWNED_POKEMON_ID)  -- Add the foreign key for OWNED_POKEMON_ID
+    )
+""".trimIndent()
+
 
         val createCapturesQuery = """
             CREATE TABLE $CAPTURES_TABLE(
             $CAPTURES_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+            $TIMELINE_LOG_ID INTEGER,
+            $OWNED_POKEMON_ID INTEGER,
             FOREIGN KEY (TIMELINE_LOG_ID) REFERENCES $TIMELINE_LOG_TABLE(TIMELINE_LOG_ID),
             FOREIGN KEY (OWNED_POKEMON_ID) REFERENCES $OWNED_POKEMON_ID(OWNED_POKEMON_ID)
             )
         """.trimIndent()
 
-        db?.execSQL(createOwnedPokemonQuery)
         db?.execSQL(createRunQuery)
+        db?.execSQL(createOwnedPokemonQuery)
         db?.execSQL(createTeamQuery)
         db?.execSQL(createBoxQuery)
         db?.execSQL(createGraveQuery)
         db?.execSQL(createDaycareQuery)
-        db?.execSQL(createDeathQuery)
+        db?.execSQL(createDeathsQuery)
         db?.execSQL(createCapturesQuery)
         db?.execSQL(createTimelineLogQuery)
+
 
 
         if (db != null) {
@@ -157,6 +182,11 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
             insertOwnedPokemonDummyValues(db)
             insertTeamDummyValues(db)
             insertTimelineLogDummyValues(db)
+            insertCapturesDummyValues(db)
+            insertDeathsDummyValues(db)
+            insertBoxDummyValues(db)
+            insertGraveDummyValues(db)
+            insertDaycareDummyValues(db)
         }
     }
 
@@ -173,6 +203,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
 
     }
 
+    @SuppressLint("Range")
     private fun insertRunDummyValues(db: SQLiteDatabase){
         val contentValues = ContentValues()
 
@@ -183,21 +214,26 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
 
     }
 
+    @SuppressLint("Range")
     private fun insertOwnedPokemonDummyValues(db: SQLiteDatabase){
         val contentValues = ContentValues()
         contentValues.put(OWNED_POKEMON_NICKNAME, "Pikachu")
         contentValues.put(OWNED_POKEMON_CAUGHT_LOCATION, "PokeCenter")
         contentValues.put(OWNED_POKEMON_SAVED_LOCATION, "Gym")
         db.insert(OWNED_POKEMON_TABLE, null, contentValues)
+
     }
 
+    @SuppressLint("Range")
     private fun insertTeamDummyValues(db: SQLiteDatabase){
         val contentValues = ContentValues()
         contentValues.put(OWNED_POKEMON_ID, 1)
         contentValues.put(RUN_ID, 1)
         db.insert(TEAM_TABLE, null, contentValues)
+
     }
 
+    @SuppressLint("Range")
     private fun insertTimelineLogDummyValues(db: SQLiteDatabase){
         val contentValues = ContentValues()
         contentValues.put(TIMELINE_LOG_EVENT_NAME, "Event 1")
@@ -208,5 +244,44 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
         contentValues.put(RUN_ID, 1)
         contentValues.put(TEAM_ID, 1)
         db.insert(TIMELINE_LOG_TABLE, null, contentValues)
+
     }
+
+    private fun insertCapturesDummyValues(db: SQLiteDatabase){
+        val contentValues = ContentValues()
+        contentValues.put(TIMELINE_LOG_ID, 1)
+        contentValues.put(OWNED_POKEMON_ID, 1)
+        db.insert(CAPTURES_TABLE, null, contentValues)
+    }
+
+    private fun insertDeathsDummyValues(db: SQLiteDatabase){
+        val contentValues = ContentValues()
+        contentValues.put(TIMELINE_LOG_ID, 1)
+        contentValues.put(OWNED_POKEMON_ID, 1)
+        db.insert(DEATHS_TABLE, null, contentValues)
+    }
+
+    private fun insertBoxDummyValues(db: SQLiteDatabase){
+        val contentValues = ContentValues()
+        contentValues.put(RUN_ID, 1)
+        contentValues.put(OWNED_POKEMON_ID, 1)
+        db.insert(BOX_TABLE, null, contentValues)
+    }
+
+    private fun insertGraveDummyValues(db: SQLiteDatabase){
+        val contentValues = ContentValues()
+        contentValues.put(RUN_ID, 1)
+        contentValues.put(OWNED_POKEMON_ID, 1)
+        db.insert(GRAVE_TABLE, null, contentValues)
+    }
+
+    private fun insertDaycareDummyValues(db: SQLiteDatabase){
+        val contentValues = ContentValues()
+        contentValues.put(RUN_ID, 1)
+        contentValues.put(OWNED_POKEMON_ID, 1)
+        db.insert(DAYCARE_TABLE, null, contentValues)
+    }
+
+
+
 }
