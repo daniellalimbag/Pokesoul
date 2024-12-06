@@ -210,9 +210,10 @@ class DatabaseManager(context: Context) {
     ): List<OwnedPokemon> {
         val db: SQLiteDatabase = dbHelper.readableDatabase
         val query = """
-        SELECT op.* FROM $table t 
-        JOIN ${MyDatabaseHelper.OWNED_POKEMON_TABLE} op 
-        ON t.$pokemonIdColumn = op.${MyDatabaseHelper.OWNED_POKEMON_ID} 
+        SELECT op.*, p.${MyDatabaseHelper.PLAYER_ID}, p.${MyDatabaseHelper.PLAYER_NAME}, p.${MyDatabaseHelper.PLAYER_IMAGE} 
+        FROM $table t 
+        JOIN ${MyDatabaseHelper.OWNED_POKEMON_TABLE} op ON t.$pokemonIdColumn = op.${MyDatabaseHelper.OWNED_POKEMON_ID}
+        JOIN ${MyDatabaseHelper.PLAYERS_TABLE} p ON op.${MyDatabaseHelper.OWNED_POKEMON_OWNER_ID} = p.${MyDatabaseHelper.PLAYER_ID}
         WHERE t.$runIdColumn = ?
     """.trimIndent()
         val cursor = db.rawQuery(query, arrayOf(runId.toString()))
@@ -221,12 +222,15 @@ class DatabaseManager(context: Context) {
         if (cursor.moveToFirst()) {
             val idIndex = cursor.getColumnIndex(MyDatabaseHelper.OWNED_POKEMON_ID)
             val nicknameIndex = cursor.getColumnIndex(MyDatabaseHelper.OWNED_POKEMON_NICKNAME)
+            val playerIdIndex = cursor.getColumnIndex(MyDatabaseHelper.PLAYER_ID)
+            val playerNameIndex = cursor.getColumnIndex(MyDatabaseHelper.PLAYER_NAME)
+            val playerImageIndex = cursor.getColumnIndex(MyDatabaseHelper.PLAYER_IMAGE)
             val caughtLocationIndex = cursor.getColumnIndex(MyDatabaseHelper.OWNED_POKEMON_CAUGHT_LOCATION)
             val savedLocationIndex = cursor.getColumnIndex(MyDatabaseHelper.OWNED_POKEMON_SAVED_LOCATION)
             val urlIndex = cursor.getColumnIndex(MyDatabaseHelper.OWNED_POKEMON_URL)
             val spriteIndex = cursor.getColumnIndex(MyDatabaseHelper.OWNED_POKEMON_SPRITE)
 
-            if (idIndex >= 0 && nicknameIndex >= 0 && caughtLocationIndex >= 0 && savedLocationIndex >= 0 && urlIndex >= 0 && spriteIndex >= 0) {
+            if (idIndex >= 0 && nicknameIndex >= 0 && playerIdIndex >= 0 && playerNameIndex >= 0 && playerImageIndex >= 0 && caughtLocationIndex >= 0 && savedLocationIndex >= 0 && urlIndex >= 0 && spriteIndex >= 0) {
                 do {
                     val id = cursor.getInt(idIndex)
                     val nickname = cursor.getString(nicknameIndex)
@@ -234,12 +238,11 @@ class DatabaseManager(context: Context) {
                     val savedLocation = cursor.getString(savedLocationIndex)
                     val url = cursor.getString(urlIndex)
                     val sprite = cursor.getString(spriteIndex)
+                    val playerId = cursor.getInt(playerIdIndex)
+                    val playerName = cursor.getString(playerNameIndex)
+                    val playerImage = cursor.getString(playerImageIndex)
 
-                    val owner = Player(
-                        id = 1,
-                        name = "Placeholder Owner",
-                        image = "https://example.com/owner.png"
-                    )
+                    val owner = Player(playerId, playerName, playerImage)
 
                     ownedPokemon.add(
                         OwnedPokemon(
@@ -254,9 +257,12 @@ class DatabaseManager(context: Context) {
                         )
                     )
                 } while (cursor.moveToNext())
+            } else {
+                // Log the missing columns for debugging
+                Log.e("DatabaseLog", "Missing columns in OwnedPokemon table: idIndex=$idIndex, nicknameIndex=$nicknameIndex, playerIdIndex=$playerIdIndex, playerNameIndex=$playerNameIndex, playerImageIndex=$playerImageIndex, caughtLocationIndex=$caughtLocationIndex, savedLocationIndex=$savedLocationIndex, urlIndex=$urlIndex, spriteIndex=$spriteIndex")
             }
-            cursor.close()
         }
+        cursor.close()
         db.close()
         return ownedPokemon
     }

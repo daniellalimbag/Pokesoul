@@ -125,17 +125,18 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
         """.trimIndent()
 
         val createOwnedPokemonTableQuery = """
-            CREATE TABLE $OWNED_POKEMON_TABLE (
-                $OWNED_POKEMON_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                $OWNED_POKEMON_NICKNAME TEXT NOT NULL,
-                FOREIGN KEY ($OWNED_POKEMON_OWNER_ID) REFERENCES $PLAYERS_TABLE($PLAYER_ID),
-                $OWNED_POKEMON_CAUGHT_LOCATION TEXT NOT NULL,
-                $OWNED_POKEMON_SAVED_LOCATION TEXT NOT NULL,
-                $OWNED_POKEMON_URL TEXT NOT NULL,
-                $OWNED_POKEMON_SPRITE TEXT NOT NULL,
-                $OWNED_POKEMON_RUN_ID INTEGER,
-                FOREIGN KEY ($OWNED_POKEMON_RUN_ID) REFERENCES $RUNS_TABLE($RUN_ID)
-            )
+        CREATE TABLE $OWNED_POKEMON_TABLE (
+            $OWNED_POKEMON_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+            $OWNED_POKEMON_NICKNAME TEXT NOT NULL,
+            $OWNED_POKEMON_OWNER_ID INTEGER,
+            $OWNED_POKEMON_CAUGHT_LOCATION TEXT NOT NULL,
+            $OWNED_POKEMON_SAVED_LOCATION TEXT NOT NULL,
+            $OWNED_POKEMON_URL TEXT NOT NULL,
+            $OWNED_POKEMON_SPRITE TEXT NOT NULL,
+            $OWNED_POKEMON_RUN_ID INTEGER,
+            FOREIGN KEY ($OWNED_POKEMON_OWNER_ID) REFERENCES $PLAYERS_TABLE($PLAYER_ID),
+            FOREIGN KEY ($OWNED_POKEMON_RUN_ID) REFERENCES $RUNS_TABLE($RUN_ID)
+        )
         """.trimIndent()
 
         val createTimelineLogTableQuery = """
@@ -233,7 +234,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
             insertRunDetailsDummyValues(it)
             insertTimelineLogDummyValues(it)
             insertTeamDummyValues(it)
-            insertBoxDummyValues(it)
+            //insertBoxDummyValues(it)
         }
     }
 
@@ -280,6 +281,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
         contentValues.put(PLAYER_RUN_ID, 1)
         db.insert(PLAYERS_TABLE, null, contentValues)
 
+        contentValues.clear()
         // Insert second player
         contentValues.put(PLAYER_NAME, "Misty")
         contentValues.put(PLAYER_ID, 2)
@@ -291,12 +293,22 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
     @SuppressLint("Range")
     private fun insertOwnedPokemonDummyValues(db: SQLiteDatabase) {
         val contentValues = ContentValues()
-        contentValues.put(OWNED_POKEMON_NICKNAME, "Pikachu")
+        contentValues.put(OWNED_POKEMON_NICKNAME, "PikaCHUU")
         contentValues.put(OWNED_POKEMON_OWNER_ID, 1)
         contentValues.put(OWNED_POKEMON_CAUGHT_LOCATION, "PokeCenter")
         contentValues.put(OWNED_POKEMON_SAVED_LOCATION, "Team")
         contentValues.put(OWNED_POKEMON_URL, "https://pokeapi.co/api/v2/pokemon/pikachu")
         contentValues.put(OWNED_POKEMON_SPRITE, "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png")
+        contentValues.put(OWNED_POKEMON_RUN_ID, 1)
+        db.insert(OWNED_POKEMON_TABLE, null, contentValues)
+
+        contentValues.clear()
+        contentValues.put(OWNED_POKEMON_NICKNAME, "Ron")
+        contentValues.put(OWNED_POKEMON_OWNER_ID, 2)
+        contentValues.put(OWNED_POKEMON_CAUGHT_LOCATION, "New Bark Town")
+        contentValues.put(OWNED_POKEMON_SAVED_LOCATION, "Team")
+        contentValues.put(OWNED_POKEMON_URL, "https://pokeapi.co/api/v2/pokemon/Quilava")
+        contentValues.put(OWNED_POKEMON_SPRITE, "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/156.png")
         contentValues.put(OWNED_POKEMON_RUN_ID, 1)
         db.insert(OWNED_POKEMON_TABLE, null, contentValues)
     }
@@ -351,8 +363,14 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
         contentValues.put(TEAM_RUN_ID, 1)
         contentValues.put(TEAM_OWNED_POKEMON_ID, 1)
         db.insert(TEAM_TABLE, null, contentValues)
+
+        contentValues.clear()
+        contentValues.put(TEAM_RUN_ID, 1)
+        contentValues.put(TEAM_OWNED_POKEMON_ID, 2)
+        db.insert(TEAM_TABLE, null, contentValues)
     }
 
+    /**
     @SuppressLint("Range")
     private fun insertBoxDummyValues(db: SQLiteDatabase) {
         val contentValues = ContentValues()
@@ -361,4 +379,5 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
         contentValues.put(BOX_OWNED_POKEMON_ID, 2)
         db.insert(BOX_TABLE, null, contentValues)
     }
+    **/
 }
