@@ -20,8 +20,8 @@ import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.activity.AddPokemonActivity
 import com.mobdeve.s21.pokesoul.activity.PokemonDetailsActivity
 import com.mobdeve.s21.pokesoul.model.OwnedPokemon
+import com.mobdeve.s21.pokesoul.model.Player
 import com.mobdeve.s21.pokesoul.model.Run
-import com.mobdeve.s21.pokesoul.model.User
 import com.squareup.picasso.Picasso
 
 class PokemonFragment : Fragment() {
@@ -44,7 +44,7 @@ class PokemonFragment : Fragment() {
         run = arguments?.getSerializable("RUN_INSTANCE") as? Run ?: return view
 
         // Set up the player names in the AutoCompleteTextView
-        val playerNames = run.players.map { player -> player.username }
+        val playerNames = run.players.map { player -> player.name }
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, playerNames)
         autoCompleteTextView.setAdapter(adapter)
 
@@ -71,7 +71,7 @@ class PokemonFragment : Fragment() {
     }
 
     private fun displayPokemon(
-        selectedPlayer: User,
+        selectedPlayer: Player,
         teamTableLayout: TableLayout,
         boxTableLayout: TableLayout,
         daycareTableLayout: TableLayout,
@@ -83,7 +83,7 @@ class PokemonFragment : Fragment() {
         daycareTableLayout.removeAllViews()
         graveTableLayout.removeAllViews()
 
-        val team = run.team.filter { it.owner.username == selectedPlayer.username }
+        val team = run.team.filter { it.owner.name == selectedPlayer.name }
 
         populatePokemonTable(team, teamTableLayout)
     }

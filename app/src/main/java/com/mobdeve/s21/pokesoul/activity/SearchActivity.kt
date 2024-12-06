@@ -11,10 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.adapter.SearchResultAdapter
 import com.mobdeve.s21.pokesoul.api.PokemonAPIClient
-import com.mobdeve.s21.pokesoul.helper.DataHelper
+import com.mobdeve.s21.pokesoul.model.Player
 import com.mobdeve.s21.pokesoul.model.Pokemon
 import com.mobdeve.s21.pokesoul.model.PokemonListResponse
-import com.mobdeve.s21.pokesoul.model.User
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,7 +24,7 @@ class SearchActivity : AppCompatActivity() {
 
     private lateinit var resultsRv: RecyclerView
     private lateinit var searchView: SearchView
-    private var allUsers = ArrayList<User>()
+    private var allUsers = ArrayList<Player>()
     private var allPokemon = ArrayList<Pokemon>()
     private var isSearchingPokemon: Boolean = false
     private lateinit var searchResultAdapter: SearchResultAdapter
@@ -46,15 +45,12 @@ class SearchActivity : AppCompatActivity() {
         resultsRv.setHasFixedSize(true)
         resultsRv.layoutManager = LinearLayoutManager(this)
 
-        // Initialize lists
-        addUserDataToList()
-
         // Determine the context of the search
         isSearchingPokemon = intent.getBooleanExtra("isFromAddPokemon", false)
 
         // Initialize the adapter based on context
         searchResultAdapter = SearchResultAdapter(if (isSearchingPokemon) allPokemon else allUsers, object : SearchResultAdapter.OnItemClickListener {
-            override fun onUserClick(user: User) {
+            override fun onUserClick(user: Player) {
                 val resultIntent = Intent()
                 resultIntent.putExtra("selectedPlayer", user)
                 setResult(RESULT_OK, resultIntent)
@@ -97,15 +93,10 @@ class SearchActivity : AppCompatActivity() {
             val filteredList = if (isSearchingPokemon) {
                 allPokemon.filter { it.name.lowercase(Locale.ROOT).contains(query.lowercase(Locale.ROOT)) }
             } else {
-                allUsers.filter { it.username.lowercase(Locale.ROOT).contains(query.lowercase(Locale.ROOT)) }
+                allUsers.filter { it.name.lowercase(Locale.ROOT).contains(query.lowercase(Locale.ROOT)) }
             }
             searchResultAdapter.updateData(ArrayList(filteredList)) // Ensure the type matches ArrayList<Serializable>
         }
-    }
-
-    private fun addUserDataToList() {
-        allUsers.add(DataHelper.user2)
-        allUsers.add(DataHelper.user3)
     }
 
     private fun fetchPokemonData() {

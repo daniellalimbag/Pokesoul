@@ -14,8 +14,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.activity.AddTimelineLogActivity
 import com.mobdeve.s21.pokesoul.adapter.TimelineLogAdapter
+import com.mobdeve.s21.pokesoul.model.Player
 import com.mobdeve.s21.pokesoul.model.Run
-import com.mobdeve.s21.pokesoul.model.User
 
 class TimelineFragment : Fragment() {
     private lateinit var run: Run
@@ -33,10 +33,10 @@ class TimelineFragment : Fragment() {
 
         logRv = view.findViewById(R.id.logRv)
         val noLogsText: TextView = view.findViewById(R.id.noLogsTv)
-        val currentUser = User("Austin", R.drawable.player1)
+        val currentUser = Player(8, "Austin", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/156.png")
 
         logRv.layoutManager = LinearLayoutManager(requireContext())
-        timelineLogAdapter = TimelineLogAdapter(run.logs, currentUser, run)
+        timelineLogAdapter = TimelineLogAdapter(run.logs, run)
         logRv.adapter = timelineLogAdapter
 
         if (run.logs.isEmpty()) {

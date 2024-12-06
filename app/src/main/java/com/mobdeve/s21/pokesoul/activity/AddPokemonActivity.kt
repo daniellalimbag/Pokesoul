@@ -13,7 +13,6 @@ import com.mobdeve.s21.pokesoul.activity.AddRunActivity.Companion
 import com.mobdeve.s21.pokesoul.adapter.PlayerAdapter
 import com.mobdeve.s21.pokesoul.adapter.PokemonAdapter
 import com.mobdeve.s21.pokesoul.model.Pokemon
-import com.mobdeve.s21.pokesoul.model.User
 import com.squareup.picasso.Picasso
 
 class AddPokemonActivity : AppCompatActivity() {

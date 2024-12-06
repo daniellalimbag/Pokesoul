@@ -17,7 +17,7 @@ class RunViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val playersRv: RecyclerView = itemView.findViewById(R.id.playersRv)
     private val teamRv: RecyclerView = itemView.findViewById(R.id.teamRv)
 
-    fun bind(run: Run, currentUserName: String) {
+    fun bind(run: Run) {
         runNameTv.text = run.runName
         gameTv.text = run.gameTitle
 
@@ -25,14 +25,20 @@ class RunViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         playersRv.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
         playersRv.adapter = playerAdapter
 
-        val userPokemon = run.team.filter { it.owner.username.equals(currentUserName, ignoreCase = true) }
+        // Check if players list is not empty
+        if (run.players.isNotEmpty()) {
+            val firstPlayerName = run.players[0].name
+            Log.d("RunViewHolder", "First Player: $firstPlayerName")
 
-        Log.d("RunViewHolder", "Current User: $currentUserName")
-        Log.d("RunViewHolder", "User Pokémon: ${userPokemon.size}")
+            val userPokemon = run.team.filter { it.owner.name.equals(firstPlayerName, ignoreCase = true) }
 
-        val pokemonAdapter = PokemonAdapter(userPokemon)
-        teamRv.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-        teamRv.adapter = pokemonAdapter
+            Log.d("RunViewHolder", "User Pokémon: ${userPokemon.size}")
+
+            val pokemonAdapter = PokemonAdapter(userPokemon)
+            teamRv.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+            teamRv.adapter = pokemonAdapter
+        } else {
+            Log.d("RunViewHolder", "No players found in run.")
+        }
     }
-
 }
