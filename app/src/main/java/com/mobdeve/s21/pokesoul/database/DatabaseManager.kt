@@ -132,14 +132,39 @@ class DatabaseManager(context: Context) {
     }
 
     fun getPlayersByRunId(runId: Int): List<Player> {
-        return listOf(
-            Player(
-                id = 1,
-                name = "Placeholder Player",
-                image = "https://example.com/placeholder.png"
-            )
+        val db: SQLiteDatabase = dbHelper.readableDatabase
+        val cursor = db.query(
+            MyDatabaseHelper.PLAYERS_TABLE,
+            null,
+            "${MyDatabaseHelper.PLAYER_RUN_ID} = ?",
+            arrayOf(runId.toString()),
+            null, null, null
         )
+
+        val players = mutableListOf<Player>()
+        if (cursor.moveToFirst()) {
+            val idIndex = cursor.getColumnIndex(MyDatabaseHelper.PLAYER_ID)
+            val nameIndex = cursor.getColumnIndex(MyDatabaseHelper.PLAYER_NAME)
+            val imageIndex = cursor.getColumnIndex(MyDatabaseHelper.PLAYER_IMAGE)
+
+            if (idIndex >= 0 && nameIndex >= 0 && imageIndex >= 0) {
+                do {
+                    val id = cursor.getInt(idIndex)
+                    val name = cursor.getString(nameIndex)
+                    val image = cursor.getString(imageIndex)
+
+                    players.add(Player(id, name, image))
+                } while (cursor.moveToNext())
+            } else {
+                // Log the missing columns for debugging
+                Log.e("DatabaseLog", "Missing columns in Players table: idIndex=$idIndex, nameIndex=$nameIndex, imageIndex=$imageIndex")
+            }
+        }
+        cursor.close()
+        db.close()
+        return players
     }
+
 
     fun getTeamByRunId(runId: Int): List<OwnedPokemon> {
         return getOwnedPokemonByRunId(
@@ -291,23 +316,27 @@ class DatabaseManager(context: Context) {
     private fun getOwnedPokemonByTimelineLogId(timelineLogId: Int, table: String, logIdColumn: String, pokemonIdColumn: String): List<OwnedPokemon> {
         val db: SQLiteDatabase = dbHelper.readableDatabase
         val query = """
-            SELECT op.* FROM $table t 
-            JOIN ${MyDatabaseHelper.OWNED_POKEMON_TABLE} op 
-            ON t.$pokemonIdColumn = op.${MyDatabaseHelper.OWNED_POKEMON_ID} 
-            WHERE t.$logIdColumn = ?
-        """.trimIndent()
+        SELECT op.*, p.${MyDatabaseHelper.PLAYER_ID}, p.${MyDatabaseHelper.PLAYER_NAME}, p.${MyDatabaseHelper.PLAYER_IMAGE} 
+        FROM $table t 
+        JOIN ${MyDatabaseHelper.OWNED_POKEMON_TABLE} op ON t.$pokemonIdColumn = op.${MyDatabaseHelper.OWNED_POKEMON_ID}
+        JOIN ${MyDatabaseHelper.PLAYERS_TABLE} p ON op.${MyDatabaseHelper.OWNED_POKEMON_OWNER_ID} = p.${MyDatabaseHelper.PLAYER_ID}
+        WHERE t.$logIdColumn = ?
+    """.trimIndent()
         val cursor = db.rawQuery(query, arrayOf(timelineLogId.toString()))
 
         val ownedPokemon = mutableListOf<OwnedPokemon>()
         if (cursor.moveToFirst()) {
             val idIndex = cursor.getColumnIndex(MyDatabaseHelper.OWNED_POKEMON_ID)
             val nicknameIndex = cursor.getColumnIndex(MyDatabaseHelper.OWNED_POKEMON_NICKNAME)
+            val playerIdIndex = cursor.getColumnIndex(MyDatabaseHelper.PLAYER_ID)
+            val playerNameIndex = cursor.getColumnIndex(MyDatabaseHelper.PLAYER_NAME)
+            val playerImageIndex = cursor.getColumnIndex(MyDatabaseHelper.PLAYER_IMAGE)
             val caughtLocationIndex = cursor.getColumnIndex(MyDatabaseHelper.OWNED_POKEMON_CAUGHT_LOCATION)
             val savedLocationIndex = cursor.getColumnIndex(MyDatabaseHelper.OWNED_POKEMON_SAVED_LOCATION)
             val urlIndex = cursor.getColumnIndex(MyDatabaseHelper.OWNED_POKEMON_URL)
             val spriteIndex = cursor.getColumnIndex(MyDatabaseHelper.OWNED_POKEMON_SPRITE)
 
-            if (idIndex >= 0 && nicknameIndex >= 0 && caughtLocationIndex >= 0 && savedLocationIndex >= 0 && urlIndex >= 0 && spriteIndex >= 0) {
+            if (idIndex >= 0 && nicknameIndex >= 0 && playerIdIndex >= 0 && playerNameIndex >= 0 && playerImageIndex >= 0 && caughtLocationIndex >= 0 && savedLocationIndex >= 0 && urlIndex >= 0 && spriteIndex >= 0) {
                 do {
                     val id = cursor.getInt(idIndex)
                     val nickname = cursor.getString(nicknameIndex)
@@ -315,12 +344,11 @@ class DatabaseManager(context: Context) {
                     val savedLocation = cursor.getString(savedLocationIndex)
                     val url = cursor.getString(urlIndex)
                     val sprite = cursor.getString(spriteIndex)
+                    val playerId = cursor.getInt(playerIdIndex)
+                    val playerName = cursor.getString(playerNameIndex)
+                    val playerImage = cursor.getString(playerImageIndex)
 
-                    val owner = Player(
-                        id = 1,
-                        name = "Placeholder Owner",
-                        image = "https://example.com/owner.png"
-                    )
+                    val owner = Player(playerId, playerName, playerImage)
 
                     ownedPokemon.add(
                         OwnedPokemon(
@@ -337,13 +365,14 @@ class DatabaseManager(context: Context) {
                 } while (cursor.moveToNext())
             } else {
                 // Log the missing columns for debugging
-                Log.e("DatabaseLog", "Missing columns in OwnedPokemon table: idIndex=$idIndex, nicknameIndex=$nicknameIndex, caughtLocationIndex=$caughtLocationIndex, savedLocationIndex=$savedLocationIndex, urlIndex=$urlIndex, spriteIndex=$spriteIndex")
+                Log.e("DatabaseLog", "Missing columns in OwnedPokemon table: idIndex=$idIndex, nicknameIndex=$nicknameIndex, playerIdIndex=$playerIdIndex, playerNameIndex=$playerNameIndex, playerImageIndex=$playerImageIndex, caughtLocationIndex=$caughtLocationIndex, savedLocationIndex=$savedLocationIndex, urlIndex=$urlIndex, spriteIndex=$spriteIndex")
             }
         }
         cursor.close()
         db.close()
         return ownedPokemon
     }
+
 
     fun getAllRuns(): Runs {
         val db: SQLiteDatabase = dbHelper.readableDatabase
@@ -368,8 +397,27 @@ class DatabaseManager(context: Context) {
                     val name = cursor.getString(nameIndex)
                     val gameTitle = cursor.getString(gameTitleIndex)
                     val updatedTime = cursor.getString(updatedTimeIndex)
+                    val players = getPlayersByRunId(id)
+                    val team = getTeamByRunId(id)
+                    val box = getBoxByRunId(id)
+                    val daycare = getDaycareByRunId(id)
+                    val grave = getGraveByRunId(id)
+                    val logs = getTimelineLogsByRun(id)
 
-                    runs.add(Run(id, name, gameTitle, emptyList(), emptyList(), emptyList(), emptyList(), emptyList(), updatedTime, emptyList()))
+                    runs.add(
+                        Run(
+                            runId = id,
+                            runName = name,
+                            gameTitle = gameTitle,
+                            players = players,
+                            team = team,
+                            box = box,
+                            daycare = daycare,
+                            grave = grave,
+                            updatedTime = updatedTime,
+                            logs = logs
+                        )
+                    )
                 } while (cursor.moveToNext())
             } else {
                 // Log the missing columns for debugging
