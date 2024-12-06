@@ -9,8 +9,8 @@ import android.util.Log
 
 class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB, null, DB_VER) {
     companion object {
-        private const val pokesoulDB = "my_database.db"
-        private const val DB_VER = 5
+        private const val pokesoulDB = "pokesoul.db"
+        private const val DB_VER = 1
         // Table: Runs
         const val RUNS_TABLE = "Runs"
         const val RUN_ID = "run_id"
@@ -25,6 +25,13 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
         const val RUN_NAME_DETAIL = "run_name"
         const val RUN_GAME_TITLE_DETAIL = "game_title"
         const val RUN_UPDATED_TIME_DETAIL = "updated_time"
+        
+        // Table: Players
+        const val PLAYERS_TABLE = "Players"
+        const val PLAYER_ID = "player_id"
+        const val PLAYER_NAME = "player_name"
+        const val PLAYER_IMAGE = "player_image"
+        const val PLAYER_RUN_ID = "run_id"
 
         // Table: OwnedPokemon
         const val OWNED_POKEMON_TABLE = "OwnedPokemon"

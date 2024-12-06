@@ -14,12 +14,12 @@ class PlayerViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     fun bind(player: Player, showNames: Boolean) {
         // Load the player's image using Picasso
-        Picasso.get().load(player.image).into(playerImageView)
+        Picasso.get()
+            .load(player.image)
+            .into(playerImageView)
 
         // Set the player's name
         playerNameTextView.text = player.name
 
-        // Toggle visibility of player name
-        playerNameTextView.visibility = if (showNames) View.VISIBLE else View.GONE
     }
 }
