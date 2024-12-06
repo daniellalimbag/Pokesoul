@@ -8,22 +8,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.activity.AddRunActivity
-import com.mobdeve.s21.pokesoul.activity.EditRunActivity
 import com.mobdeve.s21.pokesoul.adapter.RunAdapter
-import com.mobdeve.s21.pokesoul.helper.DataHelper
+import com.mobdeve.s21.pokesoul.database.DatabaseManager
 import com.mobdeve.s21.pokesoul.model.Run
 
 class RunFragment : Fragment() {
     private lateinit var runsRv: RecyclerView
     private lateinit var runAdapter: RunAdapter
     private var runList: MutableList<Run> = mutableListOf()
+    private lateinit var dbManager: DatabaseManager
 
     // Result launcher for adding a new run
     private val addRunResultLauncher = registerForActivityResult(
@@ -39,17 +38,18 @@ class RunFragment : Fragment() {
         }
     }
 
-    // Result launcher for editing an existing run
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_run, container, false)
 
+        // Initialize DatabaseManager
+        dbManager = DatabaseManager(requireContext())
+
         // Initialize RecyclerView
         runsRv = view.findViewById(R.id.runsRv)
-        runList = DataHelper.loadRunData().toMutableList() // Load runs data
+        runList = loadRunDataFromDatabase().toMutableList()
         runAdapter = RunAdapter(runList, "Player 1") // Note: Hardcoded username
         runsRv.layoutManager = LinearLayoutManager(requireContext())
         runsRv.adapter = runAdapter
@@ -62,5 +62,14 @@ class RunFragment : Fragment() {
         }
 
         return view
+    }
+
+    private fun loadRunDataFromDatabase(): List<Run> {
+        return try {
+            dbManager.getAllRuns().runs
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList() // Return an empty list if an error occurs
+        }
     }
 }

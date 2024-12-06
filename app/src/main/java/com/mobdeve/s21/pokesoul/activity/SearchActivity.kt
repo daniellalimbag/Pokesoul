@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.adapter.SearchResultAdapter
 import com.mobdeve.s21.pokesoul.api.PokemonAPIClient
-import com.mobdeve.s21.pokesoul.helper.DataHelper
 import com.mobdeve.s21.pokesoul.model.Player
 import com.mobdeve.s21.pokesoul.model.Pokemon
 import com.mobdeve.s21.pokesoul.model.PokemonListResponse
@@ -45,9 +44,6 @@ class SearchActivity : AppCompatActivity() {
         // Set up RecyclerView
         resultsRv.setHasFixedSize(true)
         resultsRv.layoutManager = LinearLayoutManager(this)
-
-        // Initialize lists
-        addUserDataToList()
 
         // Determine the context of the search
         isSearchingPokemon = intent.getBooleanExtra("isFromAddPokemon", false)
@@ -97,15 +93,10 @@ class SearchActivity : AppCompatActivity() {
             val filteredList = if (isSearchingPokemon) {
                 allPokemon.filter { it.name.lowercase(Locale.ROOT).contains(query.lowercase(Locale.ROOT)) }
             } else {
-                allUsers.filter { it.username.lowercase(Locale.ROOT).contains(query.lowercase(Locale.ROOT)) }
+                allUsers.filter { it.name.lowercase(Locale.ROOT).contains(query.lowercase(Locale.ROOT)) }
             }
             searchResultAdapter.updateData(ArrayList(filteredList)) // Ensure the type matches ArrayList<Serializable>
         }
-    }
-
-    private fun addUserDataToList() {
-        allUsers.add(DataHelper.user2)
-        allUsers.add(DataHelper.user3)
     }
 
     private fun fetchPokemonData() {

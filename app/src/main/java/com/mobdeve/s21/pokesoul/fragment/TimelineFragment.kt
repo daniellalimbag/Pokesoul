@@ -33,7 +33,7 @@ class TimelineFragment : Fragment() {
 
         logRv = view.findViewById(R.id.logRv)
         val noLogsText: TextView = view.findViewById(R.id.noLogsTv)
-        val currentUser = Player("Austin", R.drawable.player1)
+        val currentUser = Player(8, "Austin", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/156.png")
 
         logRv.layoutManager = LinearLayoutManager(requireContext())
         timelineLogAdapter = TimelineLogAdapter(run.logs, run)

@@ -11,11 +11,12 @@ import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.google.android.material.imageview.ShapeableImageView
 import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.activity.EditRunActivity
-import com.mobdeve.s21.pokesoul.model.Run
-import com.google.android.material.imageview.ShapeableImageView
 import com.mobdeve.s21.pokesoul.model.Player
+import com.mobdeve.s21.pokesoul.model.Run
+import com.squareup.picasso.Picasso
 
 class SummaryFragment : Fragment() {
     private lateinit var editBtn: Button
@@ -66,8 +67,8 @@ class SummaryFragment : Fragment() {
             val player1ImageView = player1View.findViewById<ShapeableImageView>(R.id.playerSiv)
             val player1NameTextView = player1View.findViewById<TextView>(R.id.usernameTv)
 
-            player1ImageView.setImageResource(players[i].image)
-            player1NameTextView.text = players[i].username
+            Picasso.get().load(players[i].image).into(player1ImageView)
+            player1NameTextView.text = players[i].name
 
             val params1 = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f) // Use weight
             player1View.layoutParams = params1
@@ -79,8 +80,8 @@ class SummaryFragment : Fragment() {
                 val player2ImageView = player2View.findViewById<ShapeableImageView>(R.id.playerSiv)
                 val player2NameTextView = player2View.findViewById<TextView>(R.id.usernameTv)
 
-                player2ImageView.setImageResource(players[i + 1].image)
-                player2NameTextView.text = players[i + 1].username
+                Picasso.get().load(players[i + 1].image).into(player2ImageView)
+                player2NameTextView.text = players[i + 1].name
 
                 val params2 = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f) // Use weight
                 player2View.layoutParams = params2

@@ -56,12 +56,12 @@ class PokemonDetailsActivity : AppCompatActivity() {
             nicknameText.setText(it.nickname)
             locationTv.setText(it.caughtLocation)
             saveTv.setText(it.savedLocation)
-            playerActv.setText(it.owner.username, false)
+            playerActv.setText(it.owner.name, false)
         }
 
         // Set up the AutoCompleteTextView with player names from the run data
         run?.let {
-            val playerNames = it.players.map { player -> player.username }
+            val playerNames = it.players.map { player -> player.name }
             val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, playerNames)
             playerActv.setAdapter(adapter)
 

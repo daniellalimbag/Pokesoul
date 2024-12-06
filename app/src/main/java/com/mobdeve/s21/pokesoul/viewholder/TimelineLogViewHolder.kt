@@ -36,7 +36,7 @@ class TimelineLogViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
         timeTv.text = timelineLog.time
 
         // Set up the player dropdown
-        val playerNames = run.players.map { it.username }
+        val playerNames = run.players.map { it.name }
         val adapter = ArrayAdapter(itemView.context, android.R.layout.simple_dropdown_item_1line, playerNames)
         playerActv.setAdapter(adapter)
 
@@ -77,7 +77,7 @@ class TimelineLogViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
 
     // Function to update team UI based on selected player
     private fun updateTeamUI(selectedPlayer: Player, run: Run) {
-        val team = run.team.filter { it.owner.username == selectedPlayer.username }
+        val team = run.team.filter { it.owner.name == selectedPlayer.name }
         teamRv.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
         teamRv.adapter = PokemonAdapter(team)
     }

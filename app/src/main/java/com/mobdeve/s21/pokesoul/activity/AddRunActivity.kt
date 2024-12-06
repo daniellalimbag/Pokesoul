@@ -41,7 +41,7 @@ class AddRunActivity : AppCompatActivity() {
         addIbtn = findViewById(R.id.addIbtn)
 
         // Static data
-        val user1 = Player("Player 1", R.drawable.player1)
+        val user1 = Player(5, "Player 1", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/156.png")
         playersList.add(user1)
 
         // Initialize the PlayerAdapter with playersList

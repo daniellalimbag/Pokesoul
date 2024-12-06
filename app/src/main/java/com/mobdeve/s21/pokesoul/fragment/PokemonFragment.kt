@@ -44,7 +44,7 @@ class PokemonFragment : Fragment() {
         run = arguments?.getSerializable("RUN_INSTANCE") as? Run ?: return view
 
         // Set up the player names in the AutoCompleteTextView
-        val playerNames = run.players.map { player -> player.username }
+        val playerNames = run.players.map { player -> player.name }
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, playerNames)
         autoCompleteTextView.setAdapter(adapter)
 
@@ -83,7 +83,7 @@ class PokemonFragment : Fragment() {
         daycareTableLayout.removeAllViews()
         graveTableLayout.removeAllViews()
 
-        val team = run.team.filter { it.owner.username == selectedPlayer.username }
+        val team = run.team.filter { it.owner.name == selectedPlayer.name }
 
         populatePokemonTable(team, teamTableLayout)
     }

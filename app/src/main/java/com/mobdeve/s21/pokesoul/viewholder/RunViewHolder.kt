@@ -25,7 +25,7 @@ class RunViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         playersRv.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
         playersRv.adapter = playerAdapter
 
-        val userPokemon = run.team.filter { it.owner.username.equals(currentUserName, ignoreCase = true) }
+        val userPokemon = run.team.filter { it.owner.name.equals(currentUserName, ignoreCase = true) }
 
         Log.d("RunViewHolder", "Current User: $currentUserName")
         Log.d("RunViewHolder", "User Pokémon: ${userPokemon.size}")
