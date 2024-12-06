@@ -50,7 +50,7 @@ class RunFragment : Fragment() {
         // Initialize RecyclerView
         runsRv = view.findViewById(R.id.runsRv)
         runList = loadRunDataFromDatabase().toMutableList()
-        runAdapter = RunAdapter(runList, "Player 1") // Note: Hardcoded username
+        runAdapter = RunAdapter(runList)
         runsRv.layoutManager = LinearLayoutManager(requireContext())
         runsRv.adapter = runAdapter
 
