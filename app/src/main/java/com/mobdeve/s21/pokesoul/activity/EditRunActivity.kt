@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.adapter.PlayerAdapter
+import com.mobdeve.s21.pokesoul.database.DatabaseManager
 import com.mobdeve.s21.pokesoul.model.Player
 import com.mobdeve.s21.pokesoul.model.Run
 
@@ -23,6 +24,7 @@ class EditRunActivity : AppCompatActivity() {
     private lateinit var playersRv: RecyclerView
     private lateinit var addIbtn: ImageButton
     private lateinit var playerAdapter: PlayerAdapter
+    private lateinit var dbManager: DatabaseManager
     private val playersList = mutableListOf<Player>()
 
     companion object {
@@ -32,6 +34,9 @@ class EditRunActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.edit_run)
+
+        // Initialize DatabaseManager
+        dbManager = DatabaseManager(this)
 
         // Initialize views
         backBtn = findViewById(R.id.backIbtn)
@@ -48,6 +53,15 @@ class EditRunActivity : AppCompatActivity() {
         playersRv.adapter = playerAdapter
         playersRv.layoutManager = LinearLayoutManager(this)
 
+        // Retrieve Run instance from Intent and initialize values
+        val run = intent.getSerializableExtra("RUN_INSTANCE") as? Run
+        run?.let {
+            titleEt.setText(it.runName)
+            gameEt.setText(it.gameTitle)
+            playersList.addAll(it.players)
+            playerAdapter.notifyDataSetChanged()
+        }
+
         // Back button logic
         backBtn.setOnClickListener { finish() }
 
@@ -56,7 +70,7 @@ class EditRunActivity : AppCompatActivity() {
             if (titleEt.text.isBlank() || gameEt.text.isBlank()) {
                 Toast.makeText(this, "Please fill out all fields.", Toast.LENGTH_SHORT).show()
             } else {
-                saveRun()
+                saveRun(run?.runId ?: 0)
             }
         }
 
@@ -81,16 +95,31 @@ class EditRunActivity : AppCompatActivity() {
     }
 
     // Save Run data and return it to the calling activity
-    private fun saveRun() {
+    private fun saveRun(runId: Int) {
         val title = titleEt.text.toString()
         val game = gameEt.text.toString()
-        val runId = 1
-        val editedRun = Run(runId = runId, runName = title, gameTitle = game, players = playersList, updatedTime = System.currentTimeMillis().toString())
+        val updatedTime = System.currentTimeMillis().toString()
 
-        val resultIntent = Intent().apply {
-            putExtra("edited_run", editedRun)
+        val editedRun = Run(
+            runId = runId,
+            runName = title,
+            gameTitle = game,
+            players = playersList,
+            updatedTime = updatedTime
+        )
+
+        // Update run details in the database
+        val success = dbManager.updateRunDetails(editedRun)
+        if (success) {
+            val resultIntent = Intent().apply {
+                putExtra("edited_run", editedRun)
+                putExtra("update_successful", true)
+            }
+            setResult(RESULT_OK, resultIntent)
+            finish()
+        } else {
+            Toast.makeText(this, "Error updating run details.", Toast.LENGTH_SHORT).show()
         }
-        setResult(RESULT_OK, resultIntent)
-        finish()
     }
 }
+

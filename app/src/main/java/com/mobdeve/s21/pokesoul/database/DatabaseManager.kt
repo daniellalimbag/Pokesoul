@@ -596,6 +596,30 @@ class DatabaseManager(context: Context) {
         return Runs(runs)
     }
 
+    fun updateRunDetails(run: Run): Boolean {
+        val db = dbHelper.writableDatabase
+        return try {
+            val contentValues = ContentValues().apply {
+                put(MyDatabaseHelper.RUN_NAME, run.runName)
+                put(MyDatabaseHelper.GAME_TITLE, run.gameTitle)
+                put(MyDatabaseHelper.UPDATED_TIME, run.updatedTime)
+            }
+            val rowsAffected = db.update(
+                MyDatabaseHelper.RUNS_TABLE,
+                contentValues,
+                "${MyDatabaseHelper.RUN_ID} = ?",
+                arrayOf(run.runId.toString())
+            )
+            Log.d("DatabaseLog", "Run details updated for run ID: ${run.runId}")
+            rowsAffected > 0
+        } catch (e: Exception) {
+            Log.e("DatabaseLog", "Error updating run details", e)
+            false
+        } finally {
+            db.close()
+        }
+    }
+
     @SuppressLint("Range")
     private fun logAllPokemonEntries() {
         val db: SQLiteDatabase = dbHelper.readableDatabase
