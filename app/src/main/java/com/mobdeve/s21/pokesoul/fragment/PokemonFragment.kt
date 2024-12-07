@@ -112,15 +112,25 @@ class PokemonFragment : Fragment() {
         daycareTableLayout?.removeAllViews()
         graveTableLayout?.removeAllViews()
 
-        Log.d("PokemonFragment", "Total run team size: ${run.team.size}")
         val team = run.team.filter { it.owner.name == selectedPlayer.name && it.savedLocation == "Team" }
-        Log.d("PokemonFragment", "Filtered team size: ${team.size}")
+        val box = run.box.filter { it.owner.name == selectedPlayer.name && it.savedLocation == "Box" }
+        val daycare = run.daycare.filter { it.owner.name == selectedPlayer.name && it.savedLocation == "Daycare" }
+        val grave = run.grave.filter { it.owner.name == selectedPlayer.name && it.savedLocation == "Grave" }
 
-        populatePokemonTable(team, teamTableLayout)
+        populatePokemonTable(team, teamTableLayout, "Team")
+        populatePokemonTable(box, boxTableLayout, "Box")
+        populatePokemonTable(daycare, daycareTableLayout, "Daycare")
+        populatePokemonTable(grave, graveTableLayout, "Grave")
     }
 
-    private fun populatePokemonTable(pokemonList: List<OwnedPokemon>, tableLayout: TableLayout?) {
+    private fun populatePokemonTable(
+        pokemonList: List<OwnedPokemon>,
+        tableLayout: TableLayout?,
+        locationTitle: String
+    ) {
         tableLayout ?: return
+
+        // Populate the table with Pokémon
         for (i in pokemonList.indices step 2) {
             val tableRow = TableRow(requireContext()).apply {
                 layoutParams = TableRow.LayoutParams(
