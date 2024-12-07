@@ -269,12 +269,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
         contentValues.put(GAME_TITLE, "SoulSilver")
         contentValues.put(UPDATED_TIME, "2024-10-14T17:15:23.000Z")
         db.insert(RUNS_TABLE, null, contentValues)
-
-        // Insert second run
-        contentValues.put(RUN_NAME, "Another Run")
-        contentValues.put(GAME_TITLE, "HeartGold")
-        contentValues.put(UPDATED_TIME, "2024-10-17T22:19:44.000Z")
-        db.insert(RUNS_TABLE, null, contentValues)
     }
 
     @SuppressLint("Range")
@@ -331,14 +325,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
         contentValues.put(RUN_NAME_DETAIL, "Best Run Ever")
         contentValues.put(RUN_GAME_TITLE_DETAIL, "SoulSilver")
         contentValues.put(RUN_UPDATED_TIME_DETAIL, "2024-10-14T17:15:23.000Z")
-        db.insert(RUN_DETAILS_TABLE, null, contentValues)
-
-        // Insert run details for second run
-        contentValues.clear()
-        contentValues.put(RUN_ID_FK, 2)
-        contentValues.put(RUN_NAME_DETAIL, "Another Run")
-        contentValues.put(RUN_GAME_TITLE_DETAIL, "HeartGold")
-        contentValues.put(RUN_UPDATED_TIME_DETAIL, "2024-10-17T22:19:44.000Z")
         db.insert(RUN_DETAILS_TABLE, null, contentValues)
     }
 
@@ -515,15 +501,4 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
         contentValues.put(TEAM_OWNED_POKEMON_ID, 2)
         db.insert(TEAM_TABLE, null, contentValues)
     }
-
-    /**
-    @SuppressLint("Range")
-    private fun insertBoxDummyValues(db: SQLiteDatabase) {
-        val contentValues = ContentValues()
-
-        contentValues.put(BOX_RUN_ID, 1)
-        contentValues.put(BOX_OWNED_POKEMON_ID, 2)
-        db.insert(BOX_TABLE, null, contentValues)
-    }
-    **/
 }
