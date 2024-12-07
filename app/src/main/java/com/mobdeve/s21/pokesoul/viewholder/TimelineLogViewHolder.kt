@@ -12,6 +12,7 @@ import com.mobdeve.s21.pokesoul.model.OwnedPokemon
 import com.mobdeve.s21.pokesoul.model.Run
 import com.mobdeve.s21.pokesoul.model.TimelineLog
 import com.mobdeve.s21.pokesoul.model.Player
+import com.mobdeve.s21.pokesoul.model.Pokemon
 
 class TimelineLogViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -43,43 +44,34 @@ class TimelineLogViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
         // Set the first player as default, if available
         if (playerNames.isNotEmpty()) {
             playerActv.setText(playerNames[0], false)
+            updateTeamUI(run.players[0], timelineLog)
         }
-
-        // Initialize displayed player (default: first player)
-        val initialPlayer = run.players.getOrNull(0)
-        initialPlayer?.let { updateTeamUI(it, run) }
 
         // Handle player selection from AutoCompleteTextView
         playerActv.setOnItemClickListener { _, _, position, _ ->
             val selectedPlayer = run.players[position]
-            updateTeamUI(selectedPlayer, run)
+            updateTeamUI(selectedPlayer, timelineLog)
         }
 
-        // Display team if required
-        teamLl.visibility = if (timelineLog.displayTeam) View.VISIBLE else View.GONE
-
-        // Set up deaths RecyclerView
+        // Setup other lists
         setupRecyclerView(deathsLl, deathsRv, timelineLog.deaths)
-
-        // Set up captures RecyclerView
         setupRecyclerView(capturesLl, capturesRv, timelineLog.captures)
 
-        // Set up notes if available
-        if (!timelineLog.notes.isNullOrEmpty()) {
+        // Handle notes
+        if (!timelineLog.notes.isNullOrBlank()) {
             notesLl.visibility = View.VISIBLE
-            notesTv.visibility = View.VISIBLE
             notesTv.text = timelineLog.notes
         } else {
             notesLl.visibility = View.GONE
-            notesTv.visibility = View.GONE
         }
     }
 
     // Function to update team UI based on selected player
-    private fun updateTeamUI(selectedPlayer: Player, run: Run) {
-        val team = run.team.filter { it.owner.name == selectedPlayer.name }
+    private fun updateTeamUI(selectedPlayer: Player, timelineLog: TimelineLog) {
+        val team = timelineLog.team.filter { it.owner.name == selectedPlayer.name }
         teamRv.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
         teamRv.adapter = PokemonAdapter(team)
+        teamLl.visibility = if (team.isNotEmpty()) View.VISIBLE else View.GONE
     }
 
     // Utility function to set up RecyclerView based on list visibility

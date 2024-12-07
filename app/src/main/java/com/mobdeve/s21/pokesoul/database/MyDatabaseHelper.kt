@@ -6,6 +6,11 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
+import com.mobdeve.s21.pokesoul.model.OwnedPokemon
+import com.mobdeve.s21.pokesoul.model.Player
+import com.mobdeve.s21.pokesoul.model.Pokemon
+import org.json.JSONArray
+import org.json.JSONObject
 
 class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB, null, DB_VER) {
     companion object {
@@ -54,7 +59,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
         const val TIMELINE_LOG_NOTES = "notes"
         const val TIMELINE_LOG_DISPLAY_TEAM = "display_team"
         const val TIMELINE_LOG_RUN_ID = "run_id"
-        const val TIMELINE_LOG_TEAM_ID = "team_id"
+        const val TIMELINE_LOG_TEAM = "team"
 
         // Table: Deaths
         const val DEATHS_TABLE = "Deaths"
@@ -142,19 +147,19 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
         """.trimIndent()
 
         val createTimelineLogTableQuery = """
-            CREATE TABLE $TIMELINE_LOG_TABLE (
-                $TIMELINE_LOG_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                $TIMELINE_LOG_EVENT_NAME TEXT NOT NULL,
-                $TIMELINE_LOG_LOCATION TEXT NOT NULL,
-                $TIMELINE_LOG_TIME TEXT NOT NULL,
-                $TIMELINE_LOG_NOTES TEXT,
-                $TIMELINE_LOG_DISPLAY_TEAM INTEGER NOT NULL,
-                $TIMELINE_LOG_RUN_ID INTEGER,
-                $TIMELINE_LOG_TEAM_ID INTEGER,
-                FOREIGN KEY ($TIMELINE_LOG_RUN_ID) REFERENCES $RUNS_TABLE($RUN_ID),
-                FOREIGN KEY ($TIMELINE_LOG_TEAM_ID) REFERENCES $TEAM_TABLE($TEAM_ID)
-            )
-        """.trimIndent()
+        CREATE TABLE $TIMELINE_LOG_TABLE (
+            $TIMELINE_LOG_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+            $TIMELINE_LOG_EVENT_NAME TEXT NOT NULL,
+            $TIMELINE_LOG_LOCATION TEXT NOT NULL,
+            $TIMELINE_LOG_TIME TEXT NOT NULL,
+            $TIMELINE_LOG_NOTES TEXT,
+            $TIMELINE_LOG_DISPLAY_TEAM INTEGER NOT NULL,
+            $TIMELINE_LOG_RUN_ID INTEGER,
+            $TIMELINE_LOG_TEAM TEXT NOT NULL,  -- JSON string to store the team
+            FOREIGN KEY ($TIMELINE_LOG_RUN_ID) REFERENCES $RUNS_TABLE($RUN_ID)
+        )
+    """.trimIndent()
+
 
         val createDeathsTableQuery = """
             CREATE TABLE $DEATHS_TABLE (
@@ -341,6 +346,131 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
     private fun insertTimelineLogDummyValues(db: SQLiteDatabase) {
         val contentValues = ContentValues()
 
+        // Example team members as OwnedPokemon objects
+        val team1 = listOf(
+            OwnedPokemon(
+                ownedPokemonId = 1,
+                pokemon = Pokemon(
+                    name = "Pikachu",
+                    url = "https://pokeapi.co/api/v2/pokemon/25/",
+                    sprite = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
+                ),
+                name = "Pikachu",
+                nickname = "PikaCHUU",
+                owner = Player(
+                    id = 1,
+                    name = "Ash Ketchum",
+                    image = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/156.png"
+                ),
+                caughtLocation = "PokeCenter",
+                savedLocation = "Team",
+                url = "https://pokeapi.co/api/v2/pokemon/25/",
+                sprite = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
+            ),
+            OwnedPokemon(
+                ownedPokemonId = 2,
+                pokemon = Pokemon(
+                    name = "Quilava",
+                    url = "https://pokeapi.co/api/v2/pokemon/156/",
+                    sprite = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/156.png"
+                ),
+                name = "Quilava",
+                nickname = "Ron",
+                owner = Player(
+                    id = 2,
+                    name = "Misty",
+                    image = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/181.png"
+                ),
+                caughtLocation = "New Bark Town",
+                savedLocation = "Team",
+                url = "https://pokeapi.co/api/v2/pokemon/156/",
+                sprite = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/156.png"
+            )
+        )
+
+        val team2 = listOf(
+            OwnedPokemon(
+                ownedPokemonId = 2,
+                pokemon = Pokemon(
+                    name = "Quilava",
+                    url = "https://pokeapi.co/api/v2/pokemon/156/",
+                    sprite = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/156.png"
+                ),
+                name = "Quilava",
+                nickname = "Ron",
+                owner = Player(
+                    id = 2,
+                    name = "Misty",
+                    image = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/181.png"
+                ),
+                caughtLocation = "New Bark Town",
+                savedLocation = "Team",
+                url = "https://pokeapi.co/api/v2/pokemon/156/",
+                sprite = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/156.png"
+            ),
+            OwnedPokemon(
+                ownedPokemonId = 1,
+                pokemon = Pokemon(
+                    name = "Ditto",
+                    url = "https://pokeapi.co/api/v2/pokemon-species/132/",
+                    sprite = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/132.png"
+                ),
+                name = "Ditto",
+                nickname = "Test",
+                owner = Player(
+                    id = 2,
+                    name = "Ash Ketchum",
+                    image = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/132.png"
+                ),
+                caughtLocation = "New Bark Town",
+                savedLocation = "Team",
+                url = "https://pokeapi.co/api/v2/pokemon/132/",
+                sprite = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/132.png"
+            )
+        )
+
+        // Convert team1 to JSON string
+        val teamJsonArray1 = JSONArray()
+        team1.forEach { ownedPokemon ->
+            val pokemonJson = JSONObject().apply {
+                put("ownedPokemonId", ownedPokemon.ownedPokemonId)
+                put("pokemonName", ownedPokemon.pokemon.name)
+                put("pokemonUrl", ownedPokemon.pokemon.url)
+                put("pokemonSprite", ownedPokemon.pokemon.sprite)
+                put("name", ownedPokemon.name)
+                put("nickname", ownedPokemon.nickname)
+                put("ownerId", ownedPokemon.owner.id)
+                put("ownerName", ownedPokemon.owner.name)
+                put("ownerImage", ownedPokemon.owner.image)
+                put("caughtLocation", ownedPokemon.caughtLocation)
+                put("savedLocation", ownedPokemon.savedLocation)
+                put("url", ownedPokemon.url)
+                put("sprite", ownedPokemon.sprite)
+            }
+            teamJsonArray1.put(pokemonJson)
+        }
+
+        // Convert team2 to JSON string
+        val teamJsonArray2 = JSONArray()
+        team2.forEach { ownedPokemon ->
+            val pokemonJson = JSONObject().apply {
+                put("ownedPokemonId", ownedPokemon.ownedPokemonId)
+                put("pokemonName", ownedPokemon.pokemon.name)
+                put("pokemonUrl", ownedPokemon.pokemon.url)
+                put("pokemonSprite", ownedPokemon.pokemon.sprite)
+                put("name", ownedPokemon.name)
+                put("nickname", ownedPokemon.nickname)
+                put("ownerId", ownedPokemon.owner.id)
+                put("ownerName", ownedPokemon.owner.name)
+                put("ownerImage", ownedPokemon.owner.image)
+                put("caughtLocation", ownedPokemon.caughtLocation)
+                put("savedLocation", ownedPokemon.savedLocation)
+                put("url", ownedPokemon.url)
+                put("sprite", ownedPokemon.sprite)
+            }
+            teamJsonArray2.put(pokemonJson)
+        }
+
         // First timeline log entry
         contentValues.put(TIMELINE_LOG_EVENT_NAME, "Started Journey")
         contentValues.put(TIMELINE_LOG_LOCATION, "New Bark Town")
@@ -348,7 +478,13 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
         contentValues.put(TIMELINE_LOG_NOTES, "First steps into the world")
         contentValues.put(TIMELINE_LOG_DISPLAY_TEAM, 1)
         contentValues.put(TIMELINE_LOG_RUN_ID, 1)
-        db.insert(TIMELINE_LOG_TABLE, null, contentValues)
+        contentValues.put(TIMELINE_LOG_TEAM, teamJsonArray1.toString())
+        val result1 = db.insert(TIMELINE_LOG_TABLE, null, contentValues)
+        if (result1 == -1L) {
+            Log.e("DatabaseLog", "Error inserting first timeline log entry")
+        } else {
+            Log.d("DatabaseLog", "First timeline log entry inserted with ID: $result1")
+        }
 
         // Second timeline log entry
         contentValues.clear()
@@ -358,7 +494,13 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
         contentValues.put(TIMELINE_LOG_NOTES, "Defeated Falkner")
         contentValues.put(TIMELINE_LOG_DISPLAY_TEAM, 1)
         contentValues.put(TIMELINE_LOG_RUN_ID, 1)
-        db.insert(TIMELINE_LOG_TABLE, null, contentValues)
+        contentValues.put(TIMELINE_LOG_TEAM, teamJsonArray2.toString())
+        val result2 = db.insert(TIMELINE_LOG_TABLE, null, contentValues)
+        if (result2 == -1L) {
+            Log.e("DatabaseLog", "Error inserting second timeline log entry")
+        } else {
+            Log.d("DatabaseLog", "Second timeline log entry inserted with ID: $result2")
+        }
     }
 
     @SuppressLint("Range")

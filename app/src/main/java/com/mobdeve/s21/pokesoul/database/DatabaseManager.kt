@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.util.Log
 import com.mobdeve.s21.pokesoul.model.Run
 import com.mobdeve.s21.pokesoul.model.*
+import org.json.JSONArray
 
 class DatabaseManager(context: Context) {
     private val dbHelper: MyDatabaseHelper = MyDatabaseHelper(context)
@@ -29,7 +30,8 @@ class DatabaseManager(context: Context) {
         db.delete(MyDatabaseHelper.GRAVE_TABLE, "${MyDatabaseHelper.TEAM_OWNED_POKEMON_ID} = ?", arrayOf(pokemonId.toString()))
     }
 
-    fun deletePokemonById(pokemonId: Int,savedLocation: String): Boolean {
+    @SuppressLint("SuspiciousIndentation")
+    fun deletePokemonById(pokemonId: Int, savedLocation: String): Boolean {
         val db = dbHelper.writableDatabase
         return try {
             // Attempt to delete the row from the OwnedPokemon table
@@ -195,7 +197,7 @@ class DatabaseManager(context: Context) {
             put(MyDatabaseHelper.TIMELINE_LOG_NOTES, notes)
             put(MyDatabaseHelper.TIMELINE_LOG_DISPLAY_TEAM, displayTeam)
             put(MyDatabaseHelper.TIMELINE_LOG_RUN_ID, runId)
-            put(MyDatabaseHelper.TIMELINE_LOG_TEAM_ID, teamId)
+            //put(MyDatabaseHelper.TIMELINE_LOG_TEAM_ID, teamId)
         }
 
         val logId = db.insert(MyDatabaseHelper.TIMELINE_LOG_TABLE, null, contentValues)
@@ -408,8 +410,9 @@ class DatabaseManager(context: Context) {
             val timeIndex = cursor.getColumnIndex(MyDatabaseHelper.TIMELINE_LOG_TIME)
             val notesIndex = cursor.getColumnIndex(MyDatabaseHelper.TIMELINE_LOG_NOTES)
             val displayTeamIndex = cursor.getColumnIndex(MyDatabaseHelper.TIMELINE_LOG_DISPLAY_TEAM)
+            val teamIndex = cursor.getColumnIndex(MyDatabaseHelper.TIMELINE_LOG_TEAM)
 
-            if (idIndex >= 0 && eventNameIndex >= 0 && locationIndex >= 0 && timeIndex >= 0 && notesIndex >= 0 && displayTeamIndex >= 0) {
+            if (idIndex >= 0 && eventNameIndex >= 0 && locationIndex >= 0 && timeIndex >= 0 && notesIndex >= 0 && displayTeamIndex >= 0 && teamIndex >= 0) {
                 do {
                     val id = cursor.getInt(idIndex)
                     val eventName = cursor.getString(eventNameIndex)
@@ -417,8 +420,9 @@ class DatabaseManager(context: Context) {
                     val time = cursor.getString(timeIndex)
                     val notes = cursor.getString(notesIndex)
                     val displayTeam = cursor.getInt(displayTeamIndex) > 0
+                    val teamJsonString = cursor.getString(teamIndex)
 
-                    val team = getTeamByRunId(runId)
+                    val team = parseJsonTeam(teamJsonString)
                     val deaths = getDeathsByTimelineLogId(id)
                     val captures = getCapturesByTimelineLogId(id)
 
@@ -426,12 +430,42 @@ class DatabaseManager(context: Context) {
                 } while (cursor.moveToNext())
             } else {
                 // Log the missing columns for debugging
-                Log.e("DatabaseLog", "Missing columns in TimelineLog table: idIndex=$idIndex, eventNameIndex=$eventNameIndex, locationIndex=$locationIndex, timeIndex=$timeIndex, notesIndex=$notesIndex, displayTeamIndex=$displayTeamIndex")
+                Log.e("DatabaseLog", "Missing columns in TimelineLog table: idIndex=$idIndex, eventNameIndex=$eventNameIndex, locationIndex=$locationIndex, timeIndex=$timeIndex, notesIndex=$notesIndex, displayTeamIndex=$displayTeamIndex, teamIndex=$teamIndex")
             }
         }
         cursor.close()
         db.close()
         return logs
+    }
+
+    // Parse JSON team from the log
+    private fun parseJsonTeam(jsonString: String): List<OwnedPokemon> {
+        val team = mutableListOf<OwnedPokemon>()
+        val jsonArray = JSONArray(jsonString)
+        for (i in 0 until jsonArray.length()) {
+            val pokemonJson = jsonArray.getJSONObject(i)
+            val ownedPokemon = OwnedPokemon(
+                ownedPokemonId = pokemonJson.getInt("ownedPokemonId"),
+                pokemon = Pokemon(
+                    name = pokemonJson.getString("pokemonName"),
+                    url = pokemonJson.getString("pokemonUrl"),
+                    sprite = pokemonJson.getString("pokemonSprite")
+                ),
+                name = pokemonJson.getString("name"),
+                nickname = pokemonJson.getString("nickname"),
+                owner = Player(
+                    id = pokemonJson.getInt("ownerId"),
+                    name = pokemonJson.getString("ownerName"),
+                    image = pokemonJson.getString("ownerImage")
+                ),
+                caughtLocation = pokemonJson.getString("caughtLocation"),
+                savedLocation = pokemonJson.getString("savedLocation"),
+                url = pokemonJson.getString("url"),
+                sprite = pokemonJson.getString("sprite")
+            )
+            team.add(ownedPokemon)
+        }
+        return team
     }
 
     fun getDeathsByTimelineLogId(timelineLogId: Int): List<OwnedPokemon> {
@@ -596,37 +630,5 @@ class DatabaseManager(context: Context) {
             cursor?.close()
             db.close()
         }
-    }
-
-    fun insertTimelineLog(
-        eventName: String,
-        location: String,
-        time: String,
-        notes: String,
-        runId: Int,
-        teamId: Int
-    ):Long{
-        val db: SQLiteDatabase = dbHelper.writableDatabase
-
-        return try {
-            val contentValues = ContentValues().apply {
-                put(MyDatabaseHelper.TIMELINE_LOG_EVENT_NAME, eventName)
-                put(MyDatabaseHelper.TIMELINE_LOG_LOCATION, location)
-                put(MyDatabaseHelper.TIMELINE_LOG_TIME, time)
-                put(MyDatabaseHelper.TIMELINE_LOG_NOTES, notes)
-                put(MyDatabaseHelper.TIMELINE_LOG_DISPLAY_TEAM, 1)
-                put(MyDatabaseHelper.TIMELINE_LOG_RUN_ID, runId)
-                put(MyDatabaseHelper.TIMELINE_LOG_TEAM_ID, teamId)
-            }
-            val TimelineLog = db.insert(MyDatabaseHelper.TIMELINE_LOG_TABLE, null, contentValues)
-            Log.d("DatabaseLog", "Timeline Log inserted with ID: $TimelineLog")
-            TimelineLog
-        } catch (e: Exception) {
-            Log.e("DatabaseLog", "Error inserting owned Timeline Log entry", e)
-            -1
-        } finally {
-            db.close()
-        }
-
     }
 }
