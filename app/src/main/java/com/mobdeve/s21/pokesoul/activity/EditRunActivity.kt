@@ -7,11 +7,14 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.adapter.PlayerAdapter
 import com.mobdeve.s21.pokesoul.database.DatabaseManager
+import com.mobdeve.s21.pokesoul.database.SwipeCallback
+import com.mobdeve.s21.pokesoul.databinding.EditRunBinding
 import com.mobdeve.s21.pokesoul.model.Player
 import com.mobdeve.s21.pokesoul.model.Run
 
@@ -27,14 +30,17 @@ class EditRunActivity : AppCompatActivity() {
     private lateinit var deleteBtn:Button
     private lateinit var dbManager: DatabaseManager
     private val playersList = mutableListOf<Player>()
+    private lateinit var itemTouchHelper: ItemTouchHelper
+    private lateinit var binding: EditRunBinding
 
     companion object {
-        private const val REQUEST_CODE_SEARCH = 1
+        private const val REQUEST_CODE_ADD_PLAYER = 1
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.edit_run)
+        binding = EditRunBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Initialize DatabaseManager
         dbManager = DatabaseManager(this)
@@ -89,16 +95,21 @@ class EditRunActivity : AppCompatActivity() {
 
         // Add player through SearchActivity
         addIbtn.setOnClickListener {
-            val intent = Intent(this, SearchActivity::class.java)
+            val intent = Intent(this, AddPlayerActivity::class.java)
             intent.putExtra("isFromAddRun", true)
-            startActivityForResult(intent, REQUEST_CODE_SEARCH)
+            startActivityForResult(intent, REQUEST_CODE_ADD_PLAYER)
         }
+
+        val swipeCallback = SwipeCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT)
+        swipeCallback.playerAdapter = playerAdapter
+        itemTouchHelper = ItemTouchHelper(swipeCallback)
+        itemTouchHelper.attachToRecyclerView(binding.playersRv)
     }
 
     // Handle result from SearchActivity to add a player to the list
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_SEARCH && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_CODE_ADD_PLAYER && resultCode == RESULT_OK) {
             val selectedPlayer = data?.getSerializableExtra("selectedPlayer") as? Player
             selectedPlayer?.let {
                 playersList.add(it)

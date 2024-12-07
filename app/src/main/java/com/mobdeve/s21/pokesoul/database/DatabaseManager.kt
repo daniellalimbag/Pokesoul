@@ -65,7 +65,8 @@ class DatabaseManager(context: Context) {
         db.delete(MyDatabaseHelper.GRAVE_TABLE, "${MyDatabaseHelper.TEAM_OWNED_POKEMON_ID} = ?", arrayOf(pokemonId.toString()))
     }
 
-    fun deletePokemonById(pokemonId: Int,savedLocation: String): Boolean {
+    @SuppressLint("SuspiciousIndentation")
+    fun deletePokemonById(pokemonId: Int, savedLocation: String): Boolean {
         val db = dbHelper.writableDatabase
         return try {
             // Attempt to delete the row from the OwnedPokemon table
@@ -90,6 +91,24 @@ class DatabaseManager(context: Context) {
         }
     }
 
+    @SuppressLint("SuspiciousIndentation")
+    fun deletePlayerById(playerId: Int): Boolean {
+        val db = dbHelper.writableDatabase
+        return try {
+            // Attempt to delete the row from the OwnedPokemon table
+            val rowsDeleted = db.delete(
+                MyDatabaseHelper.PLAYERS_TABLE,        // Table name
+                "${MyDatabaseHelper.PLAYER_ID} = ?",      // WHERE clause
+                arrayOf(playerId.toString()) // Arguments for the WHERE clause
+            )
+            rowsDeleted > 0 // Return true if at least one row was deleted
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false // Return false if there was an error
+        } finally {
+            db.close() // Close the database to free resources
+        }
+    }
 
     fun insertRun(run: Run): Long {
         val db = dbHelper.writableDatabase
