@@ -13,6 +13,42 @@ import org.json.JSONObject
 class DatabaseManager(context: Context) {
     private val dbHelper: MyDatabaseHelper = MyDatabaseHelper(context)
 
+    fun deleteRunById(runId: Int):Boolean{
+        val db = dbHelper.writableDatabase
+        return try {
+            val rowsDeleted = db.delete(
+                MyDatabaseHelper.RUNS_TABLE,        // Table name
+                "${MyDatabaseHelper.RUN_ID} = ?",      // WHERE clause
+                arrayOf(runId.toString()) // Arguments for the WHERE clause
+            )
+            deleteRunDetailsByRunId(runId)
+            rowsDeleted > 0
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false // Return false if there was an error
+        } finally {
+            db.close() // Close the database to free resources
+        }
+    }
+
+    fun deleteRunDetailsByRunId(runId: Int):Boolean{
+        val db = dbHelper.writableDatabase
+        return try {
+            // Attempt to delete the row from the OwnedPokemon table
+            val rowsDeleted = db.delete(
+                MyDatabaseHelper.RUN_DETAILS_TABLE,        // Table name
+                "${MyDatabaseHelper.RUN_ID_FK} = ?",      // WHERE clause
+                arrayOf(runId.toString()) // Arguments for the WHERE clause
+            )
+            rowsDeleted > 0 // Return true if at least one row was deleted
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false // Return false if there was an error
+        } finally {
+            db.close() // Close the database to free resources
+        }
+    }
+
     fun deleteFromteam(pokemonId: Int){
         val db = dbHelper.writableDatabase
         db.delete(MyDatabaseHelper.TEAM_TABLE, "${MyDatabaseHelper.TEAM_OWNED_POKEMON_ID} = ?", arrayOf(pokemonId.toString()))
@@ -58,21 +94,56 @@ class DatabaseManager(context: Context) {
     }
 
 
+    fun insertRun(run: Run): Long {
+        val db = dbHelper.writableDatabase
+        return try {
+            val contentValues = ContentValues().apply {
+                put(MyDatabaseHelper.RUN_NAME, run.runName)
+                put(MyDatabaseHelper.GAME_TITLE, run.gameTitle)
+                put(MyDatabaseHelper.UPDATED_TIME, run.updatedTime)
+            }
+            val runId = db.insert(MyDatabaseHelper.RUNS_TABLE, null, contentValues)
+            Log.d("DatabaseLog", "Run inserted with ID: $runId")
+            runId
+        } catch (e: Exception) {
+            Log.e("DatabaseLog", "Error inserting run", e)
+            -1
+        } finally {
+            db.close()
+        }
+    }
 
+    fun insertRunDetails(runId: Long, run: Run) {
+        val db = dbHelper.writableDatabase
+        try {
+            val contentValues = ContentValues().apply {
+                put(MyDatabaseHelper.RUN_ID_FK, runId)
+                put(MyDatabaseHelper.RUN_NAME_DETAIL, run.runName)
+                put(MyDatabaseHelper.RUN_GAME_TITLE_DETAIL, run.gameTitle)
+                put(MyDatabaseHelper.RUN_UPDATED_TIME_DETAIL, run.updatedTime)
+            }
+            db.insert(MyDatabaseHelper.RUN_DETAILS_TABLE, null, contentValues)
+            Log.d("DatabaseLog", "Run details inserted for run ID: $runId")
+        } catch (e: Exception) {
+            Log.e("DatabaseLog", "Error inserting run details", e)
+        } finally {
+            db.close()
+        }
+    }
 
-    fun insertRunEntry(runName: String, gameTitle: String, updatedTime: String): Long {
+    fun insertPlayer(player: Player): Long {
         val db: SQLiteDatabase = dbHelper.writableDatabase
         return try {
             val contentValues = ContentValues().apply {
-                put(MyDatabaseHelper.RUN_NAME, runName)
-                put(MyDatabaseHelper.GAME_TITLE, gameTitle)
-                put(MyDatabaseHelper.UPDATED_TIME, updatedTime)
+                put(MyDatabaseHelper.PLAYER_NAME, player.name)
+                put(MyDatabaseHelper.PLAYER_IMAGE, player.image)
+                // Assuming PLAYER_RUN_ID is available, you can include it if necessary.
             }
-            val runId = db.insert(MyDatabaseHelper.RUNS_TABLE, null, contentValues)
-            Log.d("DatabaseLog", "Run entry inserted with ID: $runId")
-            runId
+            val playerId = db.insert(MyDatabaseHelper.PLAYERS_TABLE, null, contentValues)
+            Log.d("DatabaseLog", "Player entry inserted with ID: $playerId")
+            playerId
         } catch (e: Exception) {
-            Log.e("DatabaseLog", "Error inserting run entry", e)
+            Log.e("DatabaseLog", "Error inserting player entry", e)
             -1
         } finally {
             db.close()
@@ -684,6 +755,30 @@ class DatabaseManager(context: Context) {
         cursor.close()
         db.close()
         return Runs(runs)
+    }
+
+    fun updateRunDetails(run: Run): Boolean {
+        val db = dbHelper.writableDatabase
+        return try {
+            val contentValues = ContentValues().apply {
+                put(MyDatabaseHelper.RUN_NAME, run.runName)
+                put(MyDatabaseHelper.GAME_TITLE, run.gameTitle)
+                put(MyDatabaseHelper.UPDATED_TIME, run.updatedTime)
+            }
+            val rowsAffected = db.update(
+                MyDatabaseHelper.RUNS_TABLE,
+                contentValues,
+                "${MyDatabaseHelper.RUN_ID} = ?",
+                arrayOf(run.runId.toString())
+            )
+            Log.d("DatabaseLog", "Run details updated for run ID: ${run.runId}")
+            rowsAffected > 0
+        } catch (e: Exception) {
+            Log.e("DatabaseLog", "Error updating run details", e)
+            false
+        } finally {
+            db.close()
+        }
     }
 
     @SuppressLint("Range")
