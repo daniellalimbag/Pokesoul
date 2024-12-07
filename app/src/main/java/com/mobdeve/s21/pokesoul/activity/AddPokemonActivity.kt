@@ -13,7 +13,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.imageview.ShapeableImageView
 import com.mobdeve.s21.pokesoul.R
+import com.mobdeve.s21.pokesoul.adapter.PokemonAdapter
 import com.mobdeve.s21.pokesoul.database.DatabaseManager
+import com.mobdeve.s21.pokesoul.model.OwnedPokemon
 import com.mobdeve.s21.pokesoul.model.Pokemon
 import com.squareup.picasso.Picasso
 
@@ -104,7 +106,6 @@ class AddPokemonActivity : AppCompatActivity() {
             val dbManager = DatabaseManager(this)
             val success = dbManager.insertOwnedPokemonEntry(
                 runId = runId,
-                owner = savedPlayer.id,
                 nickname = nickname,
                 caughtLocation = caughtLocation,
                 savedLocation = savedLocation,
