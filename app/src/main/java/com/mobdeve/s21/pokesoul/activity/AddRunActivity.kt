@@ -43,7 +43,7 @@ class AddRunActivity : AppCompatActivity() {
         addIbtn = findViewById(R.id.addIbtn)
 
         // Initialize the PlayerAdapter with playersList
-        playerAdapter = PlayerAdapter(playersList, showNames = true)
+        playerAdapter = PlayerAdapter(playersList as ArrayList, showNames = true, this)
 
         // Set up RecyclerView
         playersRv.adapter = playerAdapter

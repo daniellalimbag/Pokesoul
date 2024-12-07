@@ -1,5 +1,6 @@
 package com.mobdeve.s21.pokesoul.viewholder
 
+import android.app.Activity
 import android.util.Log
 import android.view.View
 import android.widget.TextView
@@ -21,9 +22,14 @@ class RunViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         runNameTv.text = run.runName
         gameTv.text = run.gameTitle
 
-        val playerAdapter = PlayerAdapter(run.players, false)
-        playersRv.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-        playersRv.adapter = playerAdapter
+        val activity = itemView.context as? Activity
+        activity?.let {
+            val playerAdapter = PlayerAdapter(run.players as ArrayList, false, it)
+            playersRv.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+            playersRv.adapter = playerAdapter
+        } ?: run {
+            Log.e("RunViewHolder", "Could not determine the activity context.")
+        }
 
         // Check if players list is not empty
         if (run.players.isNotEmpty()) {
