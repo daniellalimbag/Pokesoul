@@ -8,6 +8,7 @@ import android.util.Log
 import com.mobdeve.s21.pokesoul.model.Run
 import com.mobdeve.s21.pokesoul.model.*
 import org.json.JSONArray
+import org.json.JSONObject
 
 class DatabaseManager(context: Context) {
     private val dbHelper: MyDatabaseHelper = MyDatabaseHelper(context)
@@ -190,6 +191,27 @@ class DatabaseManager(context: Context) {
         team: List<OwnedPokemon>
     ): Long {
         val db: SQLiteDatabase = dbHelper.writableDatabase
+
+        //converting TEAM from List to JSON String
+        val teamJSONArray = JSONArray()
+        team.forEach { ownedPokemon ->
+            val pokemonJson = JSONObject().apply {
+                put("ownedPokemonId", ownedPokemon.ownedPokemonId)
+                put("pokemonName", ownedPokemon.pokemon.name)
+                put("pokemonUrl", ownedPokemon.pokemon.url)
+                put("pokemonSprite", ownedPokemon.pokemon.sprite)
+                put("name", ownedPokemon.name)
+                put("nickname", ownedPokemon.nickname)
+                put("ownerId", ownedPokemon.owner.id)
+                put("ownerName", ownedPokemon.owner.name)
+                put("ownerImage", ownedPokemon.owner.image)
+                put("caughtLocation", ownedPokemon.caughtLocation)
+                put("savedLocation", ownedPokemon.savedLocation)
+                put("url", ownedPokemon.url)
+                put("sprite", ownedPokemon.sprite)
+            }
+            teamJSONArray.put(pokemonJson)
+        }
         val contentValues = ContentValues().apply {
             put(MyDatabaseHelper.TIMELINE_LOG_EVENT_NAME, eventName)
             put(MyDatabaseHelper.TIMELINE_LOG_LOCATION, location)
@@ -197,7 +219,7 @@ class DatabaseManager(context: Context) {
             put(MyDatabaseHelper.TIMELINE_LOG_NOTES, notes)
             put(MyDatabaseHelper.TIMELINE_LOG_DISPLAY_TEAM, displayTeam)
             put(MyDatabaseHelper.TIMELINE_LOG_RUN_ID, runId)
-            put(MyDatabaseHelper.TIMELINE_LOG_TEAM, team.toString())
+            put(MyDatabaseHelper.TIMELINE_LOG_TEAM, teamJSONArray.toString())
         }
         val logId = db.insert(MyDatabaseHelper.TIMELINE_LOG_TABLE, null, contentValues)
         db.close()

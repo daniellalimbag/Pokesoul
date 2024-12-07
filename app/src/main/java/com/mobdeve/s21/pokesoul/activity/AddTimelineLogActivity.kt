@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.database.DatabaseManager
 import com.mobdeve.s21.pokesoul.model.OwnedPokemon
+import com.mobdeve.s21.pokesoul.model.Player
+import com.mobdeve.s21.pokesoul.model.Pokemon
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -84,8 +86,7 @@ class AddTimelineLogActivity : AppCompatActivity() {
                         "time=$currentTime, ")
                 setResult(RESULT_OK)
             } else {
-                Log.e("AddPokemonActivity", "Error adding Pokemon")
-                Toast.makeText(this, "Error adding Pokemon", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Error adding Log", Toast.LENGTH_SHORT).show()
             }
 
             finish()
