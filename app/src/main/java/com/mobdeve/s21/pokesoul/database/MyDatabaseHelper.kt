@@ -36,6 +36,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
         // Table: OwnedPokemon
         const val OWNED_POKEMON_TABLE = "OwnedPokemon"
         const val OWNED_POKEMON_ID = "owned_pokemon_id"
+        const val OWNED_POKEMON_NAME = "name"
         const val OWNED_POKEMON_NICKNAME = "nickname"
         const val OWNED_POKEMON_OWNER_ID = "owner_id"
         const val OWNED_POKEMON_CAUGHT_LOCATION = "caught_location"
@@ -127,6 +128,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
         val createOwnedPokemonTableQuery = """
         CREATE TABLE $OWNED_POKEMON_TABLE (
             $OWNED_POKEMON_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+            $OWNED_POKEMON_NAME TEXT NOT NULL,
             $OWNED_POKEMON_NICKNAME TEXT NOT NULL,
             $OWNED_POKEMON_OWNER_ID INTEGER,
             $OWNED_POKEMON_CAUGHT_LOCATION TEXT NOT NULL,
@@ -293,6 +295,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
     @SuppressLint("Range")
     private fun insertOwnedPokemonDummyValues(db: SQLiteDatabase) {
         val contentValues = ContentValues()
+        contentValues.put(OWNED_POKEMON_NAME, "Pikachu")
         contentValues.put(OWNED_POKEMON_NICKNAME, "PikaCHUU")
         contentValues.put(OWNED_POKEMON_OWNER_ID, 1)
         contentValues.put(OWNED_POKEMON_CAUGHT_LOCATION, "PokeCenter")
@@ -303,6 +306,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, pokesoulDB,
         db.insert(OWNED_POKEMON_TABLE, null, contentValues)
 
         contentValues.clear()
+        contentValues.put(OWNED_POKEMON_NAME, "Quilava")
         contentValues.put(OWNED_POKEMON_NICKNAME, "Ron")
         contentValues.put(OWNED_POKEMON_OWNER_ID, 2)
         contentValues.put(OWNED_POKEMON_CAUGHT_LOCATION, "New Bark Town")

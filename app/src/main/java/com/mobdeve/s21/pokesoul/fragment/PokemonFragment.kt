@@ -12,13 +12,14 @@ import android.widget.LinearLayout
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.imageview.ShapeableImageView
 import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.activity.AddPokemonActivity
 import com.mobdeve.s21.pokesoul.activity.PokemonDetailsActivity
+import com.mobdeve.s21.pokesoul.database.DatabaseManager
 import com.mobdeve.s21.pokesoul.model.OwnedPokemon
 import com.mobdeve.s21.pokesoul.model.Player
 import com.mobdeve.s21.pokesoul.model.Run
@@ -26,6 +27,10 @@ import com.squareup.picasso.Picasso
 
 class PokemonFragment : Fragment() {
     private lateinit var run: Run
+
+    companion object {
+        private const val REQUEST_CODE_ADD_POKEMON = 100
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,31 +71,56 @@ class PokemonFragment : Fragment() {
             val intent = Intent(requireContext(), AddPokemonActivity::class.java)
             intent.putExtra("RUN_ID", run.runId)
             intent.putStringArrayListExtra("playerList", ArrayList(playerNames))
-            startActivity(intent)
+            startActivityForResult(intent, REQUEST_CODE_ADD_POKEMON)
         }
 
         return view
     }
 
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_ADD_POKEMON && resultCode == AppCompatActivity.RESULT_OK) {
+            // Refresh the data
+            val db = DatabaseManager(requireContext())
+            run = db.getRunById(run.runId) ?: return
+            val autoCompleteTextView = view?.findViewById<AutoCompleteTextView>(R.id.playerActv)
+            val teamTableLayout = view?.findViewById<TableLayout>(R.id.teamTl)
+            val boxTableLayout = view?.findViewById<TableLayout>(R.id.boxTl)
+            val daycareTableLayout = view?.findViewById<TableLayout>(R.id.daycareTl)
+            val graveTableLayout = view?.findViewById<TableLayout>(R.id.graveTl)
+
+            val selectedPlayerName = autoCompleteTextView?.text.toString()
+            val selectedPlayer = run.players.find { it.name == selectedPlayerName }
+
+            selectedPlayer?.let {
+                displayPokemon(it, teamTableLayout, boxTableLayout, daycareTableLayout, graveTableLayout, run)
+            }
+        }
+    }
+
     private fun displayPokemon(
         selectedPlayer: Player,
-        teamTableLayout: TableLayout,
-        boxTableLayout: TableLayout,
-        daycareTableLayout: TableLayout,
-        graveTableLayout: TableLayout,
+        teamTableLayout: TableLayout?,
+        boxTableLayout: TableLayout?,
+        daycareTableLayout: TableLayout?,
+        graveTableLayout: TableLayout?,
         run: Run
     ) {
-        teamTableLayout.removeAllViews()
-        boxTableLayout.removeAllViews()
-        daycareTableLayout.removeAllViews()
-        graveTableLayout.removeAllViews()
+        teamTableLayout?.removeAllViews()
+        boxTableLayout?.removeAllViews()
+        daycareTableLayout?.removeAllViews()
+        graveTableLayout?.removeAllViews()
 
-        val team = run.team.filter { it.owner.name == selectedPlayer.name }
+        Log.d("PokemonFragment", "Total run team size: ${run.team.size}")
+        val team = run.team.filter { it.owner.name == selectedPlayer.name && it.savedLocation == "Team" }
+        Log.d("PokemonFragment", "Filtered team size: ${team.size}")
 
         populatePokemonTable(team, teamTableLayout)
     }
 
-    private fun populatePokemonTable(pokemonList: List<OwnedPokemon>, tableLayout: TableLayout) {
+    private fun populatePokemonTable(pokemonList: List<OwnedPokemon>, tableLayout: TableLayout?) {
+        tableLayout ?: return
         for (i in pokemonList.indices step 2) {
             val tableRow = TableRow(requireContext()).apply {
                 layoutParams = TableRow.LayoutParams(
@@ -123,13 +153,13 @@ class PokemonFragment : Fragment() {
         val nicknameTextView = pokemonView.findViewById<TextView>(R.id.nicknameTv)
 
         pokemonView.orientation = LinearLayout.HORIZONTAL
-        pokemon?.let {
+        pokemon.let {
             Picasso.get()
                 .load(it.pokemon.sprite)
                 .resize(100, 100)
                 .centerCrop()
                 .placeholder(R.drawable.magikarp)
-                .error(R.drawable.player1)
+                .error(R.drawable.ampharos)
                 .into(pokemonImageView)
         }
         nicknameTextView.text = pokemon.nickname
@@ -150,9 +180,7 @@ class PokemonFragment : Fragment() {
         return pokemonView
     }
 
-
     private fun dpToPx(dp: Int): Int {
         return (dp * resources.displayMetrics.density).toInt()
     }
 }
-

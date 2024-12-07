@@ -31,6 +31,7 @@ class DatabaseManager(context: Context) {
     }
 
     fun insertOwnedPokemonEntry(
+        name: String,
         nickname: String,
         ownerId: Int,
         caughtLocation: String,
@@ -42,6 +43,7 @@ class DatabaseManager(context: Context) {
         val db: SQLiteDatabase = dbHelper.writableDatabase
         return try {
             val contentValues = ContentValues().apply {
+                put(MyDatabaseHelper.OWNED_POKEMON_NAME, name)
                 put(MyDatabaseHelper.OWNED_POKEMON_NICKNAME, nickname)
                 put(MyDatabaseHelper.OWNED_POKEMON_OWNER_ID, ownerId)
                 put(MyDatabaseHelper.OWNED_POKEMON_CAUGHT_LOCATION, caughtLocation)
@@ -225,6 +227,7 @@ class DatabaseManager(context: Context) {
         val ownedPokemon = mutableListOf<OwnedPokemon>()
         if (cursor.moveToFirst()) {
             val idIndex = cursor.getColumnIndex(MyDatabaseHelper.OWNED_POKEMON_ID)
+            val nameIndex = cursor.getColumnIndex(MyDatabaseHelper.OWNED_POKEMON_NAME)
             val nicknameIndex = cursor.getColumnIndex(MyDatabaseHelper.OWNED_POKEMON_NICKNAME)
             val playerIdIndex = cursor.getColumnIndex(MyDatabaseHelper.PLAYER_ID)
             val playerNameIndex = cursor.getColumnIndex(MyDatabaseHelper.PLAYER_NAME)
@@ -234,9 +237,10 @@ class DatabaseManager(context: Context) {
             val urlIndex = cursor.getColumnIndex(MyDatabaseHelper.OWNED_POKEMON_URL)
             val spriteIndex = cursor.getColumnIndex(MyDatabaseHelper.OWNED_POKEMON_SPRITE)
 
-            if (idIndex >= 0 && nicknameIndex >= 0 && playerIdIndex >= 0 && playerNameIndex >= 0 && playerImageIndex >= 0 && caughtLocationIndex >= 0 && savedLocationIndex >= 0 && urlIndex >= 0 && spriteIndex >= 0) {
+            if (idIndex >= 0 && nameIndex >= 0 && nicknameIndex >= 0 && playerIdIndex >= 0 && playerNameIndex >= 0 && playerImageIndex >= 0 && caughtLocationIndex >= 0 && savedLocationIndex >= 0 && urlIndex >= 0 && spriteIndex >= 0) {
                 do {
                     val id = cursor.getInt(idIndex)
+                    val name = cursor.getString(nameIndex)
                     val nickname = cursor.getString(nicknameIndex)
                     val caughtLocation = cursor.getString(caughtLocationIndex)
                     val savedLocation = cursor.getString(savedLocationIndex)
@@ -251,7 +255,8 @@ class DatabaseManager(context: Context) {
                     ownedPokemon.add(
                         OwnedPokemon(
                             id,
-                            Pokemon(nickname, url, sprite),
+                            Pokemon(name, url, sprite),
+                            name,
                             nickname,
                             owner,
                             caughtLocation,
@@ -337,6 +342,7 @@ class DatabaseManager(context: Context) {
         val ownedPokemon = mutableListOf<OwnedPokemon>()
         if (cursor.moveToFirst()) {
             val idIndex = cursor.getColumnIndex(MyDatabaseHelper.OWNED_POKEMON_ID)
+            val nameIndex = cursor.getColumnIndex(MyDatabaseHelper.OWNED_POKEMON_NAME)
             val nicknameIndex = cursor.getColumnIndex(MyDatabaseHelper.OWNED_POKEMON_NICKNAME)
             val playerIdIndex = cursor.getColumnIndex(MyDatabaseHelper.PLAYER_ID)
             val playerNameIndex = cursor.getColumnIndex(MyDatabaseHelper.PLAYER_NAME)
@@ -346,9 +352,10 @@ class DatabaseManager(context: Context) {
             val urlIndex = cursor.getColumnIndex(MyDatabaseHelper.OWNED_POKEMON_URL)
             val spriteIndex = cursor.getColumnIndex(MyDatabaseHelper.OWNED_POKEMON_SPRITE)
 
-            if (idIndex >= 0 && nicknameIndex >= 0 && playerIdIndex >= 0 && playerNameIndex >= 0 && playerImageIndex >= 0 && caughtLocationIndex >= 0 && savedLocationIndex >= 0 && urlIndex >= 0 && spriteIndex >= 0) {
+            if (idIndex >= 0 && nameIndex >= 0 && nicknameIndex >= 0 && playerIdIndex >= 0 && playerNameIndex >= 0 && playerImageIndex >= 0 && caughtLocationIndex >= 0 && savedLocationIndex >= 0 && urlIndex >= 0 && spriteIndex >= 0) {
                 do {
                     val id = cursor.getInt(idIndex)
+                    val name = cursor.getString(nameIndex)
                     val nickname = cursor.getString(nicknameIndex)
                     val caughtLocation = cursor.getString(caughtLocationIndex)
                     val savedLocation = cursor.getString(savedLocationIndex)
@@ -363,7 +370,8 @@ class DatabaseManager(context: Context) {
                     ownedPokemon.add(
                         OwnedPokemon(
                             id,
-                            Pokemon(nickname, url, sprite),
+                            Pokemon(name, url, sprite),
+                            name,
                             nickname,
                             owner,
                             caughtLocation,

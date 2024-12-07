@@ -5,6 +5,7 @@ import java.io.Serializable
 data class OwnedPokemon(
     val ownedPokemonId: Int,
     val pokemon: Pokemon,
+    val name: String,
     val nickname: String,
     val owner: Player,
     val caughtLocation: String,

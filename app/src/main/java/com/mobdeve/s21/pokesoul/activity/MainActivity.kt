@@ -30,47 +30,8 @@ class MainActivity : AppCompatActivity() {
                 .commit()
         }
 
-        // Insert some sample data for testing
-        addSampleData()
-
         // Retrieve and log the data from the database
         retrieveAndLogData()
-    }
-
-    private fun addSampleData() {
-        try {
-            // Example: Insert a new run entry
-            val runId = dbManager.insertRunEntry("My Nuzlocke Run", "Pokemon Emerald", "2024-12-07T10:00:00Z")
-            Log.d("DatabaseLog", "Inserted Run ID: $runId")
-
-            // Example: Insert a new owned Pokemon
-            val pokemonId = dbManager.insertOwnedPokemonEntry(
-                "Bulbasaur",
-                0,
-                "Route 1",
-                "PC",
-                "https://pokeapi.co/api/v2/pokemon/bulbasaur",
-                "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
-                runId.toInt() // Pass the runId here
-            )
-            Log.d("DatabaseLog", "Inserted Pokemon ID: $pokemonId")
-
-            // Example: Insert a new timeline log entry
-            if (runId != null) {
-                val logId = dbManager.insertTimelineLogEntry(
-                    "Caught Bulbasaur",
-                    "Route 1",
-                    "2024-12-07T10:30:00Z",
-                    "First capture!",
-                    true,
-                    runId.toInt(), // Ensure runId is passed as an integer
-                    1
-                )
-                Log.d("DatabaseLog", "Inserted Timeline Log ID: $logId")
-            }
-        } catch (e: Exception) {
-            Log.e("DatabaseLog", "Error inserting sample data", e)
-        }
     }
 
     private fun retrieveAndLogData() {
