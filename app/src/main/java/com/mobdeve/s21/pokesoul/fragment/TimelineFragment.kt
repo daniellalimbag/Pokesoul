@@ -31,6 +31,8 @@ class TimelineFragment : Fragment() {
 
         run = arguments?.getSerializable("RUN_INSTANCE") as? Run ?: return view
 
+        val playerNames = run.players.map { player -> player.name }
+
         logRv = view.findViewById(R.id.logRv)
         val noLogsText: TextView = view.findViewById(R.id.noLogsTv)
         val currentUser = Player(8, "Austin", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/156.png")
@@ -51,6 +53,7 @@ class TimelineFragment : Fragment() {
         // Set up FloatingActionButton to open AddTimelineLogActivity
         addFab.setOnClickListener {
             val intent = Intent(requireContext(), AddTimelineLogActivity::class.java)
+            intent.putStringArrayListExtra("playerList", ArrayList(playerNames))
             startActivity(intent)
         }
         return view
