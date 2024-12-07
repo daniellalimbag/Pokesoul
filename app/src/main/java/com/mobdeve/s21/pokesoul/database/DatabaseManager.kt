@@ -55,22 +55,38 @@ class DatabaseManager(context: Context) {
     }
 
 
-
-
-    fun insertRunEntry(runName: String, gameTitle: String, updatedTime: String): Long {
-        val db: SQLiteDatabase = dbHelper.writableDatabase
+    fun insertRun(run: Run): Long {
+        val db = dbHelper.writableDatabase
         return try {
             val contentValues = ContentValues().apply {
-                put(MyDatabaseHelper.RUN_NAME, runName)
-                put(MyDatabaseHelper.GAME_TITLE, gameTitle)
-                put(MyDatabaseHelper.UPDATED_TIME, updatedTime)
+                put(MyDatabaseHelper.RUN_NAME, run.runName)
+                put(MyDatabaseHelper.GAME_TITLE, run.gameTitle)
+                put(MyDatabaseHelper.UPDATED_TIME, run.updatedTime)
             }
             val runId = db.insert(MyDatabaseHelper.RUNS_TABLE, null, contentValues)
-            Log.d("DatabaseLog", "Run entry inserted with ID: $runId")
+            Log.d("DatabaseLog", "Run inserted with ID: $runId")
             runId
         } catch (e: Exception) {
-            Log.e("DatabaseLog", "Error inserting run entry", e)
+            Log.e("DatabaseLog", "Error inserting run", e)
             -1
+        } finally {
+            db.close()
+        }
+    }
+
+    fun insertRunDetails(runId: Long, run: Run) {
+        val db = dbHelper.writableDatabase
+        try {
+            val contentValues = ContentValues().apply {
+                put(MyDatabaseHelper.RUN_ID_FK, runId)
+                put(MyDatabaseHelper.RUN_NAME_DETAIL, run.runName)
+                put(MyDatabaseHelper.RUN_GAME_TITLE_DETAIL, run.gameTitle)
+                put(MyDatabaseHelper.RUN_UPDATED_TIME_DETAIL, run.updatedTime)
+            }
+            db.insert(MyDatabaseHelper.RUN_DETAILS_TABLE, null, contentValues)
+            Log.d("DatabaseLog", "Run details inserted for run ID: $runId")
+        } catch (e: Exception) {
+            Log.e("DatabaseLog", "Error inserting run details", e)
         } finally {
             db.close()
         }
