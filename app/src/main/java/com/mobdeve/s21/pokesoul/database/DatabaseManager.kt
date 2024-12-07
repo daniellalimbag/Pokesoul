@@ -76,6 +76,25 @@ class DatabaseManager(context: Context) {
         }
     }
 
+    fun insertPlayer(player: Player): Long {
+        val db: SQLiteDatabase = dbHelper.writableDatabase
+        return try {
+            val contentValues = ContentValues().apply {
+                put(MyDatabaseHelper.PLAYER_NAME, player.name)
+                put(MyDatabaseHelper.PLAYER_IMAGE, player.image)
+                // Assuming PLAYER_RUN_ID is available, you can include it if necessary.
+            }
+            val playerId = db.insert(MyDatabaseHelper.PLAYERS_TABLE, null, contentValues)
+            Log.d("DatabaseLog", "Player entry inserted with ID: $playerId")
+            playerId
+        } catch (e: Exception) {
+            Log.e("DatabaseLog", "Error inserting player entry", e)
+            -1
+        } finally {
+            db.close()
+        }
+    }
+
     fun insertOwnedPokemonEntry(
         runId: Int,
         ownerId: Int,
