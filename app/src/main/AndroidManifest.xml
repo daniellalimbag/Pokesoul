@@ -25,10 +25,6 @@
         <activity
             android:name=".activity.RunDetailsActivity"
             android:exported="true" />
-        <!-- AddPostActivity -->
-        <activity
-            android:name=".activity.AddPostActivity"
-            android:exported="true" />
         <!-- AddPokemonActivity -->
         <activity
             android:name=".activity.AddPokemonActivity"
@@ -41,35 +37,16 @@
         <activity
             android:name=".activity.AddRunActivity"
             android:exported="true" />
+        <!-- AddPlayerActivity -->
+        <activity
+            android:name=".activity.AddPlayerActivity"
+            android:exported="true" />
         <!-- EditRunActivity -->
         <activity
             android:name=".activity.EditRunActivity"
             android:exported="true" />
-        <!-- EditProfileActivity -->
-        <activity
-            android:name=".activity.EditProfileActivity"
-            android:exported="true" />
-        <!-- ProfileDetailsActivity -->
-        <activity
-            android:name=".activity.ProfileDetailsActivity"
-            android:exported="true" />
-        <activity
-        android:name=".activity.RegisterUserActivity"
-        android:exported="true" />
-        <activity
-            android:name=".activity.LoginUserActivity"
-            android:exported="true" />
-        <activity
-            android:name=".activity.ForgotPasswordActivity"
-            android:exported="true" />
-        <activity
-            android:name=".activity.ViewPostActivity"
-            android:exported="true" />
         <activity
             android:name=".activity.SearchActivity"
-            android:exported="true" />
-        <activity
-            android:name=".activity.AddCommentActivity"
             android:exported="true" />
         <activity
             android:name=".activity.PokemonDetailsActivity"
