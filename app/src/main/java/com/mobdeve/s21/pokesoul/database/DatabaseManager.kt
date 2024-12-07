@@ -597,4 +597,36 @@ class DatabaseManager(context: Context) {
             db.close()
         }
     }
+
+    fun insertTimelineLog(
+        eventName: String,
+        location: String,
+        time: String,
+        notes: String,
+        runId: Int,
+        teamId: Int
+    ):Long{
+        val db: SQLiteDatabase = dbHelper.writableDatabase
+
+        return try {
+            val contentValues = ContentValues().apply {
+                put(MyDatabaseHelper.TIMELINE_LOG_EVENT_NAME, eventName)
+                put(MyDatabaseHelper.TIMELINE_LOG_LOCATION, location)
+                put(MyDatabaseHelper.TIMELINE_LOG_TIME, time)
+                put(MyDatabaseHelper.TIMELINE_LOG_NOTES, notes)
+                put(MyDatabaseHelper.TIMELINE_LOG_DISPLAY_TEAM, 1)
+                put(MyDatabaseHelper.TIMELINE_LOG_RUN_ID, runId)
+                put(MyDatabaseHelper.TIMELINE_LOG_TEAM_ID, teamId)
+            }
+            val TimelineLog = db.insert(MyDatabaseHelper.TIMELINE_LOG_TABLE, null, contentValues)
+            Log.d("DatabaseLog", "Timeline Log inserted with ID: $TimelineLog")
+            TimelineLog
+        } catch (e: Exception) {
+            Log.e("DatabaseLog", "Error inserting owned Timeline Log entry", e)
+            -1
+        } finally {
+            db.close()
+        }
+
+    }
 }

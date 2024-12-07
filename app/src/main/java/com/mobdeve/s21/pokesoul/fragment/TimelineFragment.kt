@@ -54,6 +54,7 @@ class TimelineFragment : Fragment() {
         addFab.setOnClickListener {
             val intent = Intent(requireContext(), AddTimelineLogActivity::class.java)
             intent.putStringArrayListExtra("playerList", ArrayList(playerNames))
+            intent.putExtra("RUN_ID", run.runId)
             startActivity(intent)
         }
         return view
