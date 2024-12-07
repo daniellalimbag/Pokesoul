@@ -51,5 +51,5 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.retrofit)
     implementation(libs.gson)
-    implementation("com.squareup.picasso:picasso:2.71828")
+    implementation(libs.picasso)
 }
