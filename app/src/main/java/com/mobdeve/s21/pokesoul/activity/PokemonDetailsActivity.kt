@@ -98,7 +98,7 @@ class PokemonDetailsActivity : AppCompatActivity() {
                 .resize(100, 100)
                 .centerCrop()
                 .placeholder(R.drawable.magikarp)
-                .error(R.drawable.player1)
+                .error(R.drawable.missing)
                 .into(pokemonSiv)
 
             nicknameText.setText(it.nickname)

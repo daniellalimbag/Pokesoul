@@ -20,7 +20,7 @@ class PokemonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             .resize(100, 100)
             .centerCrop()
             .placeholder(R.drawable.magikarp)
-            .error(R.drawable.player1)
+            .error(R.drawable.missing)
             .into(pokemonImageView)
     }
 }
