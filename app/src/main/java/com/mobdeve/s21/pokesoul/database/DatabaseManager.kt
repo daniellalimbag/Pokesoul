@@ -468,6 +468,21 @@ class DatabaseManager(context: Context) {
         return ownedPokemon
     }
 
+    fun getAllOwnedPokemonByRunId(runId: Int): List<OwnedPokemon> {
+        val teamList = getTeamByRunId(runId)
+        val boxList = getBoxByRunId(runId)
+        val daycareList = getDaycareByRunId(runId)
+        val graveList = getGraveByRunId(runId)
+
+        val allOwnedPokemon = mutableListOf<OwnedPokemon>()
+        allOwnedPokemon.addAll(teamList)
+        allOwnedPokemon.addAll(boxList)
+        allOwnedPokemon.addAll(daycareList)
+        allOwnedPokemon.addAll(graveList)
+
+        return allOwnedPokemon
+    }
+
     fun getTimelineLogsByRun(runId: Int): List<TimelineLog> {
         val db: SQLiteDatabase = dbHelper.readableDatabase
         val cursor = db.query(

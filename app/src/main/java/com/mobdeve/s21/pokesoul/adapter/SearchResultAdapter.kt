@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s21.pokesoul.R
+import com.mobdeve.s21.pokesoul.model.OwnedPokemon
 import com.mobdeve.s21.pokesoul.model.Player
 import com.mobdeve.s21.pokesoul.model.Pokemon
 import com.mobdeve.s21.pokesoul.viewholder.SearchResultViewHolder
@@ -18,6 +19,7 @@ class SearchResultAdapter(
     interface OnItemClickListener {
         fun onUserClick(user: Player)
         fun onPokemonClick(pokemon: Pokemon)
+        fun onOwnedPokemonClick(ownedPokemon: OwnedPokemon)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchResultViewHolder {

@@ -11,9 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.adapter.SearchResultAdapter
 import com.mobdeve.s21.pokesoul.api.PokemonAPIClient
+import com.mobdeve.s21.pokesoul.model.OwnedPokemon
 import com.mobdeve.s21.pokesoul.model.Player
 import com.mobdeve.s21.pokesoul.model.Pokemon
 import com.mobdeve.s21.pokesoul.model.PokemonListResponse
+import com.mobdeve.s21.pokesoul.database.DatabaseManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,7 +28,9 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var searchView: SearchView
     private var allUsers = ArrayList<Player>()
     private var allPokemon = ArrayList<Pokemon>()
+    private var allOwnedPokemon = ArrayList<OwnedPokemon>()
     private var isSearchingPokemon: Boolean = false
+    private var isSearchingOwnedPokemon: Boolean = false
     private lateinit var searchResultAdapter: SearchResultAdapter
 
     companion object {
@@ -47,28 +51,46 @@ class SearchActivity : AppCompatActivity() {
 
         // Determine the context of the search
         isSearchingPokemon = intent.getBooleanExtra("isFromAddPokemon", false)
+        isSearchingOwnedPokemon = intent.getBooleanExtra("isFromAddDeath", false) || intent.getBooleanExtra("isFromAddCapture", false)
 
         // Initialize the adapter based on context
-        searchResultAdapter = SearchResultAdapter(if (isSearchingPokemon) allPokemon else allUsers, object : SearchResultAdapter.OnItemClickListener {
-            override fun onUserClick(user: Player) {
-                val resultIntent = Intent()
-                resultIntent.putExtra("selectedPlayer", user)
-                setResult(RESULT_OK, resultIntent)
-                finish()
-            }
+        searchResultAdapter = SearchResultAdapter(
+            when {
+                isSearchingPokemon -> allPokemon
+                isSearchingOwnedPokemon -> allOwnedPokemon
+                else -> allUsers
+            },
+            object : SearchResultAdapter.OnItemClickListener {
+                override fun onUserClick(user: Player) {
+                    val resultIntent = Intent()
+                    resultIntent.putExtra("selectedPlayer", user)
+                    setResult(RESULT_OK, resultIntent)
+                    finish()
+                }
 
-            override fun onPokemonClick(pokemon: Pokemon) {
-                val resultIntent = Intent()
-                resultIntent.putExtra("selectedPokemon", pokemon)
-                setResult(RESULT_OK, resultIntent)
-                finish()
+                override fun onPokemonClick(pokemon: Pokemon) {
+                    val resultIntent = Intent()
+                    resultIntent.putExtra("selectedPokemon", pokemon)
+                    setResult(RESULT_OK, resultIntent)
+                    finish()
+                }
+
+                override fun onOwnedPokemonClick(ownedPokemon: OwnedPokemon) {
+                    val resultIntent = Intent()
+                    resultIntent.putExtra("selectedPokemon", ownedPokemon)
+                    setResult(RESULT_OK, resultIntent)
+                    finish()
+                }
             }
-        })
+        )
         resultsRv.adapter = searchResultAdapter
 
-        // Fetch Pokémon data from API
+        // Fetch data based on context
         if (isSearchingPokemon) {
             fetchPokemonData()
+        } else if (isSearchingOwnedPokemon) {
+            val runId = intent.getIntExtra("RUN_ID", -1)
+            fetchAllOwnedPokemonData(runId)
         }
 
         // Set up SearchView
@@ -90,12 +112,12 @@ class SearchActivity : AppCompatActivity() {
 
     private fun filterList(query: String?) {
         if (query != null) {
-            val filteredList = if (isSearchingPokemon) {
-                allPokemon.filter { it.name.lowercase(Locale.ROOT).contains(query.lowercase(Locale.ROOT)) }
-            } else {
-                allUsers.filter { it.name.lowercase(Locale.ROOT).contains(query.lowercase(Locale.ROOT)) }
+            val filteredList = when {
+                isSearchingPokemon -> allPokemon.filter { it.name.lowercase(Locale.ROOT).contains(query.lowercase(Locale.ROOT)) }
+                isSearchingOwnedPokemon -> allOwnedPokemon.filter { it.nickname.lowercase(Locale.ROOT).contains(query.lowercase(Locale.ROOT)) }
+                else -> allUsers.filter { it.name.lowercase(Locale.ROOT).contains(query.lowercase(Locale.ROOT)) }
             }
-            searchResultAdapter.updateData(ArrayList(filteredList)) // Ensure the type matches ArrayList<Serializable>
+            searchResultAdapter.updateData(ArrayList(filteredList))
         }
     }
 
@@ -116,8 +138,8 @@ class SearchActivity : AppCompatActivity() {
                             )
                             allPokemon.add(pokemon)
                         }
-                        // Cast to ArrayList<Serializable> to match the required type
-                        searchResultAdapter.updateData(allPokemon as ArrayList<Serializable>) // Update the adapter with the new list
+                        // Update the adapter with the new list
+                        searchResultAdapter.updateData(allPokemon as ArrayList<Serializable>)
                     }
                 } else {
                     Log.e("SearchActivity", "Failed to load Pokémon data")
@@ -130,5 +152,13 @@ class SearchActivity : AppCompatActivity() {
                 Toast.makeText(this@SearchActivity, "Error fetching Pokémon data", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun fetchAllOwnedPokemonData(runId: Int) {
+        val dbManager = DatabaseManager(this)
+        val allOwnedPokemonList = dbManager.getAllOwnedPokemonByRunId(runId)
+        allOwnedPokemon.clear()
+        allOwnedPokemon.addAll(allOwnedPokemonList)
+        searchResultAdapter.updateData(allOwnedPokemon as ArrayList<Serializable>)
     }
 }
