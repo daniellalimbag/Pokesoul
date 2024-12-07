@@ -31,6 +31,7 @@ class DatabaseManager(context: Context) {
 
     fun insertOwnedPokemonEntry(
         nickname: String,
+        owner: Int,
         caughtLocation: String,
         savedLocation: String,
         url: String,

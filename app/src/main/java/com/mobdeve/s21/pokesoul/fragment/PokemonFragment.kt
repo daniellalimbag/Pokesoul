@@ -64,6 +64,8 @@ class PokemonFragment : Fragment() {
         // Set up FloatingActionButton to open AddPokemonActivity
         addFab.setOnClickListener {
             val intent = Intent(requireContext(), AddPokemonActivity::class.java)
+            intent.putExtra("RUN_ID", run.runId)
+            intent.putStringArrayListExtra("playerList", ArrayList(playerNames))
             startActivity(intent)
         }
 
