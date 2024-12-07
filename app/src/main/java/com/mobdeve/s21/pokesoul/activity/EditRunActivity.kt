@@ -24,6 +24,7 @@ class EditRunActivity : AppCompatActivity() {
     private lateinit var playersRv: RecyclerView
     private lateinit var addIbtn: ImageButton
     private lateinit var playerAdapter: PlayerAdapter
+    private lateinit var deleteBtn:Button
     private lateinit var dbManager: DatabaseManager
     private val playersList = mutableListOf<Player>()
 
@@ -45,6 +46,7 @@ class EditRunActivity : AppCompatActivity() {
         gameEt = findViewById(R.id.gameEt)
         playersRv = findViewById(R.id.playersRv)
         addIbtn = findViewById(R.id.addIbtn)
+        deleteBtn = findViewById(R.id.deleteBtn)
 
         // Initialize PlayerAdapter
         playerAdapter = PlayerAdapter(playersList, showNames = true)
@@ -64,6 +66,17 @@ class EditRunActivity : AppCompatActivity() {
 
         // Back button logic
         backBtn.setOnClickListener { finish() }
+
+        deleteBtn.setOnClickListener{
+            if(dbManager.deleteRunById(run!!.runId)){
+                Toast.makeText(this, "Run deleted", Toast.LENGTH_SHORT).show()
+            }
+            else{
+                Toast.makeText(this, "Run not deleted", Toast.LENGTH_SHORT).show()
+            }
+            setResult(RESULT_OK)
+            finish()
+        }
 
         // Save button logic with basic validation
         saveBtn.setOnClickListener {

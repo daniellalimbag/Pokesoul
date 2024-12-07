@@ -11,6 +11,42 @@ import com.mobdeve.s21.pokesoul.model.*
 class DatabaseManager(context: Context) {
     private val dbHelper: MyDatabaseHelper = MyDatabaseHelper(context)
 
+    fun deleteRunById(runId: Int):Boolean{
+        val db = dbHelper.writableDatabase
+        return try {
+            val rowsDeleted = db.delete(
+                MyDatabaseHelper.RUNS_TABLE,        // Table name
+                "${MyDatabaseHelper.RUN_ID} = ?",      // WHERE clause
+                arrayOf(runId.toString()) // Arguments for the WHERE clause
+            )
+            deleteRunDetailsByRunId(runId)
+            rowsDeleted > 0
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false // Return false if there was an error
+        } finally {
+            db.close() // Close the database to free resources
+        }
+    }
+
+    fun deleteRunDetailsByRunId(runId: Int):Boolean{
+        val db = dbHelper.writableDatabase
+        return try {
+            // Attempt to delete the row from the OwnedPokemon table
+            val rowsDeleted = db.delete(
+                MyDatabaseHelper.RUN_DETAILS_TABLE,        // Table name
+                "${MyDatabaseHelper.RUN_ID_FK} = ?",      // WHERE clause
+                arrayOf(runId.toString()) // Arguments for the WHERE clause
+            )
+            rowsDeleted > 0 // Return true if at least one row was deleted
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false // Return false if there was an error
+        } finally {
+            db.close() // Close the database to free resources
+        }
+    }
+
     fun deleteFromteam(pokemonId: Int){
         val db = dbHelper.writableDatabase
         db.delete(MyDatabaseHelper.TEAM_TABLE, "${MyDatabaseHelper.TEAM_OWNED_POKEMON_ID} = ?", arrayOf(pokemonId.toString()))
