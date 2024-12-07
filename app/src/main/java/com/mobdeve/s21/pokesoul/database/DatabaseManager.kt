@@ -185,9 +185,9 @@ class DatabaseManager(context: Context) {
         location: String,
         time: String,
         notes: String,
-        displayTeam: Boolean,
+        displayTeam: Int,
         runId: Int,
-        teamId: Int
+        team: List<OwnedPokemon>
     ): Long {
         val db: SQLiteDatabase = dbHelper.writableDatabase
         val contentValues = ContentValues().apply {
@@ -197,12 +197,66 @@ class DatabaseManager(context: Context) {
             put(MyDatabaseHelper.TIMELINE_LOG_NOTES, notes)
             put(MyDatabaseHelper.TIMELINE_LOG_DISPLAY_TEAM, displayTeam)
             put(MyDatabaseHelper.TIMELINE_LOG_RUN_ID, runId)
-            //put(MyDatabaseHelper.TIMELINE_LOG_TEAM_ID, teamId)
+            put(MyDatabaseHelper.TIMELINE_LOG_TEAM, team.toString())
         }
-
         val logId = db.insert(MyDatabaseHelper.TIMELINE_LOG_TABLE, null, contentValues)
         db.close()
+        listAllTimelineLogs()
         return logId
+    }
+
+    //TO BE DELETED
+    fun listAllTimelineLogs() {
+        val db: SQLiteDatabase = dbHelper.readableDatabase
+
+        val projection = arrayOf(
+            MyDatabaseHelper.TIMELINE_LOG_ID,
+            MyDatabaseHelper.TIMELINE_LOG_EVENT_NAME,
+            MyDatabaseHelper.TIMELINE_LOG_LOCATION,
+            MyDatabaseHelper.TIMELINE_LOG_TIME,
+            MyDatabaseHelper.TIMELINE_LOG_NOTES,
+            MyDatabaseHelper.TIMELINE_LOG_DISPLAY_TEAM,
+            MyDatabaseHelper.TIMELINE_LOG_RUN_ID,
+        )
+
+        val cursor = db.query(
+            MyDatabaseHelper.TIMELINE_LOG_TABLE,  // Table name
+            null,  // Select all columns
+            null,
+            null,
+            null,
+            null,
+            null
+        )
+
+        if (cursor.moveToFirst()) {
+            do {
+                val id = cursor.getInt(cursor.getColumnIndexOrThrow(MyDatabaseHelper.TIMELINE_LOG_ID))
+                val eventName = cursor.getString(cursor.getColumnIndexOrThrow(MyDatabaseHelper.TIMELINE_LOG_EVENT_NAME))
+                val location = cursor.getString(cursor.getColumnIndexOrThrow(MyDatabaseHelper.TIMELINE_LOG_LOCATION))
+                val time = cursor.getString(cursor.getColumnIndexOrThrow(MyDatabaseHelper.TIMELINE_LOG_TIME))
+                val notes = cursor.getString(cursor.getColumnIndexOrThrow(MyDatabaseHelper.TIMELINE_LOG_NOTES))
+                val displayTeam = cursor.getInt(cursor.getColumnIndexOrThrow(MyDatabaseHelper.TIMELINE_LOG_DISPLAY_TEAM)) == 1
+                val runId = cursor.getInt(cursor.getColumnIndexOrThrow(MyDatabaseHelper.TIMELINE_LOG_RUN_ID))
+                val team = cursor.getString(cursor.getColumnIndexOrThrow(MyDatabaseHelper.TIMELINE_LOG_TEAM))
+
+                Log.d("TimelineLog", """
+                ID: $id
+                Event Name: $eventName
+                Location: $location
+                Time: $time
+                Notes: $notes
+                Display Team: $displayTeam
+                Run ID: $runId
+                Team: $team
+            """.trimIndent())
+            } while (cursor.moveToNext())
+        } else {
+            Log.d("TimelineLog", "No timeline logs found in the database.")
+        }
+
+        cursor.close()
+        db.close()
     }
 
     fun getRunById(runId: Int): Run? {
