@@ -30,6 +30,7 @@ class PokemonFragment : Fragment() {
 
     companion object {
         private const val REQUEST_CODE_ADD_POKEMON = 100
+        private const val REQUEST_CODE_UPDATE_POKEMON = 100
     }
 
     override fun onCreateView(
@@ -80,7 +81,7 @@ class PokemonFragment : Fragment() {
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_ADD_POKEMON && resultCode == AppCompatActivity.RESULT_OK) {
+        if ((requestCode == REQUEST_CODE_ADD_POKEMON && resultCode == AppCompatActivity.RESULT_OK)|| requestCode == REQUEST_CODE_UPDATE_POKEMON && resultCode == AppCompatActivity.RESULT_OK) {
             // Refresh the data
             val db = DatabaseManager(requireContext())
             run = db.getRunById(run.runId) ?: return
@@ -185,7 +186,8 @@ class PokemonFragment : Fragment() {
                 putExtra("POKEMON_INSTANCE", pokemon)
                 putExtra("RUN_INSTANCE", run)
             }
-            startActivity(intent)
+            startActivityForResult(intent, REQUEST_CODE_UPDATE_POKEMON)
+
         }
         return pokemonView
     }

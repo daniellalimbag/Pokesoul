@@ -11,6 +11,52 @@ import com.mobdeve.s21.pokesoul.model.*
 class DatabaseManager(context: Context) {
     private val dbHelper: MyDatabaseHelper = MyDatabaseHelper(context)
 
+    fun deleteFromteam(pokemonId: Int){
+        val db = dbHelper.writableDatabase
+        db.delete(MyDatabaseHelper.TEAM_TABLE, "${MyDatabaseHelper.TEAM_OWNED_POKEMON_ID} = ?", arrayOf(pokemonId.toString()))
+    }
+
+    fun deleteFromBox(pokemonId: Int){
+        val db = dbHelper.writableDatabase
+        db.delete(MyDatabaseHelper.BOX_TABLE, "${MyDatabaseHelper.TEAM_OWNED_POKEMON_ID} = ?", arrayOf(pokemonId.toString()))
+    }
+    fun deleteFromDaycare(pokemonId: Int){
+        val db = dbHelper.writableDatabase
+        db.delete(MyDatabaseHelper.GRAVE_TABLE, "${MyDatabaseHelper.TEAM_OWNED_POKEMON_ID} = ?", arrayOf(pokemonId.toString()))
+    }
+    fun deleteFromGrave(pokemonId: Int){
+        val db = dbHelper.writableDatabase
+        db.delete(MyDatabaseHelper.GRAVE_TABLE, "${MyDatabaseHelper.TEAM_OWNED_POKEMON_ID} = ?", arrayOf(pokemonId.toString()))
+    }
+
+    fun deletePokemonById(pokemonId: Int,savedLocation: String): Boolean {
+        val db = dbHelper.writableDatabase
+        return try {
+            // Attempt to delete the row from the OwnedPokemon table
+            val rowsDeleted = db.delete(
+                MyDatabaseHelper.OWNED_POKEMON_TABLE,        // Table name
+                "${MyDatabaseHelper.OWNED_POKEMON_ID} = ?",      // WHERE clause
+                arrayOf(pokemonId.toString()) // Arguments for the WHERE clause
+            )
+                when (savedLocation.lowercase()) {
+                    "team" -> deleteFromteam(pokemonId)
+                    "box" -> deleteFromBox(pokemonId)
+                    "daycare" -> deleteFromDaycare(pokemonId)
+                    "grave" -> deleteFromGrave(pokemonId)
+                    else -> Log.e("DatabaseLog", "Invalid savedLocation: $savedLocation")
+            }
+            rowsDeleted > 0 // Return true if at least one row was deleted
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false // Return false if there was an error
+        } finally {
+            db.close() // Close the database to free resources
+        }
+    }
+
+
+
+
     fun insertRunEntry(runName: String, gameTitle: String, updatedTime: String): Long {
         val db: SQLiteDatabase = dbHelper.writableDatabase
         return try {

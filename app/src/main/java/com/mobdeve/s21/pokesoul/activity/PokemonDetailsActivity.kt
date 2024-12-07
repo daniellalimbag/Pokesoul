@@ -5,7 +5,9 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.imageview.ShapeableImageView
 import com.mobdeve.s21.pokesoul.R
+import com.mobdeve.s21.pokesoul.database.DatabaseManager
 import com.mobdeve.s21.pokesoul.model.OwnedPokemon
+import com.mobdeve.s21.pokesoul.model.Player
 import com.mobdeve.s21.pokesoul.model.Run
 import com.squareup.picasso.Picasso
 
@@ -14,6 +16,8 @@ class PokemonDetailsActivity : AppCompatActivity() {
     private lateinit var saveBtn: Button
     private lateinit var playerActv: AutoCompleteTextView
     private lateinit var saveTv: AutoCompleteTextView
+    private lateinit var db: DatabaseManager
+    private lateinit var refPlayer: Player
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,13 +37,57 @@ class PokemonDetailsActivity : AppCompatActivity() {
         deleteBtn = findViewById(R.id.deleteBtn)
         saveBtn = findViewById(R.id.saveBtn)
 
+        db = DatabaseManager(this)
+        val playerList = run?.let { db.getPlayersByRunId(it.runId) }
+
         // Set click listener for the delete button
         deleteBtn.setOnClickListener {
+
+            if(db.deletePokemonById(pokemon!!.ownedPokemonId, pokemon.savedLocation)){
+                Toast.makeText(this, "Pokemon deleted", Toast.LENGTH_SHORT).show()
+            }
+            else{
+                Toast.makeText(this, "Pokemon not deleted", Toast.LENGTH_SHORT).show()
+            }
+            setResult(RESULT_OK)
             finish()
         }
 
-        // Set click listener for the save button
+        //TODO: LET IT SAVE THE NEW INFORMATION IN THE DATABASE
         saveBtn.setOnClickListener {
+
+            if (playerList != null) {
+                refPlayer = playerList.firstOrNull { it.name == playerActv.text.toString() }!!
+            }
+
+
+            val updatedNickname = nicknameText.text.toString()
+            val updatedCaughtLocation = locationTv.text.toString()
+            val updatedSavedLocation = saveTv.text.toString()
+
+            if(updatedNickname.isEmpty()|| updatedCaughtLocation.isEmpty() || updatedSavedLocation.isEmpty()){
+                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            //Adds the new pokemon with the updated information to the database
+            val dbManager = DatabaseManager(this)
+            val success = dbManager.insertOwnedPokemonEntry(
+                runId = run!!.runId,
+                ownerId =refPlayer.id,
+                name = pokemon!!.name,
+                nickname = updatedNickname,
+                caughtLocation = updatedCaughtLocation,
+                savedLocation = updatedSavedLocation,
+                url = pokemon.url,
+                sprite = pokemon.sprite
+            )
+
+            //Removes the old pokemon with the old information to the database
+            if(db.deletePokemonById(pokemon.ownedPokemonId, pokemon.savedLocation)){
+                Toast.makeText(this, "Pokemon Updated", Toast.LENGTH_SHORT).show()
+            }
+
+            setResult(RESULT_OK)
             finish()
         }
 
