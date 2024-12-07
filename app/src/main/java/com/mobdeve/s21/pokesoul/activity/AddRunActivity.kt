@@ -14,7 +14,6 @@ import com.mobdeve.s21.pokesoul.model.Player
 import com.mobdeve.s21.pokesoul.model.Run
 
 class AddRunActivity : AppCompatActivity() {
-
     private lateinit var backBtn: ImageButton
     private lateinit var saveBtn: Button
     private lateinit var titleEt: EditText
@@ -25,7 +24,7 @@ class AddRunActivity : AppCompatActivity() {
     private val playersList = mutableListOf<Player>()
 
     companion object {
-        const val REQUEST_CODE_SEARCH = 1
+        private const val REQUEST_CODE_ADD_PLAYER = 1
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,10 +38,6 @@ class AddRunActivity : AppCompatActivity() {
         gameEt = findViewById(R.id.gameEt)
         playersRv = findViewById(R.id.playersRv)
         addIbtn = findViewById(R.id.addIbtn)
-
-        // Static data
-        val user1 = Player(5, "Player 1", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/156.png")
-        playersList.add(user1)
 
         // Initialize the PlayerAdapter with playersList
         playerAdapter = PlayerAdapter(playersList, showNames = true)
@@ -61,21 +56,20 @@ class AddRunActivity : AppCompatActivity() {
             saveRun()
         }
 
-        // Set OnClickListener for the addIbtn to open SearchActivity
+        // Set OnClickListener for the addIbtn to open addPlayerActivity
         addIbtn.setOnClickListener {
-            val intent = Intent(this, SearchActivity::class.java)
-            intent.putExtra("isFromAddRun", true)
-            startActivityForResult(intent, REQUEST_CODE_SEARCH) // Start SearchActivity for result
+            val intent = Intent(this, AddPlayerActivity::class.java)
+            startActivityForResult(intent, REQUEST_CODE_ADD_PLAYER)
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_SEARCH && resultCode == RESULT_OK) {
-            val selectedPlayer = data?.getSerializableExtra("selectedPlayer") as? Player
-            selectedPlayer?.let {
-                playersList.add(it) // Add the selected player to the list
-                playerAdapter.notifyItemInserted(playersList.size - 1) // Notify the adapter
+        if (requestCode == REQUEST_CODE_ADD_PLAYER && resultCode == RESULT_OK) {
+            val player = data?.getSerializableExtra("selectedPlayer") as? Player
+            player?.let {
+                playersList.add(it)
+                playerAdapter.notifyDataSetChanged()
             }
         }
     }
@@ -87,8 +81,13 @@ class AddRunActivity : AppCompatActivity() {
         val runId = 1 // Replace with your logic to generate a unique ID
 
         // Create new Run object
-        val newRun = Run(runId = runId,
-            runName = title, gameTitle = game, players = playersList, updatedTime = System.currentTimeMillis().toString())
+        val newRun = Run(
+            runId = runId,
+            runName = title,
+            gameTitle = game,
+            players = playersList,
+            updatedTime = System.currentTimeMillis().toString()
+        )
 
         // Pass the new Run back to RunFragment
         val resultIntent = Intent()

@@ -59,6 +59,7 @@ class RunFragment : Fragment() {
         addIbtn.setOnClickListener {
             val intent = Intent(requireContext(), AddRunActivity::class.java)
             addRunResultLauncher.launch(intent)
+
         }
 
         return view
