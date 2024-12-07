@@ -31,34 +31,102 @@ class DatabaseManager(context: Context) {
     }
 
     fun insertOwnedPokemonEntry(
+        runId: Int,
+        ownerId: Int,
         name: String,
         nickname: String,
-        ownerId: Int,
         caughtLocation: String,
         savedLocation: String,
         url: String,
-        sprite: String,
-        runId: Int
+        sprite: String
     ): Long {
         val db: SQLiteDatabase = dbHelper.writableDatabase
+        Log.d("DatabaseLog", "Inserting Pokémon entry: nickname=$nickname, caughtLocation=$caughtLocation, savedLocation=$savedLocation, url=$url, sprite=$sprite, runId=$runId, ownerId=$ownerId")
+
         return try {
             val contentValues = ContentValues().apply {
                 put(MyDatabaseHelper.OWNED_POKEMON_NAME, name)
                 put(MyDatabaseHelper.OWNED_POKEMON_NICKNAME, nickname)
-                put(MyDatabaseHelper.OWNED_POKEMON_OWNER_ID, ownerId)
                 put(MyDatabaseHelper.OWNED_POKEMON_CAUGHT_LOCATION, caughtLocation)
                 put(MyDatabaseHelper.OWNED_POKEMON_SAVED_LOCATION, savedLocation)
                 put(MyDatabaseHelper.OWNED_POKEMON_URL, url)
                 put(MyDatabaseHelper.OWNED_POKEMON_SPRITE, sprite)
                 put(MyDatabaseHelper.OWNED_POKEMON_RUN_ID, runId)
+                put(MyDatabaseHelper.OWNED_POKEMON_OWNER_ID, ownerId)
             }
             val pokemonId = db.insert(MyDatabaseHelper.OWNED_POKEMON_TABLE, null, contentValues)
-            Log.d("DatabaseLog", "Owned Pokemon entry inserted with ID: $pokemonId")
-            logAllPokemonEntries()
+            Log.d("DatabaseLog", "Owned Pokémon entry inserted with ID: $pokemonId")
+
+            if (pokemonId != -1L) {
+                when (savedLocation.lowercase()) {
+                    "team" -> insertIntoTeam(runId, pokemonId)
+                    "box" -> insertIntoBox(runId, pokemonId)
+                    "daycare" -> insertIntoDaycare(runId, pokemonId)
+                    "grave" -> insertIntoGrave(runId, pokemonId)
+                    else -> Log.e("DatabaseLog", "Invalid savedLocation: $savedLocation")
+                }
+            }
+
             pokemonId
         } catch (e: Exception) {
-            Log.e("DatabaseLog", "Error inserting owned Pokemon entry", e)
+            Log.e("DatabaseLog", "Error inserting owned Pokémon entry", e)
             -1
+        } finally {
+            db.close()
+        }
+    }
+
+    private fun insertIntoTeam(runId: Int, pokemonId: Long) {
+        val db: SQLiteDatabase = dbHelper.writableDatabase
+        try {
+            val contentValues = ContentValues().apply {
+                put(MyDatabaseHelper.TEAM_RUN_ID, runId)
+                put(MyDatabaseHelper.TEAM_OWNED_POKEMON_ID, pokemonId)
+            }
+            db.insert(MyDatabaseHelper.TEAM_TABLE, null, contentValues)
+            Log.d("DatabaseLog", "Inserted Pokémon into Team with ID: $pokemonId")
+        } finally {
+            db.close()
+        }
+    }
+
+    private fun insertIntoBox(runId: Int, pokemonId: Long) {
+        val db: SQLiteDatabase = dbHelper.writableDatabase
+        try {
+            val contentValues = ContentValues().apply {
+                put(MyDatabaseHelper.BOX_RUN_ID, runId)
+                put(MyDatabaseHelper.BOX_OWNED_POKEMON_ID, pokemonId)
+            }
+            db.insert(MyDatabaseHelper.BOX_TABLE, null, contentValues)
+            Log.d("DatabaseLog", "Inserted Pokémon into Box with ID: $pokemonId")
+        } finally {
+            db.close()
+        }
+    }
+
+    private fun insertIntoDaycare(runId: Int, pokemonId: Long) {
+        val db: SQLiteDatabase = dbHelper.writableDatabase
+        try {
+            val contentValues = ContentValues().apply {
+                put(MyDatabaseHelper.DAYCARE_RUN_ID, runId)
+                put(MyDatabaseHelper.DAYCARE_OWNED_POKEMON_ID, pokemonId)
+            }
+            db.insert(MyDatabaseHelper.DAYCARE_TABLE, null, contentValues)
+            Log.d("DatabaseLog", "Inserted Pokémon into Daycare with ID: $pokemonId")
+        } finally {
+            db.close()
+        }
+    }
+
+    private fun insertIntoGrave(runId: Int, pokemonId: Long) {
+        val db: SQLiteDatabase = dbHelper.writableDatabase
+        try {
+            val contentValues = ContentValues().apply {
+                put(MyDatabaseHelper.GRAVE_RUN_ID, runId)
+                put(MyDatabaseHelper.GRAVE_OWNED_POKEMON_ID, pokemonId)
+            }
+            db.insert(MyDatabaseHelper.GRAVE_TABLE, null, contentValues)
+            Log.d("DatabaseLog", "Inserted Pokémon into Grave with ID: $pokemonId")
         } finally {
             db.close()
         }
