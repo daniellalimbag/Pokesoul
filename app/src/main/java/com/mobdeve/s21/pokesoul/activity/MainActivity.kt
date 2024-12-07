@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
             // Example: Insert a new owned Pokemon
             val pokemonId = dbManager.insertOwnedPokemonEntry(
                 "Bulbasaur",
+                0,
                 "Route 1",
                 "PC",
                 "https://pokeapi.co/api/v2/pokemon/bulbasaur",

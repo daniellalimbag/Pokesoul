@@ -16,6 +16,7 @@ import com.mobdeve.s21.pokesoul.R
 import com.mobdeve.s21.pokesoul.adapter.PokemonAdapter
 import com.mobdeve.s21.pokesoul.database.DatabaseManager
 import com.mobdeve.s21.pokesoul.model.OwnedPokemon
+import com.mobdeve.s21.pokesoul.model.Player
 import com.mobdeve.s21.pokesoul.model.Pokemon
 import com.squareup.picasso.Picasso
 
@@ -30,6 +31,10 @@ class AddPokemonActivity : AppCompatActivity() {
     private lateinit var saveTv: AutoCompleteTextView
     private var selectedPokemon: Pokemon? = null
     private lateinit var savedPlayer:AutoCompleteTextView
+
+    private lateinit var refPlayer:Player
+
+    lateinit var db: DatabaseManager
 
     private val savedLocations = listOf("Team", "Box", "Daycare", "Grave")
 
@@ -77,6 +82,12 @@ class AddPokemonActivity : AppCompatActivity() {
             return
         }
 
+        db = DatabaseManager(this)
+
+        var Players = listOf<Player>()
+
+        Players = db.getPlayersByRunId(runId)
+
         // Set OnClickListener for the searchIbtn to open SearchActivity
         searchIbtn.setOnClickListener {
             val intent = Intent(this, SearchActivity::class.java)
@@ -89,8 +100,18 @@ class AddPokemonActivity : AppCompatActivity() {
             finish()
         }
 
-        //TODO: HAVE THE SAVE BUTTON ADD THE POKEMON TO THE DATABASE
         saveBtn.setOnClickListener {
+            if(savedPlayer == null){
+                Toast.makeText(this, "Please select a Player", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            for(currentPlayer in Players){
+                if(currentPlayer.name.equals(savedPlayer.text.toString())){
+                    refPlayer = currentPlayer
+                    break
+                }
+            }
+
             if(selectedPokemon == null){
                 Toast.makeText(this, "Please select a Pokemon", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -106,6 +127,7 @@ class AddPokemonActivity : AppCompatActivity() {
             val dbManager = DatabaseManager(this)
             val success = dbManager.insertOwnedPokemonEntry(
                 runId = runId,
+                ownerId = refPlayer.id,
                 nickname = nickname,
                 caughtLocation = caughtLocation,
                 savedLocation = savedLocation,

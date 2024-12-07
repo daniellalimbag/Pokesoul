@@ -1,5 +1,6 @@
 package com.mobdeve.s21.pokesoul.database
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -31,6 +32,7 @@ class DatabaseManager(context: Context) {
 
     fun insertOwnedPokemonEntry(
         nickname: String,
+        ownerId: Int,
         caughtLocation: String,
         savedLocation: String,
         url: String,
@@ -41,6 +43,7 @@ class DatabaseManager(context: Context) {
         return try {
             val contentValues = ContentValues().apply {
                 put(MyDatabaseHelper.OWNED_POKEMON_NICKNAME, nickname)
+                put(MyDatabaseHelper.OWNED_POKEMON_OWNER_ID, ownerId)
                 put(MyDatabaseHelper.OWNED_POKEMON_CAUGHT_LOCATION, caughtLocation)
                 put(MyDatabaseHelper.OWNED_POKEMON_SAVED_LOCATION, savedLocation)
                 put(MyDatabaseHelper.OWNED_POKEMON_URL, url)
@@ -49,6 +52,7 @@ class DatabaseManager(context: Context) {
             }
             val pokemonId = db.insert(MyDatabaseHelper.OWNED_POKEMON_TABLE, null, contentValues)
             Log.d("DatabaseLog", "Owned Pokemon entry inserted with ID: $pokemonId")
+            logAllPokemonEntries()
             pokemonId
         } catch (e: Exception) {
             Log.e("DatabaseLog", "Error inserting owned Pokemon entry", e)
@@ -433,5 +437,42 @@ class DatabaseManager(context: Context) {
         cursor.close()
         db.close()
         return Runs(runs)
+    }
+
+    @SuppressLint("Range")
+    private fun logAllPokemonEntries() {
+        val db: SQLiteDatabase = dbHelper.readableDatabase
+        val cursor = db.query(
+            MyDatabaseHelper.OWNED_POKEMON_TABLE,
+            null, // null means select all columns
+            null, // no WHERE clause (select all rows)
+            null, // no selection args
+            null, // no GROUP BY
+            null, // no HAVING
+            null // no ORDER BY
+        )
+
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    val id = cursor.getLong(cursor.getColumnIndex(MyDatabaseHelper.OWNED_POKEMON_ID))
+                    val nickname = cursor.getString(cursor.getColumnIndex(MyDatabaseHelper.OWNED_POKEMON_NICKNAME))
+                    val ownerId = cursor.getInt(cursor.getColumnIndex(MyDatabaseHelper.OWNED_POKEMON_OWNER_ID))
+                    val caughtLocation = cursor.getString(cursor.getColumnIndex(MyDatabaseHelper.OWNED_POKEMON_CAUGHT_LOCATION))
+                    val savedLocation = cursor.getString(cursor.getColumnIndex(MyDatabaseHelper.OWNED_POKEMON_SAVED_LOCATION))
+                    val url = cursor.getString(cursor.getColumnIndex(MyDatabaseHelper.OWNED_POKEMON_URL))
+                    val sprite = cursor.getString(cursor.getColumnIndex(MyDatabaseHelper.OWNED_POKEMON_SPRITE))
+                    val runId = cursor.getInt(cursor.getColumnIndex(MyDatabaseHelper.OWNED_POKEMON_RUN_ID))
+
+                    // Log each entry
+                    Log.d("DatabaseLog", "Owned Pokemon - ID: $id, Nickname: $nickname, Owner: $ownerId, CaughtLocation: $caughtLocation, SavedLocation: $savedLocation, URL: $url, Sprite: $sprite, RunID: $runId")
+                } while (cursor.moveToNext())
+            }
+        } catch (e: Exception) {
+            Log.e("DatabaseLog", "Error reading from database", e)
+        } finally {
+            cursor?.close()
+            db.close()
+        }
     }
 }
